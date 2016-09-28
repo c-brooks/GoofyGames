@@ -1,12 +1,12 @@
 const usersRepo = {};
 
 module.exports = (knex) => {
-  usersRepo.getUser = function(user_id, cb) {
+  usersRepo.getUser = (user_id, cb) => {
     knex
     .select('*')
     .from('users')
     .where('id', '=', user_id)
-    .asCallback(function(err, user) {
+    .asCallback((err, user) => {
       if (err) cb(err);
       cb(user[0]);
     });
