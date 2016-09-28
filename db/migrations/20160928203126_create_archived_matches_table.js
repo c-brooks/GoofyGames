@@ -4,7 +4,8 @@ exports.up = function(knex, Promise) {
     table.integer('match_id');
     table.integer('winner_id');
     table.integer('loser_id');
-    table.integer('score');
+    table.integer('winner_score');
+    table.integer('loser_score');
     table.dateTime('game_end');
   });
 };
