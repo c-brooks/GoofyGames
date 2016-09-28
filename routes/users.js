@@ -4,13 +4,12 @@ const express = require('express');
 const router  = express.Router();
 
 module.exports = (knex) => {
+  const usersRepo = require('../db/users.js')(knex);
 
-  router.get("/", (req, res) => {
-    knex
-      .select("*")
-      .from("users")
-      .then((results) => {
-        res.json(results);
+  router.get("/:id", (req, res) => {
+    usersRepo.getUser(req.params.id, function(user) {
+      let templateVars = { user: user };
+      // res.render("user_profile", templateVars);
     });
   });
 
