@@ -4,6 +4,8 @@ exports.seed = function(knex, Promise) {
   return knex('matches').del()
     .then(function () {
       return Promise.all([
+        // Reset id sequence to start at 1
+        knex.schema.raw("select setval('archived_matches_id_seq',1)"),
         // Inserts seed entries
         knex('matches').insert(
         {
