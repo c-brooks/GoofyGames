@@ -5,9 +5,9 @@ const router  = express.Router();
 
 module.exports = (knex) => {
 
-  router.get("/:id", (req, res) => {
+  router.get("/", (req, res) => {
     res.clearCookie('user_id');
-    res.redirect('/urls');
+    res.redirect('/');
   });
 
   return router;

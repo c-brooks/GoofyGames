@@ -40,7 +40,7 @@ app.use(express.static("public"));
 // Mount all resource routes
 app.use("/users", usersRoutes(knex));
 app.use("/login", loginRoutes(knex));
-app.use("/logout", loginRoutes(knex));
+app.use("/logout", logoutRoutes(knex));
 
 // Home page
 app.get("/", (req, res) => {
