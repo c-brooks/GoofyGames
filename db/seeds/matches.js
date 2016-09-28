@@ -36,9 +36,7 @@ exports.seed = function(knex, Promise) {
             diamonds: []
           },
           game_start: '1999-01-08 04:05:06'
-        }),
-        knex('matches').insert({id: 2, colName: 'rowValue2'}),
-        knex('matches').insert({id: 3, colName: 'rowValue3'})
+        })
       ]);
     });
 };
