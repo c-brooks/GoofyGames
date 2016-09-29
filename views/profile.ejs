@@ -6,6 +6,10 @@
     <% include ../views/partials/_header %>
 
     <h1><%= user.username %></h1>
+
+    <% for (match in archived_matches) { %>
+      <% console.log(archived_matches[match]); %>
+    <% } %>
   </body>
 
   <% include ../views/partials/_footer %>
