@@ -1,0 +1,27 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <body>
+
+<!-- Because of limited seed data, this is every single match -->
+    <h1>All Matches</h1>
+
+    <section>
+      <table>
+        <th>Game Type</th>
+        <th>Player 1</th>
+        <th>Player 2</th>
+        <% for(var i = 0; i < results.length; i++) { %>
+          <tr>
+            <% if(results[i].id === 1) %>
+            <td><%= 'Goofspiel' %></td>
+            <td><%= results[i].player1_id %></td>
+            <td><%= results[i].player2_id %></td>
+          </tr>
+        <% } %>
+      </table>
+    </section>
+  </body>
+</html>

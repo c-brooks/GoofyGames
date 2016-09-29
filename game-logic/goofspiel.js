@@ -9,14 +9,13 @@ const suits = ['spades', 'hearts', 'clubs', 'diamonds'];
 function newMatch (p1_id, p2_id) {
   // const suits = ['spades', 'hearts', 'clubs', 'diamonds'];
   // shuffle the suits array
-  var randSuits = suits.shuffle();
+  var randSuits   = shuffle(suits);
   const p1_suit   = randSuits[0];
   const p2_suit   = randSuits[1];
   const deck_suit = randSuits[2];
 
   var newMatch =
   {
-    id: 1,
     game_id: 1,
     player1_id: p1_id,
     player2_id: p2_id,
@@ -46,9 +45,9 @@ function newMatch (p1_id, p2_id) {
     },
     game_start: new Date
   }
-  deck_cards.deck_suit  = [1,2,3,4,5,6,7,8,9,10,11,12,13];
-  player1_cards.p1_suit = [1,2,3,4,5,6,7,8,9,10,11,12,13];
-  player2_cards.p2_suit = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+  newMatch.deck_cards[deck_suit]  = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+  newMatch.player1_cards[p1_suit] = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+  newMatch.player2_cards[p2_suit] = [1,2,3,4,5,6,7,8,9,10,11,12,13];
 }
 
 
@@ -83,7 +82,8 @@ function checkGameEnd(match){
 };
 
 module.exports = (knex) => {
-  match(knex).getMatch(MATCH_ID, move);
+  //match(knex).getMatch(MATCH_ID, move);
+  match(knex).newMatch(newMatch)
 };
 
 
