@@ -1,6 +1,7 @@
 "use strict";
 
 const express = require('express');
+const _ = require('underscore');
 const router  = express.Router();
 
 module.exports = (knex) => {
@@ -9,13 +10,24 @@ module.exports = (knex) => {
   const rankingsRepo = require('../db/rankings.js')(knex);
 
   router.get("/:id", (req, res) => {
-    usersRepo.getUser(req.params.id, function(user) {
-      archivedMatchesRepo.getArchivedMatches(req.params.id, function(archivedMatches) {
-        rankingsRepo.getUserRankings(req.params.id, function(rankings) {
-          let templateVars = { title: user.username, user: user, rankings: rankings, archivedMatches: archivedMatches };
-          res.render("profile", templateVars);
-        })
-      })
+    Promise.all([
+      usersRepo.getUser(req.params.id),
+      archivedMatchesRepo.getArchivedMatches(req.params.id),
+      rankingsRepo.getUserRankings(req.params.id)
+    ]).then(function(results) {
+      let user = results[0][0];
+      let archivedMatches = results[1];
+      let rankings = results[2];
+
+      let templateVars =
+      {
+        title: user.username,
+        user: user,
+        rankings: rankings,
+        archivedMatches: archivedMatches
+      };
+
+      res.render("profile", templateVars);
     });
   });
 
