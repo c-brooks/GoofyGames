@@ -7,17 +7,26 @@
 
     <h1><%= user.username %></h1>
 
-    <% for (match in archivedMatches) { %>
-      <% var currMatch = archivedMatches[match]; %>
-      <% if (currMatch.winner_id === user.id) { %>
-        <% outcome = 'W'; %>
-        <% opponent = currMatch.loser_name; %>
-      <% } else { %>
-       <% outcome = 'L'; %>
-       <% opponent = currMatch.winner_name; %>
+    <section>
+      <% for (rank in rankings) { %>
+        <% var currRank = rankings[rank]; %>
+        <%= currRank.game %> - Wins: <%= currRank.wins%> Losses: <%= currRank.losses %>
       <% } %>
-      <%= outcome %> VS. <%= opponent %> --- <%= currMatch.winner_score %> - <%= currMatch.loser_score %>
-    <% } %>
+    </section>
+
+    <section>
+      <% for (match in archivedMatches) { %>
+        <% var currMatch = archivedMatches[match]; %>
+        <% if (currMatch.winner_id === user.id) { %>
+          <% outcome = 'W'; %>
+          <% opponent = currMatch.loser_name; %>
+        <% } else { %>
+         <% outcome = 'L'; %>
+         <% opponent = currMatch.winner_name; %>
+        <% } %>
+        <%= outcome %> VS. <%= opponent %> --- <%= currMatch.winner_score %> - <%= currMatch.loser_score %>
+      <% } %>
+    </section>
   </body>
 
   <% include ../views/partials/_footer %>
