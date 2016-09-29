@@ -2,7 +2,6 @@ const _ = require('underscore');
 const match = require('../db/matches.js');
 
 const MATCH_ID = 1;
-//const game = require('./goofspiel_gamestate');
 
 var goofObj = {};
 
@@ -39,40 +38,33 @@ function move(oldState, p1bid , p2bid, prize) {
             diamonds: [1,2,3,4,5,6,7,8,9,10,11,12,13]
           }
   };
-  //console.log('newState inside move', newState)
-  //console.log('oldState inside move', oldState)
+
   // remove  cards from hand and deck
-  newState.player1_cards.spades = _.without(oldState.player1_cards.spades, p1bid);
+  newState.player1_cards.spades   = _.without(oldState.player1_cards.spades, p1bid);
   newState.player2_cards.diamonds = _.without(oldState.player2_cards.diamonds, p2bid);
-  newState.deck_cards.hearts    = _.without(oldState.deck_cards.hearts, prize);
+  newState.deck_cards.hearts      = _.without(oldState.deck_cards.hearts, prize);
 
   // Winner gets the value of prize
   if(p1bid  > p2bid ) {
-    newState.player1_score = oldState.player1_score + Math.round(Math.random()*10);
+    newState.player1_score = oldState.player1_score + prize;
   } else if (p2bid  > p1bid ) {
-    newState.player2_score = oldState.player2_score + Math.round(Math.random()*10);
+    newState.player2_score = oldState.player2_score + prize;
   }
-  console.log(oldState.keys);
   if(checkGameEnd(oldState)){
-    console.log('Game End!'); // Do some logic
+    console.log('Game End!'); // Do game-end logic
   }
   return newState;
+};
+
+function checkGameEnd(match){
+  if(match.deck_cards){
+    return match.deck_cards.length === 0;
+  }
 };
 
 module.exports = (knex) => {
   match(knex).getMatch(MATCH_ID, move);
 };
-
-
-
-
-
-
-  function checkGameEnd(match){
-    if(match.deck_cards){
-      return match.deck_cards.length === 0;
-    }
-  };
 
 
 
