@@ -4,45 +4,65 @@ const match = require('../db/matches.js');
 const MATCH_ID = 1;
 
 var goofObj = {};
+const suits = ['spades', 'hearts', 'clubs', 'diamonds'];
+
+function newMatch (p1_id, p2_id) {
+  // const suits = ['spades', 'hearts', 'clubs', 'diamonds'];
+  // shuffle the suits array
+  var randSuits = suits.shuffle();
+  const p1_suit   = randSuits[0];
+  const p2_suit   = randSuits[1];
+  const deck_suit = randSuits[2];
+
+  var newMatch =
+  {
+    id: 1,
+    game_id: 1,
+    player1_id: p1_id,
+    player2_id: p2_id,
+    player1_score: 0,
+    player2_score: 0,
+    whose_move: 1,
+    deck_cards:
+    {
+      spades:   [],
+      hearts:   [],
+      clubs:    [],
+      diamonds: []
+    },
+    player1_cards:
+    {
+      spades: [],
+      hearts: [],
+      clubs: [],
+      diamonds: []
+    },
+    player2_cards:
+    {
+      spades: [],
+      hearts: [],
+      clubs: [],
+      diamonds: []
+    },
+    game_start: new Date
+  }
+  deck_cards.deck_suit  = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+  player1_cards.p1_suit = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+  player2_cards.p2_suit = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+}
+
+
 
 
 function move(oldState, p1bid , p2bid, prize) {
   // for testing
-  var newState = {
-          id: 1,
-          game_id: oldState.game_id,
-          player1_id: oldState.player1_id,
-          player2_id: oldState.player2_id,
-          player1_score: oldState.player1_score,
-          player2_score: oldState.player2_score,
-          whose_move: 1,
-          deck_cards:
-          {
-            spades:   [1,2,3,4,5,6,7,8,9,10,11,12,13],
-            hearts:   [1,2,3,4,5,6,7,8,9,10,11,12,13],
-            clubs:    [1,2,3,4,5,6,7,8,9,10,11,12,13],
-            diamonds: [1,2,3,4,5,6,7,8,9,10,11,12,13]
-          },
-          player1_cards:
-          {
-            spades: [1,2,3,4,5,6,7,8,9,10,11,12,13],
-            hearts: [],
-            clubs: [],
-            diamonds: []
-          },
-          player2_cards:
-          {
-            spades: [],
-            hearts: [],
-            clubs: [],
-            diamonds: [1,2,3,4,5,6,7,8,9,10,11,12,13]
-          }
-  };
+
+var newState = oldState;
 
   // remove  cards from hand and deck
-  newState.player1_cards.spades   = _.without(oldState.player1_cards.spades, p1bid);
-  newState.player2_cards.diamonds = _.without(oldState.player2_cards.diamonds, p2bid);
-  newState.deck_cards.hearts      = _.without(oldState.deck_cards.hearts, prize);
+  newState.player1_cards   = remove(oldState.player1_cards, p1bid);
+  newState.player2_cards   = remove(oldState.player2_cards, p2bid);
+  newState.deck_cards      = remove(oldState.deck_cards, prize);
 
   // Winner gets the value of prize
   if(p1bid  > p2bid ) {
@@ -66,6 +86,25 @@ module.exports = (knex) => {
   match(knex).getMatch(MATCH_ID, move);
 };
 
+
+// Shuffles array of cards randomly
+function shuffle (cards) {
+  for (var i = cards.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = cards[i];
+      cards[i] = cards[j];
+      cards[j] = temp;
+  }
+  return cards;
+};
+
+// Takes cards as an object with keys for every suit
+function remove(cards, removal) {
+  suits.forEach((suit) => {
+    cards[suit] = _.without(cards[suit], removal);
+  });
+  return cards;
+}
 
 
 

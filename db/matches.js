@@ -4,11 +4,16 @@ module.exports = (knex) => {
 
 // TODO: this should accept an object called moveParams
 //        which tells the program which move to make.
+
+  matchesRepo.newMatch = (matchID, newMatch) => {
+    knex('matches').insert(newMatch);
+  }
+
   matchesRepo.updateMatch = (matchID, currentState, move) => {
-//    console.log('Before move: ', currentState);
+  //  console.log('Before move: ', currentState);
 
     var newState = move(currentState, 1, 5, 12);
-//    console.log('After move: ', newState);
+  //  console.log('After move: ', newState);
       knex.table('matches')
       .where({'id': 1})
       .update({
