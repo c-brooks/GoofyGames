@@ -7,34 +7,59 @@ const MATCH_ID = 1;
 var goofObj = {};
 
 
-
-module.exports = (knex) => {
-
-  match(knex).updateMatch(MATCH_ID, move);
-
-
-
-  };
-
-
-
 function move(match, p1bid , p2bid, prize) {
-  var newState = {};
+  var newState = {
+    id: 1,
+          game_id: 1,
+          player1_id: 1,
+          player2_id: 2,
+          player1_score: 0,
+          player2_score: 0,
+          whose_move: 1,
+          deck_cards:
+          {
+            spades:   [1,2,3,4,5,6,7,8,9,10,11,12,13],
+            hearts:   [1,2,3,4,5,6,7,8,9,10,11,12,13],
+            clubs:    [1,2,3,4,5,6,7,8,9,10,11,12,13],
+            diamonds: [1,2,3,4,5,6,7,8,9,10,11,12,13]
+          },
+          player1_cards:
+          {
+            spades: [],
+            hearts: [],
+            clubs: [],
+            diamonds: []
+          },
+          player2_cards:
+          {
+            spades: [],
+            hearts: [],
+            clubs: [],
+            diamonds: []
+          }
+  };
   // remove  cards from hand and deck
-  newState.player1_cards = _.without(match.player1_cards, p1bid);
-  newState.player2_cards = _.without(match.player2_cards, p2bid);
-  newState.deck_cards    = _.without(match.deck_cards, prize);
+  newState.player1_cards.spades = Math.round(Math.random()*10)//_.without(match.player1_cards, p1bid);
+  newState.player2_cards.diamonds = Math.round(Math.random()*10)//_.without(match.player2_cards, p2bid);
+  //newState.deck_cards.hearts    = _.without(match.deck_cards.hearts, prize);
   // Winner gets the value of prize
   if(p1bid  > p2bid ) {
-    newState.player1_score += prize;
+    newState.player1_score += Math.random()*10;
   } else if (p2bid  > p1bid ) {
-    newState.player2_score += prize;
+    newState.player2_score += Math.random()*10;
   }
   console.log(match.keys);
   if(checkGameEnd(match)){
     console.log('Game End!'); // Do some logic
   }
+  return newState;
 };
+
+module.exports = (knex) => {
+  match(knex).getMatch(MATCH_ID, move);
+};
+
+
 
 
 
