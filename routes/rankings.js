@@ -7,7 +7,7 @@ module.exports = (knex) => {
   const rankingsRepo = require('../db/rankings.js')(knex);
   const gamesRepo = require('../db/games.js')(knex);
 
-  router.get("/", (req, res) => {
+  router.get('/', (req, res) => {
 
     Promise.all([
       gamesRepo.getAllGames(),
@@ -23,6 +23,13 @@ module.exports = (knex) => {
       res.render("rankings", templateVars);
     });
   });
+
+  router.get('/:id', (req, res) => {
+    rankingsRepo.getGlobalRankings(req.params.id)
+    .then(function(results) {
+      res.json(results);
+    });
+  )};
 
   return router;
 }
