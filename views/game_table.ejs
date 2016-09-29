@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <% include ../views/partials/_head %>
+
+  <body>
+    <% include ../views/partials/_header %>
+
+  <section id='table'>
+    <section class='activePlayer cards'>
+      <% var activeSuits = matchData.activePlayer_cards; %>
+      <% for (suit in activeSuits) { %>
+        <% var currSuit = activeSuits[suit]; %>
+        <% for (card in currSuit) { %>
+          <% include ../views/partials/_card %>
+        <% } %>
+      <% } %>
+    </section>
+
+<!--     <section class='deck cards'>
+        <% var deckSuits = matchData.deck_cards; %>
+        <% for (suit in deckSuits) { %>
+          <% var currSuit = deckSuits[suit]; %>
+          <% for (card in currSuit) { %>
+            <% include ../views/partials/_card %>
+          <% } %>
+        <% } %>
+    </section>
+ -->
+    <section class='opponent cards'>
+      <% var opponenetSuits = matchData.opponent_cards; %>
+      <% for (suit in opponenetSuits) { %>
+        <% var currSuit = opponenetSuits[suit]; %>
+        <% for (card in currSuit) { %>
+          <% include ../views/partials/_card %>
+        <% } %>
+      <% } %>
+    </section>
+  </section>
+
+  </body>
+
+  <% include ../views/partials/_footer %>
+</html>
