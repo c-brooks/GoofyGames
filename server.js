@@ -13,6 +13,11 @@ const knexConfig  = require("./knexfile");
 const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
 const knexLogger  = require('knex-logger');
+const match = require('./db/matches.js');
+
+// Passing knex instance to goofspiel
+const gs = require('./game-logic/goofspiel')(knex);
+console.log(gs.game)
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
@@ -46,4 +51,5 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
+
 

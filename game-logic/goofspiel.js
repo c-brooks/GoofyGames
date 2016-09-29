@@ -1,17 +1,25 @@
 const _ = require('underscore');
+const match = require('../db/matches.js');
 
-module.exports = {
+var goofObj = {};
 
-  game: {
-    p1: { cards: [],
-          score: 0,
-          suit: '' },
-    p2: { cards: [],
-          score: 0,
-          suit: ''
-        },
-    deck: { cards: [] }
-  },
+module.exports = (knex) => {
+
+// to test
+goofObj.game = match(knex).getMatch(1, (match) => {
+  console.log(match);
+});
+
+  // game: {
+  //   p1: { cards: [],
+  //         score: 0,
+  //         suit: '' },
+  //   p2: { cards: [],
+  //         score: 0,
+  //         suit: ''
+  //       },
+  //   deck: { cards: [] }
+  // },
 
 // Change to work with database eventually
 
@@ -21,25 +29,26 @@ module.exports = {
  * King - 13
  */
 
-  initGame: function() {
-    this.game.p1.cards   = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-    this.game.p1.score   = 0;
-    this.game.p1.suit    = 'spades';
-    this.game.p2.cards   = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-    this.game.p2.score   = 0;
-    this.game.p2.suit    = 'hearts';
-    this.game.deck.cards = this.shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
-    this.game.deck.suit  = 'diamonds';
-  },
-
-  shuffle: function(array) {
-    for (var i = array.length - 1; i > 0; i--) {
+  // goofObj.initGame = function() {
+  //   this.game.p1.cards   = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+  //   this.game.p1.score   = 0;
+  //   this.game.p1.suit    = 'spades';
+  //   this.game.p2.cards   = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+  //   this.game.p2.score   = 0;
+  //   this.game.p2.suit    = 'hearts';
+  //   this.game.deck.cards = this.shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
+  //   this.game.deck.suit  = 'diamonds';
+  // }
+/*
+  // Shuffles array of cards randomly
+  shuffle: function(cards) {
+    for (var i = cards.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
+        var temp = cards[i];
+        cards[i] = cards[j];
+        cards[j] = temp;
     }
-    return array;
+    return cards;
   },
 
 // Takes 'bids' (card played by players) and 'prize' (top card on deck) as parameters
@@ -63,4 +72,6 @@ module.exports = {
   checkGameEnd: function(){
     return this.game.deck.cards.length === 0;
   }
+  */
+  return goofObj;
 };
