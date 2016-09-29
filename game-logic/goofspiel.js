@@ -7,14 +7,15 @@ const MATCH_ID = 1;
 var goofObj = {};
 
 
-function move(match, p1bid , p2bid, prize) {
+function move(oldState, p1bid , p2bid, prize) {
+  // for testing
   var newState = {
-    id: 1,
-          game_id: 1,
-          player1_id: 1,
-          player2_id: 2,
-          player1_score: 0,
-          player2_score: 0,
+          id: 1,
+          game_id: oldState.game_id,
+          player1_id: oldState.player1_id,
+          player2_id: oldState.player2_id,
+          player1_score: oldState.player1_score,
+          player2_score: oldState.player2_score,
           whose_move: 1,
           deck_cards:
           {
@@ -25,7 +26,7 @@ function move(match, p1bid , p2bid, prize) {
           },
           player1_cards:
           {
-            spades: [],
+            spades: [1,2,3,4,5,6,7,8,9,10,11,12,13],
             hearts: [],
             clubs: [],
             diamonds: []
@@ -35,21 +36,24 @@ function move(match, p1bid , p2bid, prize) {
             spades: [],
             hearts: [],
             clubs: [],
-            diamonds: []
+            diamonds: [1,2,3,4,5,6,7,8,9,10,11,12,13]
           }
   };
+  //console.log('newState inside move', newState)
+  //console.log('oldState inside move', oldState)
   // remove  cards from hand and deck
-  newState.player1_cards.spades = Math.round(Math.random()*10)//_.without(match.player1_cards, p1bid);
-  newState.player2_cards.diamonds = Math.round(Math.random()*10)//_.without(match.player2_cards, p2bid);
-  //newState.deck_cards.hearts    = _.without(match.deck_cards.hearts, prize);
+  newState.player1_cards.spades = _.without(oldState.player1_cards.spades, p1bid);
+  newState.player2_cards.diamonds = _.without(oldState.player2_cards.diamonds, p2bid);
+  newState.deck_cards.hearts    = _.without(oldState.deck_cards.hearts, prize);
+
   // Winner gets the value of prize
   if(p1bid  > p2bid ) {
-    newState.player1_score += Math.random()*10;
+    newState.player1_score = oldState.player1_score + Math.round(Math.random()*10);
   } else if (p2bid  > p1bid ) {
-    newState.player2_score += Math.random()*10;
+    newState.player2_score = oldState.player2_score + Math.round(Math.random()*10);
   }
-  console.log(match.keys);
-  if(checkGameEnd(match)){
+  console.log(oldState.keys);
+  if(checkGameEnd(oldState)){
     console.log('Game End!'); // Do some logic
   }
   return newState;
