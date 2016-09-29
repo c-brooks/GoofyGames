@@ -14,7 +14,6 @@ module.exports = (knex) => {
       // Get game with ID of 1 by default
       rankingsRepo.getGlobalRankings(1)
     ]).then(function(results) {
-      console.log(results);
       let templateVars =
         {
           title: 'Rankings',
