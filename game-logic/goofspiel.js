@@ -56,36 +56,6 @@ function newMatch (p1_id, p2_id) {
 
 function move(oldState, p1bid , p2bid, prize) {
   // for testing
-/*  var newState = {
-          id: 1,
-          game_id: oldState.game_id,
-          player1_id: oldState.player1_id,
-          player2_id: oldState.player2_id,
-          player1_score: oldState.player1_score,
-          player2_score: oldState.player2_score,
-          whose_move: 1,
-          deck_cards:
-          {
-            spades:   [1,2,3,4,5,6,7,8,9,10,11,12,13],
-            hearts:   [1,2,3,4,5,6,7,8,9,10,11,12,13],
-            clubs:    [1,2,3,4,5,6,7,8,9,10,11,12,13],
-            diamonds: [1,2,3,4,5,6,7,8,9,10,11,12,13]
-          },
-          player1_cards:
-          {
-            spades: [1,2,3,4,5,6,7,8,9,10,11,12,13],
-            hearts: [],
-            clubs: [],
-            diamonds: []
-          },
-          player2_cards:
-          {
-            spades: [],
-            hearts: [],
-            clubs: [],
-            diamonds: [1,2,3,4,5,6,7,8,9,10,11,12,13]
-          }
-  };*/
 
 var newState = oldState;
 
