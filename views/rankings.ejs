@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <% include ../views/partials/_head %>
+
+  <body>
+    <% include ../views/partials/_header %>
+
+    <h1>Global Rankings</h1>
+
+    Select Game:
+    <select name="game">
+      <% for (game in games) { %>
+        <option value= <%= games[game].id %> <% if (games[game].id === 1) { %>selected <% } %>>
+          <%= games[game].name %>
+        </option>
+      <% } %>
+    </select>
+
+
+    <section>
+      <table>
+        <th>Rank</th>
+        <th>Player</th>
+        <th>Wins</th>
+        <th>Losses</th>
+        <% for (i = 0; i < rankings.length; i++) { %>
+          <tr>
+            <% var currRank = rankings[i]; %>
+            <td><%= i + 1 %></td>
+            <td><%= currRank.username %></td>
+            <td><%= currRank.wins %></td>
+            <td><%= currRank.losses %></td>
+          </tr>
+        <% } %>
+      </table>
+    </section>
+
+  </body>
+
+  <% include ../views/partials/_footer %>
+</html>
