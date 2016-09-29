@@ -9,7 +9,7 @@ module.exports = (knex) => {
     .orWhere('loser_id', 'like', user_id)
     .asCallback((err, archived_matches) => {
       if (err) cb(err);
-      cb(archived_matches);
+      cb(archived_matches.rows);
     });
   }
 
