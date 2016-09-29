@@ -8,7 +8,7 @@
     <h1>Global Rankings</h1>
 
     Select Game:
-    <select name="game">
+    <select name="game" class="rankings-game">
       <% for (game in games) { %>
         <option value= <%= games[game].id %> <% if (games[game].id === 1) { %>selected <% } %>>
           <%= games[game].name %>
