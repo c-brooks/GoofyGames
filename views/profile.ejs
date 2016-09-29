@@ -9,25 +9,42 @@
 
     <section>
       <h2>Rankings</h2>
-      <% for (rank in rankings) { %>
-        <% var currRank = rankings[rank]; %>
-        <%= currRank.name %> - Wins: <%= currRank.wins%> Losses: <%= currRank.losses %>
-      <% } %>
+      <table>
+        <th>Game</th>
+        <th>Wins</th>
+        <th>Losses</th>
+        <% for (rank in rankings) { %>
+          <tr>
+            <% var currRank = rankings[rank]; %>
+            <td><%= currRank.name %></td>
+            <td><%= currRank.wins%></td>
+            <td><%= currRank.losses %></td>
+          </tr>
+        <% } %>
+      </table>
     </section>
 
     <section>
       <h2>Previous Matches</h2>
-      <% for (match in archivedMatches) { %>
-        <% var currMatch = archivedMatches[match]; %>
-        <% if (currMatch.winner_id === user.id) { %>
-          <% outcome = 'W'; %>
-          <% opponent = currMatch.loser_name; %>
-        <% } else { %>
-         <% outcome = 'L'; %>
-         <% opponent = currMatch.winner_name; %>
+      <table>
+        <% for (match in archivedMatches) { %>
+          <tr>
+            <% var currMatch = archivedMatches[match]; %>
+            <% if (currMatch.winner_id === user.id) { %>
+              <% outcome = 'W'; %>
+              <% opponent = currMatch.loser_name; %>
+              <% opponentID = currMatch.loser_id; %>
+            <% } else { %>
+             <% outcome = 'L'; %>
+             <% opponent = currMatch.winner_name; %>
+             <% opponentID = currMatch.winner_id; %>
+            <% } %>
+            <td><%= outcome %></td>
+            <td><a href="/users/<%= opponentID %>"><%= opponent %></a></td>
+            <td><%= currMatch.winner_score %> - <%= currMatch.loser_score %></td>
+          </tr>
         <% } %>
-        <%= outcome %> VS. <%= opponent %> --- <%= currMatch.winner_score %> - <%= currMatch.loser_score %>
-      <% } %>
+      </table>
     </section>
   </body>
 
