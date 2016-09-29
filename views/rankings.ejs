@@ -27,7 +27,7 @@
           <tr>
             <% var currRank = rankings[i]; %>
             <td><%= i + 1 %></td>
-            <td><%= currRank.username %></td>
+            <td><a href="/users/<%= currRank.id %>"><%= currRank.username %></a></td>
             <td><%= currRank.wins %></td>
             <td><%= currRank.losses %></td>
           </tr>
