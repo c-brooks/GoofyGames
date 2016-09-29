@@ -10,10 +10,10 @@ module.exports = (knex) => {
   }
 
   matchesRepo.updateMatch = (matchID, currentState, move) => {
-    console.log('Before move: ', currentState);
+  //  console.log('Before move: ', currentState);
 
     var newState = move(currentState, 1, 5, 12);
-    console.log('After move: ', newState);
+  //  console.log('After move: ', newState);
       knex.table('matches')
       .where({'id': 1})
       .update({
