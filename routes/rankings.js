@@ -29,7 +29,7 @@ module.exports = (knex) => {
     .then(function(results) {
       res.json(results);
     });
-  )};
+  });
 
   return router;
 }
