@@ -8,7 +8,6 @@ module.exports = (knex) => {
     .leftJoin('games', 'rankings.game_id', 'games.id')
     .where('player_id', '=', user_id)
     .asCallback((err, rankings) => {
-      console.log(rankings);
       if (err) cb(err);
       cb(rankings);
     });
