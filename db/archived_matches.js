@@ -5,11 +5,11 @@ module.exports = (knex) => {
     knex
     .select('*')
     .from('archived_matches')
-    .where('winner_id', 'like', user_id)
-    .orWhere('loser_id', 'like', user_id)
+    .where('winner_id', '=', user_id)
+    .orWhere('loser_id', '=', user_id)
     .asCallback((err, archived_matches) => {
       if (err) cb(err);
-      cb(archived_matches.rows);
+      cb(archived_matches);
     });
   }
 

@@ -7,8 +7,14 @@
 
     <h1><%= user.username %></h1>
 
-    <% for (match in archived_matches) { %>
-      <% console.log(archived_matches[match]); %>
+    <% for (match in archivedMatches) { %>
+      <% var currMatch = archivedMatches[match]; %>
+      <% if (currMatch.winner_id === user.id) { %>
+        <% outcome = 'W'; %>
+      <% } else { %>
+       <% outcome = 'L'; %>
+      <% } %>
+      <%= outcome %> VS. OPPONENT --- <%= currMatch.winner_score %> - <%= currMatch.loser_score %>
     <% } %>
   </body>
 
