@@ -17,7 +17,7 @@ const match = require('./db/matches.js');
 
 // Passing knex instance to goofspiel
 const gs = require('./game-logic/goofspiel')(knex);
-console.log(gs.game)
+//console.log(gs.game);
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
