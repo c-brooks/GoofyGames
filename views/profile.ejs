@@ -8,6 +8,7 @@
     <h1><%= user.username %></h1>
 
     <section>
+      <h2>Rankings</h2>
       <% for (rank in rankings) { %>
         <% var currRank = rankings[rank]; %>
         <%= currRank.name %> - Wins: <%= currRank.wins%> Losses: <%= currRank.losses %>
@@ -15,6 +16,7 @@
     </section>
 
     <section>
+      <h2>Previous Matches</h2>
       <% for (match in archivedMatches) { %>
         <% var currMatch = archivedMatches[match]; %>
         <% if (currMatch.winner_id === user.id) { %>
