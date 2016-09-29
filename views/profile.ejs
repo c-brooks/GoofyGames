@@ -11,10 +11,12 @@
       <% var currMatch = archivedMatches[match]; %>
       <% if (currMatch.winner_id === user.id) { %>
         <% outcome = 'W'; %>
+        <% opponent = currMatch.loser_name; %>
       <% } else { %>
        <% outcome = 'L'; %>
+       <% opponent = currMatch.winner_name; %>
       <% } %>
-      <%= outcome %> VS. OPPONENT --- <%= currMatch.winner_score %> - <%= currMatch.loser_score %>
+      <%= outcome %> VS. <%= opponent %> --- <%= currMatch.winner_score %> - <%= currMatch.loser_score %>
     <% } %>
   </body>
 
