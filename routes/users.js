@@ -30,6 +30,5 @@ module.exports = (knex) => {
       res.render("profile", templateVars);
     });
   });
-
   return router;
 }

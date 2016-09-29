@@ -35,6 +35,7 @@ describe("Move", function () {
 
     // Reset
     goofspiel.initGame();
+
     // Player 2 wins
     goofspiel.move(3, 7, 12);
     assert.equal(goofspiel.game.p1.score, 0, "winner gets prize");
@@ -63,15 +64,18 @@ describe("Game End", function () {
   it("should end after 13 rounds", function () {
     var i;
     goofspiel.initGame();
-
+    // Make 12 moves
     for(i = 0; i < 13; i ++){
       goofspiel.move(3, 7, i);
       console.log(`turn ${i} `);
       assert.deepEqual(goofspiel.checkGameEnd(), false, `Turn ${i}, game not over yet`);
     }
+    // Last move should end game
     goofspiel.move(3, 7, i);
     assert.deepEqual(goofspiel.checkGameEnd(), true, `Turn ${i}, game is over`)
   });
 });
+
+
 
 
