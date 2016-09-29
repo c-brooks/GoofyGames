@@ -90,8 +90,8 @@ function move(oldState, p1bid , p2bid, prize) {
 var newState = oldState;
 
   // remove  cards from hand and deck
-//  newState.player1_cards   = remove(oldState.player1_cards, p1bid);
-//  newState.player2_cards   = remove(oldState.player2_cards, p2bid);
+  newState.player1_cards   = remove(oldState.player1_cards, p1bid);
+  newState.player2_cards   = remove(oldState.player2_cards, p2bid);
   newState.deck_cards      = remove(oldState.deck_cards, prize);
 
   // Winner gets the value of prize
