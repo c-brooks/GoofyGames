@@ -6,12 +6,8 @@
     <% include ../views/partials/_header %>
 
     <section class='opponent cards row'>
-      <% var opponenetSuits = matchData.opponent_cards; %>
-      <% for (suit in opponenetSuits) { %>
-        <% var currSuit = opponenetSuits[suit]; %>
-        <% for (card in currSuit) { %>
-          <% include ../views/partials/_card %>
-        <% } %>
+      <% for (i = 0; i < matchData.opponent_cards; i++) { %>
+        <% include ../views/partials/_blank_card %>
       <% } %>
     </section>
 

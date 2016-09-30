@@ -31,7 +31,6 @@ module.exports = (knex) => {
 // move(currentState, p1bid, p2bid, **prize**)
   matchesRepo.getMatchByID = (matchID) => {
     var id = matchID;
-    console.log(id, typeof id)
     return knex
       .select('*')
       .from('matches')

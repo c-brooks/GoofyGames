@@ -31,22 +31,9 @@ module.exports = (knex) => {
   router.get("/:id", (req, res) => {
     matchesRepo.getMatchByID(req.params.id)
     .then((match) => {
-      // Build matchData
-      console.log(match);
-      if (match.player1_id === req.cookies['user_id']) {
-        match.activePlayer_id = match.player1_id;
-        match.activePlayer_cards = match.player1_cards;
-        match.opponent_cards = match.player2_cards.length;
-        delete match.player2_cards;
-      } else if (match.player2_id === req.cookies['user_id']) {
-        match.activePlayer_id = match.player2_id;
-        match.activePlayer_cards = match.player2_cards;
-        match.opponent_cards = match.player1_cards.length
-        delete match.player1_cards;
-      }
-
-      console.log(match);
-      let templateVars = { title: 'Match', matchData: match };
+      let matchData = buildMatchData(match[0],req.cookies['user_id']);
+      console.log(matchData);
+      let templateVars = { title: 'Match', matchData: matchData };
       res.render("game_table", templateVars);
     });
   });
@@ -74,4 +61,31 @@ module.exports = (knex) => {
   });
 
   return router;
+}
+
+function buildMatchData(match, activePlayerID) {
+  if (match.player1_id === Number(activePlayerID)) {
+    match.activePlayer_id = match.player1_id;
+    match.activePlayer_cards = JSON.parse(match.player1_cards);
+    match.opponent_cards = countCards(match.player2_cards);
+    delete match.player2_cards;
+  } else if (match.player2_id === Number(activePlayerID)) {
+    match.activePlayer_id = match.player2_id;
+    match.activePlayer_cards = JSON.parse(match.player2_cards);
+    match.opponent_cards = countCards(match.player1_cards);
+    delete match.player1_cards;
+  }
+
+  match.deck_cards = JSON.parse(match.deck_cards);
+
+  return match;
+}
+
+function countCards(cards) {
+  let cardCount = 0;
+  let cardsObj = JSON.parse(cards);
+  for (var suit in cardsObj) {
+    cardCount += cardsObj[suit].length;
+  }
+  return cardCount;
 }
