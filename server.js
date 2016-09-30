@@ -6,11 +6,9 @@ const PORT        = process.env.PORT || 8080;
 const ENV         = process.env.ENV || "development";
 const express     = require("express");
 const bodyParser  = require("body-parser");
+const cookieParser = require('cookie-parser');
 const sass        = require("node-sass-middleware");
 const app         = express();
-const cookieParser = require('cookie-parser')
-
-app.use(cookieParser());
 
 const knexConfig  = require("./knexfile");
 const knex        = require("knex")(knexConfig[ENV]);
@@ -18,11 +16,14 @@ const morgan      = require('morgan');
 const knexLogger  = require('knex-logger');
 
 // Seperated Routes for each Resource
+// Cookie Parser must be defined router
+app.use(cookieParser());
 const usersRoutes = require("./routes/users");
 const loginRoutes = require("./routes/login");
 const logoutRoutes = require("./routes/logout");
 const rankingsRoutes = require("./routes/rankings");
 const matchesRoutes  = require("./routes/matches");
+
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -48,11 +49,12 @@ app.use("/login",    loginRoutes(knex));
 app.use("/logout",   logoutRoutes(knex));
 app.use("/rankings", rankingsRoutes(knex));
 app.use("/matches",  matchesRoutes(knex));
-//app.use("/new",      newRoutes(knex));
+
 
 // Home page
 app.get("/", (req, res) => {
-  res.render("index");
+  var templateVars = { title: 'GG Bro' }
+  res.render("index", templateVars);
 });
 
 app.listen(PORT, () => {

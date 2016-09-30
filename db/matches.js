@@ -28,7 +28,6 @@ module.exports = (knex) => {
 
   matchesRepo.getMatchByID = (matchID) => {
     var id = matchID;
-    console.log(id, typeof id)
     return knex
       .select('*')
       .from('matches')
