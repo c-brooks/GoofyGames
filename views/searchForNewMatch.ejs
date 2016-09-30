@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ../views/partials/_head %>
+<head>
+
+<!--   <script type="text/javascript" src="/scripts/newGame.js"></script>
+ -->
+
+ </head>
+  <body>
+
+
+    <h1>Look for a new match!</h1>
+    <!-- Select which game to play -->
+        Select Game:
+
+    <select name="game">
+      <% for (game in games) { %>
+        <option id="gameType" value= <%= games[game].id %> <% if (games[game].id === 1) { %>selected <% } %>>
+          <%= games[game].name %>
+        </option>
+      <% } %>
+    </select>
+
+
+     <form id="search-form" action="/matches" method="POST" id="search">
+        <input id="search-btn" type="submit" name="gameID" value="<%=games[0].id%>">
+      </form>
+
+    <div id="test">TEST</div>
+
+
+    <section>
+      <table>
+        <th>Game Type</th>
+        <th>Player 1</th>
+        <th>Player 2</th>
+        <% for(var i = 0; i < allMatches.length; i++) { %>
+          <tr>
+
+            <td><%= games[allMatches[i].game_id].name %></td>
+            <td><%= allMatches[i].player1_id %></td>
+            <td><%= allMatches[i].player2_id %></td>
+            <a type="button" href="/matches/<%=allMatches[i].id%>" value="Play">Play</a>
+
+          </tr>
+        <% } %>
+      </table>
+
+    </section>
+  </body>
+</html>
