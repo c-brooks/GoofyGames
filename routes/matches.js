@@ -77,8 +77,7 @@ module.exports = (knex) => {
   router.get("/:id/last_turn", (req, res) => {
     matchesRepo.getLastTurn(req.cookies['user_id'],req.params.id)
     .then((turn) => {
-      console.log(turn);
-      res.json(turn);
+      req.json(turn[0]);
     });
   });
 

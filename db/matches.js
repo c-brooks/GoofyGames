@@ -42,7 +42,5 @@ module.exports = (knex) => {
     .where({ id: matchID });
   };
 
-
-
   return matchesRepo;
 };
