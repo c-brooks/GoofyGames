@@ -28,7 +28,7 @@ module.exports = (knex) => {
     });
   });
 
-  // GET GAME PAGE
+  // GET MATCH PAGE
   router.get("/:id", (req, res) => {
     matchesRepo.getMatchByID(req.params.id)
     .then((match) => {
@@ -73,7 +73,13 @@ module.exports = (knex) => {
     });
   });
 
-
+  // Get last turn for player
+  router.get("/:id/latest", (req, res) => {
+    matchesRepo.getLastTurn(req.cookies['user_id'].req.params.id)
+    .then((turn) => {
+      res.json(turn);
+    });
+  });
 
   return router;
 }
