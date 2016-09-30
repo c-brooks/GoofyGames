@@ -32,6 +32,15 @@ module.exports = (knex) => {
       .select('*')
       .from('matches')
       .where({id: id})
-    };
+  };
+
+  matchesRepo.getLastTurn = (userID, matchID) => {
+    return knex
+    .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_last_turn WHEN player2_id = ${userID} THEN player2_last_turn END AS activePlayer_last_turn`))
+    .select(knex.raw(`CASE WHEN player1_id != ${userID} THEN player1_last_turn WHEN player2_id != ${userID} THEN player2_last_turn END AS opponent_last_turn`))
+    .from('matches')
+    .where({ id: matchID });
+  };
+
   return matchesRepo;
 };
