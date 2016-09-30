@@ -42,6 +42,32 @@ module.exports = (knex) => {
       .where({id: id})
   };
 
+  matchesRepo.getMyMatch = (userID, matchID) => {
+    return knex
+    .select('deck_cards', 'game_start')
+    // Setup activePlayer
+    // id
+    .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_id WHEN player2_id = ${userID} THEN player2_id END AS activePlayer_id`))
+    // cards
+    .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_cards WHEN player2_id = ${userID} THEN player2_cards END AS activePlayer_cards`))
+    //score
+    .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_score WHEN player2_id = ${userID} THEN player2_score END AS activePlayer_score`))
+    // last_turn
+    .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_last_turn WHEN player2_id = ${userID} THEN player2_last_turn END AS activePlayer_last_turn`))
+
+    // Setup opponent
+    // id
+    .select(knex.raw(`CASE WHEN player1_id != ${userID} THEN player1_id WHEN player2_id != ${userID} THEN player2_id END AS opponent_id`))
+    // cards
+    .select(knex.raw(`CASE WHEN player1_id != ${userID} THEN player1_cards WHEN player2_id != ${userID} THEN player2_cards END AS opponent_cards`))
+    // score
+    .select(knex.raw(`CASE WHEN player1_id != ${userID} THEN player1_score WHEN player2_id != ${userID} THEN player2_score END AS opponent_score`))
+    // last_turn
+    .select(knex.raw(`CASE WHEN player1_id != ${userID} THEN player1_last_turn WHEN player2_id != ${userID} THEN player2_last_turn END AS opponent_last_turn`))
+    .from('matches')
+    .where({ id: matchID })
+  };
+
   matchesRepo.getLastTurn = (userID, matchID) => {
     return knex
     .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_last_turn WHEN player2_id = ${userID} THEN player2_last_turn END AS activePlayer_last_turn`))

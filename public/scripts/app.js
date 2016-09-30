@@ -38,6 +38,11 @@ $(() => {
           // // TODO animate the transition
           // $(this).transition({ x: -moveHere.left, y: -moveHere.top });
           $('.myMove').append($(this));
+          $.ajax({
+            method: 'post',
+            url: '/matches/' + matchID + '/play_turn',
+            data: { cardValue: cardValue, cardSuit: cardSuit }
+          })
         } else {
           // Shake the card because it's not their turn
           $(this).transition({ x: -10 }, 100)

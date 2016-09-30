@@ -45,17 +45,21 @@ router.get('/new', (req, res) => {
   });
 });
 
-// GET GAME PAGE
+// GET MATCH PAGE
 router.get("/:id", (req, res) => {
-  matchesRepo.getMatchByID(req.params.id)
-  .then((match) => {
-    let matchData = buildMatchData(match[0],req.cookies['user_id']);
+  matchesRepo.getMyMatch(req.cookies.user_id, req.params.id)
+  .then((matchData) => {
+    // Return first card from deck
+    matchData[0].deck_cards = matchData[0].deck_cards[0];
+
+    // Only return opponent card count, not value of cards
+    matchData[0].opponent_cards = matchData[0].opponent_cards.length;
+
     let templateVars = {
       title: 'Match',
-      matchData: matchData,
+      matchData: matchData[0],
       my_id: req.cookies['user_id']
     };
-    console.log(matchData);
     res.render("game_table", templateVars);
   });
 });
@@ -98,72 +102,21 @@ router.get("/:id", (req, res) => {
 
   // Get last turn for player
   router.get("/:id/last_turn", (req, res) => {
-    matchesRepo.getLastTurn(req.cookies['user_id'],req.params.id)
+    matchesRepo.getLastTurn(req.cookies.user_id,req.params.id)
     .then((turn) => {
       res.json(turn[0]);
     });
   });
 
+  // Post turn for player
+  router.post("/:id/play_turn", (req, res) => {
+    // TODO check that play is valid (card is in player's hand)
+    matchesRepo.playCard(req.cookies.user_id,req.params.id)
+    .then((turn) => {
+      // TODO remove card from players hand
+    });
+  });
+
+
   return router;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-// TODO do all of this in SQL
-function buildMatchData(match, activePlayerID) {
-  if (match.player1_id === Number(activePlayerID)) {
-    // Setup activePlayer = player1
-    match.activePlayer_id = match.player1_id;
-    match.activePlayer_cards = JSON.parse(match.player1_cards);
-    match.activePlayer_score = match.player1_score;
-    match.activePlayer_last_turn = match.player1_last_turn;
-
-    // Setup opponent = player 2
-    match.opponent_last_turn = match.player2_last_turn;
-    match.opponent_score = match.player2_score;
-    match.opponent_cards = countCards(match.player2_cards);
-  } else if (match.player2_id === Number(activePlayerID)) {
-    // Setup activePlayer = player2
-    match.activePlayer_id = match.player2_id;
-    match.activePlayer_cards = JSON.parse(match.player2_cards);
-    match.activePlayer_score = match.player2_score;
-    match.activePlayer_last_turn = match.player2_last_turn;
-
-    // Setup opponent = player1
-    match.opponent_last_turn = match.player1_last_turn;
-    match.opponent_score = match.player1_score;
-    match.opponent_cards = countCards(match.player1_cards);
-  }
-
-  // Delete redundant data that has been remapped
-  delete match.player1_cards;
-  delete match.player2_cards;
-  delete match.player1_last_turn;
-  delete match.player2_last_turn;
-  delete match.player1_score;
-  delete match.player2_score;
-
-  // Return the top card of the deck
-  match.deck_cards = JSON.parse(match.deck_cards);
-  match.deck_cards = { spades: match.deck_cards.spades[0] };
-
-  return match;
-}
-
-function countCards(cards) {
-  let cardCount = 0;
-  let cardsObj = JSON.parse(cards);
-  for (var suit in cardsObj) {
-    cardCount += cardsObj[suit].length;
-  }
-  return cardCount;
 }

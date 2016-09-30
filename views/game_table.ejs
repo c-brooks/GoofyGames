@@ -7,12 +7,8 @@
 </head>
 
   <body class="bump-down">
-
-
     <div class='container'>
       <div class = 'row opponent cards'>
-
-
         <% for (i = 0; i < matchData.opponent_cards; i++) { %>
           <% include ../views/partials/_blank_card %>
         <% } %>
@@ -21,17 +17,16 @@
       <div class='row play-area'>
         <div class='activePlayer-score col-sm-3'>
           <h2>YOU</h2>
-          <%= matchData.activePlayer_score %>
+          <%= matchData.activeplayer_score %>
         </div>
 
         <div class='myMove cards col-sm-2'>
         </div>
 
         <div class='deck cards col-sm-2'>
-          <% for (suit in matchData.deck_cards) { %>
-            <% var cardNum = matchData.deck_cards[suit]; %>
-            <% include ../views/partials/_card %>
-          <% } %>
+          <% var suit = matchData.deck_cards.suit %>
+          <% var cardNum = matchData.deck_cards.value %>
+          <% include ../views/partials/_card %>
         </div>
 
         <div class='theirMove cards col-sm-2'>
@@ -44,14 +39,13 @@
       </div>
 
       <div class = 'row activePlayer cards'>
-        <% var activeSuits = matchData.activePlayer_cards; %>
-        <% for (suit in activeSuits) { %>
-          <% var currSuit = activeSuits[suit]; %>
-          <% for (card in currSuit) { %>
-            <% var cardNum = currSuit[card]; %>
-            <% include ../views/partials/_card %>
-          <% } %>
+        <% for (card in matchData.activeplayer_cards) { %>
+          <% var currCard = matchData.activeplayer_cards[card] %>
+          <% var suit = currCard.suit %>
+          <% var cardNum = currCard.value %>
+          <% include ../views/partials/_card %>
         <% } %>
+
       </div>
     </div>
   </body>
