@@ -24,9 +24,6 @@ router.get("/", (req, res) => {
     });
   })
 
-<<<<<<< HEAD
-
-
 // GET NEW PAGE
 router.get('/new', (req, res) => {
   Promise.all([
@@ -55,9 +52,8 @@ router.get("/:id", (req, res) => {
     };
     console.log(matchData);
     res.render("game_table", templateVars);
-
-
   });
+});
 
 
 
