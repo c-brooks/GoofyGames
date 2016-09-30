@@ -44,12 +44,12 @@ router.get('/new', (req, res) => {
 router.get("/:id", (req, res) => {
   matchesRepo.getMyMatch(req.cookies.user_id, req.params.id)
   .then((matchData) => {
+    matchData[0].opponent_cards = countCards(matchData[0].opponent_cards);
     let templateVars = {
       title: 'Match',
-      matchData: matchData,
+      matchData: matchData[0],
       my_id: req.cookies['user_id']
     };
-    console.log(matchData);
     res.render("game_table", templateVars);
   });
 });
@@ -98,4 +98,12 @@ router.get("/:id", (req, res) => {
   });
 
   return router;
+}
+
+function countCards(cards) {
+  let cardCount = 0;
+  for (var card in cards) {
+    cardCount++;
+  }
+  return cardCount;
 }
