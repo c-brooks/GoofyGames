@@ -23,7 +23,9 @@ const usersRoutes = require("./routes/users");
 const loginRoutes = require("./routes/login");
 const logoutRoutes = require("./routes/logout");
 const rankingsRoutes = require("./routes/rankings");
-const matchesRoutes    = require("./routes/matches");
+const matchesRoutes  = require("./routes/matches");
+//const newRoutes      = require("./routes/new");
+
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
@@ -43,11 +45,12 @@ app.use("/styles", sass({
 app.use(express.static("public"));
 
 // Mount all resource routes
-app.use("/users", usersRoutes(knex));
-app.use("/login", loginRoutes(knex));
-app.use("/logout", logoutRoutes(knex));
+app.use("/users",    usersRoutes(knex));
+app.use("/login",    loginRoutes(knex));
+app.use("/logout",   logoutRoutes(knex));
 app.use("/rankings", rankingsRoutes(knex));
-app.use("/matches", matchesRoutes(knex));
+app.use("/matches",  matchesRoutes(knex));
+//app.use("/new",      newRoutes(knex));
 
 // Home page
 app.get("/", (req, res) => {
