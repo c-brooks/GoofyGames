@@ -17,7 +17,8 @@ module.exports = (knex) => {
     ]).then( (results) => {
       var templateVars = {
         allMatches: results[0],
-        myMatches:  results[1]
+        myMatches:  results[1],
+        my_id:      req.cookies['user_id']
       }
       res.render("matches", templateVars)
     });
@@ -30,7 +31,11 @@ router.get('/new', (req, res) => {
     matchesRepo.getAllMatches()
     ])
   .then( (results) => {
-    var templateVars = {games: results[0], allMatches: results[1]}
+    var templateVars = {
+      games: results[0],
+      allMatches: results[1],
+      my_id: req.cookies['user_id']
+    }
     res.render("searchForNewMatch", templateVars);
   });
 });
@@ -40,7 +45,11 @@ router.get("/:id", (req, res) => {
   matchesRepo.getMatchByID(req.params.id)
   .then((match) => {
     let matchData = buildMatchData(match[0],req.cookies['user_id']);
-    let templateVars = { title: 'Match', matchData: matchData };
+    let templateVars = {
+      title: 'Match',
+      matchData: matchData,
+      my_id: req.cookies['user_id']
+    };
     console.log(matchData);
     res.render("game_table", templateVars);
   });

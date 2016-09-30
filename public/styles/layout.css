@@ -7744,6 +7744,10 @@ body h1 {
   color: #244751;
 }
 
+.container {
+  margin-top: 80px;
+}
+
 .play-area {
   width: 100%;
 }
