@@ -9,34 +9,54 @@ module.exports = (knex) => {
   const matchmakingRepo = require('../db/matchmaking')(knex);
   const gamesRepo = require('../db/games.js')(knex);
 
-  router.get("/", (req, res) => {
-    matchesRepo.getAllMatches().then( (results) => {
-      var templateVars = {results: results}
+// Get all games
+router.get("/", (req, res) => {
+  Promise.all([
+    matchesRepo.getAllMatches(),
+    matchesRepo.getMatchesByPlayerID(req.cookies['user_id'])
+    ]).then( (results) => {
+      var templateVars = {
+        allMatches: results[0],
+        myMatches:  results[1],
+        my_id:      req.cookies['user_id']
+      }
       res.render("matches", templateVars)
     });
   })
 
-  // GET NEW PAGE
-  router.get('/new', (req, res) => {
-    Promise.all([
-      gamesRepo.getAllGames(),
-      matchesRepo.getAllMatches()
-      ])
-    .then( (results) => {
-      var templateVars = {games: results[0], allMatches: results[1]}
-      res.render("searchForNewMatch", templateVars);
-    });
-  });
+<<<<<<< HEAD
 
-  // GET MATCH PAGE
-  router.get("/:id", (req, res) => {
-    matchesRepo.getMatchByID(req.params.id)
-    .then((match) => {
-      let matchData = buildMatchData(match[0],req.cookies['user_id']);
-      let templateVars = { title: 'Match', matchData: matchData };
-      // console.log(matchData);
-      res.render("game_table", templateVars);
-    });
+
+// GET NEW PAGE
+router.get('/new', (req, res) => {
+  Promise.all([
+    gamesRepo.getAllGames(),
+    matchesRepo.getAllMatches()
+    ])
+  .then( (results) => {
+    var templateVars = {
+      games: results[0],
+      allMatches: results[1],
+      my_id: req.cookies['user_id']
+    }
+    res.render("searchForNewMatch", templateVars);
+  });
+});
+
+// GET GAME PAGE
+router.get("/:id", (req, res) => {
+  matchesRepo.getMatchByID(req.params.id)
+  .then((match) => {
+    let matchData = buildMatchData(match[0],req.cookies['user_id']);
+    let templateVars = {
+      title: 'Match',
+      matchData: matchData,
+      my_id: req.cookies['user_id']
+    };
+    console.log(matchData);
+    res.render("game_table", templateVars);
+
+
   });
 
 
@@ -66,13 +86,12 @@ module.exports = (knex) => {
           matchmakingRepo.remove(challenge.player_id),
           matchesRepo.newMatch(goofspiel.newMatch(user_id, challenge.player_id))
           ]).then((results) => {
-             res.redirect(`/matches/${results[2]}`);
-          //console.log("             ID: ", game_id)
-        });
+           res.redirect(`/matches/${results[2]}`);
+         });
           console.log('Challenge posted!');
           //res.redirect('/matches');
-      }
-    });
+        }
+      });
   });
 
   // Get last turn for player

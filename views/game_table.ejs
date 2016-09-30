@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <% const player_id = my_id %>
   <% include ../views/partials/_head %>
+  <% /*include ../views/partials/_header*/ %>
+</head>
 
-  <body>
-    <% include ../views/partials/_header %>
+  <body class="bump-down">
+
 
     <div class='container'>
       <div class = 'row opponent cards'>
+
+
         <% for (i = 0; i < matchData.opponent_cards; i++) { %>
           <% include ../views/partials/_blank_card %>
         <% } %>

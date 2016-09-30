@@ -10,5 +10,11 @@ module.exports = (knex) => {
     res.redirect('/');
   });
 
+  router.post("/", (req, res) => {
+    res.cookie('user_id', req.body.id);
+    res.redirect('/');
+  });
+
+
   return router;
 }
