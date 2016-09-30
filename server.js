@@ -9,12 +9,15 @@ const bodyParser  = require("body-parser");
 const cookieParser = require('cookie-parser');
 const sass        = require("node-sass-middleware");
 const app         = express();
+const cookieParser = require('cookie-parser')
+
+app.use(cookieParser());
 
 const knexConfig  = require("./knexfile");
 const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
 const knexLogger  = require('knex-logger');
-const match = require('./db/matches.js');
+//const match       = require('./db/matches.js');
 
 // Passing knex instance to goofspiel
 const gs = require('./game-logic/goofspiel')(knex);
@@ -27,6 +30,7 @@ const loginRoutes = require("./routes/login");
 const logoutRoutes = require("./routes/logout");
 const rankingsRoutes = require("./routes/rankings");
 const matchesRoutes = require("./routes/matches");
+
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -47,11 +51,12 @@ app.use("/styles", sass({
 app.use(express.static("public"));
 
 // Mount all resource routes
-app.use("/users", usersRoutes(knex));
-app.use("/login", loginRoutes(knex));
-app.use("/logout", logoutRoutes(knex));
+app.use("/users",    usersRoutes(knex));
+app.use("/login",    loginRoutes(knex));
+app.use("/logout",   logoutRoutes(knex));
 app.use("/rankings", rankingsRoutes(knex));
-app.use("/matches", matchesRoutes(knex));
+app.use("/matches",  matchesRoutes(knex));
+
 
 // Home page
 app.get("/", (req, res) => {
