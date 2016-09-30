@@ -21,7 +21,7 @@ module.exports = (knex) => {
   };
 
   matchesRepo.updateMatch = (matchID, currentState, move, moveParams) => {
-
+// Numbers hardcoded for testing. should be passed in moveParams
     var newState = move(currentState, 1, 5, 12);
       knex.table('matches')
       .where({'id': 1})

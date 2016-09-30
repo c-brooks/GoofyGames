@@ -8,6 +8,7 @@ module.exports = (knex) => {
   };
 
   matchmakingRepo.removeOneByUserID = (player_id) => {
+    return
     knex
     ('matchmaking')
     .where({player_id1: player_id})
@@ -21,6 +22,9 @@ module.exports = (knex) => {
     .from('matchmaking')
     .where({game_id: gameID})
     .whereNot({player_id: player_id})
+    .then((rows) => {
+      console.log('CHALLENGE: ', rows);
+    })
   };
 
   matchmakingRepo.getUserChallenges = (player_id) => {
@@ -30,8 +34,8 @@ module.exports = (knex) => {
     .where({player_id: player_id})
   };
 
-
   matchmakingRepo.new = (player_id, gameID) => {
+    return
     knex('matchmaking')
     .insert(
       {player_id: player_id, game_id: gameID}
