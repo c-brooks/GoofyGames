@@ -45,12 +45,10 @@ router.get("/:id", (req, res) => {
   matchesRepo.getMyMatch(req.cookies.user_id, req.params.id)
   .then((matchData) => {
     // Return first card from deck
-    for (var card in matchData[0].deck_cards) {
-      matchData[0].deck_cards = matchData[0].deck_cards[card];
-      break;
-    }
+    matchData[0].deck_cards = matchData[0].deck_cards[0];
+
     // Only return opponent card count, not value of cards
-    matchData[0].opponent_cards = countCards(matchData[0].opponent_cards);
+    matchData[0].opponent_cards = matchData[0].opponent_cards.length;
 
     let templateVars = {
       title: 'Match',
@@ -114,12 +112,4 @@ router.get("/:id", (req, res) => {
   });
 
   return router;
-}
-
-function countCards(cards) {
-  let cardCount = 0;
-  for (var card in cards) {
-    cardCount++;
-  }
-  return cardCount;
 }
