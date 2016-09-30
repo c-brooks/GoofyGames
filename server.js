@@ -16,10 +16,6 @@ const knexConfig  = require("./knexfile");
 const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
 const knexLogger  = require('knex-logger');
-//const match       = require('./db/matches.js');
-
-// Passing knex instance to goofspiel
-//const gs = require('./game-logic/goofspiel')(knex);
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
@@ -27,7 +23,6 @@ const loginRoutes = require("./routes/login");
 const logoutRoutes = require("./routes/logout");
 const rankingsRoutes = require("./routes/rankings");
 const matchesRoutes  = require("./routes/matches");
-//const newRoutes      = require("./routes/new");
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.

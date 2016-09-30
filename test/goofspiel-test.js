@@ -3,23 +3,23 @@ const goofspiel = require('../game-logic/goofspiel');
 
 describe("Create hands", function () {
   it("should create players hands", function() {
-    goofspiel.initGame();
-    assert.deepEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], goofspiel.game.p1.cards);
+    testGame = goofspiel.newMatch();
+    assert.deepEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], testGame.p1_cards);
     assert.deepEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], goofspiel.game.p2.cards);
   });
 });
 
 describe("Shuffle deck", function () {
   it("should shuffle deck", function() {
-    goofspiel.initGame();
-    var deckOne = goofspiel.game.deck.cards;
-    assert.notEqual(goofspiel.game.deck.cards, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
+    testGame = goofspiel.newMatch();
+    var deckOne = testGame.deck_cards;
+    assert.notEqual(testGame.deck_cards, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
   });
   it("should shuffle deck randomly every time", function() {
-    goofspiel.initGame();
-    var deckOne = goofspiel.game.deck.cards;
-    goofspiel.initGame();
-    var deckTwo = goofspiel.game.deck.cards;
+    var testGame = goofspiel.newMatch();
+    var deckOne = testGame.deck_cards;
+    testGame = goofspiel.newMatch();
+    var deckTwo = testGame.deck_cards;
     assert.notEqual(deckOne, deckTwo);
   });
 });
@@ -27,14 +27,14 @@ describe("Shuffle deck", function () {
 
 describe("Move", function () {
   it("should determine winner of a round", function () {
-    goofspiel.initGame();
+    var testGame = goofspiel.newMatch();
     // Player 1 wins
     goofspiel.move(10, 1, 13);
     assert.equal(goofspiel.game.p1.score, 13, "winner gets prize");
     assert.equal(goofspiel.game.p2.score, 0, "loser gets nothing");
 
     // Reset
-    goofspiel.initGame();
+    var testGame = goofspiel.newMatch();
 
     // Player 2 wins
     goofspiel.move(3, 7, 12);
@@ -42,28 +42,28 @@ describe("Move", function () {
     assert.equal(goofspiel.game.p2.score, 12, "loser gets nothing");
   });
   it("should remove cards from players hands", function () {
-    goofspiel.initGame();
+    var testGame = goofspiel.newMatch();
 
-    assert.equal(goofspiel.game.p1.cards.length, 13, "player 1 initial hand");
-    assert.equal(goofspiel.game.p2.cards.length, 13, "player 2 initial hand");
+    assert.equal(goofspiel.game.p1.cards.length, 13, "player 1 new hand");
+    assert.equal(goofspiel.game.p2.cards.length, 13, "player 2 new hand");
     goofspiel.move(10, 1, 13);
     assert.equal(goofspiel.game.p1.cards.length, 12, "player 1 lost a card");
     assert.equal(goofspiel.game.p2.cards.length, 12, "player 2 lost a card");
   });
 
   it("should remove cards from deck", function () {
-    goofspiel.initGame();
+    var testGame = goofspiel.newMatch();
 
-    assert.equal(goofspiel.game.deck.cards.length, 13, "initial deck");
+    assert.equal(testGame.deck_cards.length, 13, "new deck");
     goofspiel.move(10, 1, 13);
-    assert.equal(goofspiel.game.deck.cards.length, 12, "deck lost a card");
+    assert.equal(testGame.deck_cards.length, 12, "deck lost a card");
   });
 });
 
 describe("Game End", function () {
   it("should end after 13 rounds", function () {
     var i;
-    goofspiel.initGame();
+    var testGame = goofspiel.newMatch();
     // Make 12 moves
     for(i = 0; i < 13; i ++){
       goofspiel.move(3, 7, i);

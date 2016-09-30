@@ -44,6 +44,7 @@ router.post("/", (req, res) => {
     res.redirect('/');
   }
 
+
   matchmakingRepo.checkForChallenges(user_id, 1).then( (challenge) => {
     console.log('CHALLENGE: ', challenge)
     if(challenge.player_id === user_id) {
