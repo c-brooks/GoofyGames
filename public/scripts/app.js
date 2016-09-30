@@ -27,6 +27,11 @@ $(() => {
     });
   });
 
+  $('.activePlayer').find('.card').on('click', function() {
+    var cardValue = $(this).find('span.number').html();
+    var cardSuit = $(this).attr('class').split(/\s+/)[1];
+  });
+
   $('.activePlayer').find('.card').on('mouseover', function() {
     $(this).css({ scale: [2, 2] });
     // $(this).transition({ y: '100px' });

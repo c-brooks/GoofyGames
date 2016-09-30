@@ -34,6 +34,7 @@ router.get("/:id", (req, res) => {
   .then((match) => {
     let matchData = buildMatchData(match[0],req.cookies['user_id']);
     let templateVars = { title: 'Match', matchData: matchData };
+    console.log(matchData);
     res.render("game_table", templateVars);
   });
 });
@@ -76,24 +77,33 @@ router.post("/", (req, res) => {
 
 function buildMatchData(match, activePlayerID) {
   if (match.player1_id === Number(activePlayerID)) {
+    // Setup activePlayer = player1
     match.activePlayer_id = match.player1_id;
     match.activePlayer_cards = JSON.parse(match.player1_cards);
     match.activePlayer_score = match.player1_score;
+    match.activePlayer_last_turn = match.player1_last_turn;
+
+    // Setup opponent = player 2
+    match.opponent_last_turn = match.player2_last_turn;
     match.opponent_score = match.player2_score;
     match.opponent_cards = countCards(match.player2_cards);
-
-    delete match.player2_cards;
   } else if (match.player2_id === Number(activePlayerID)) {
+    // Setup archivedPlayer = player2
     match.activePlayer_id = match.player2_id;
     match.activePlayer_cards = JSON.parse(match.player2_cards);
     match.activePlayer_score = match.player2_score;
+
+    // Setup opponent = player 1
+    match.opponent_last_turn = match.player1_last_turn;
     match.opponent_score = match.player1_score;
     match.opponent_cards = countCards(match.player1_cards);
-
-    delete match.player1_cards;
   }
 
-  // Delete old scores
+  // Delete redundant data that has been remapped
+  delete match.player1_cards;
+  delete match.player2_cards;
+  delete match.player1_last_turn;
+  delete match.player2_last_turn;
   delete match.player1_score;
   delete match.player2_score;
 
