@@ -2,18 +2,19 @@ var matchesRepo = {};
 
 module.exports = (knex) => {
 
-// TODO: this should accept an object called moveParams
-//        which tells the program which move to make.
+  matchesRepo.getAllMatches = () => {
+    return knex
+      .select('*')
+      .from('matches');
+  };
 
-  matchesRepo.newMatch = (matchID, newMatch) => {
-    knex('matches').insert(newMatch);
-  }
+  matchesRepo.newMatch = (gameObj) => {
+    return knex('matches').returning('id').insert(gameObj);
+  };
 
-  matchesRepo.updateMatch = (matchID, currentState, move) => {
-  //  console.log('Before move: ', currentState);
+  matchesRepo.updateMatch = (matchID, currentState, move, moveParams) => {
 
     var newState = move(currentState, 1, 5, 12);
-  //  console.log('After move: ', newState);
       knex.table('matches')
       .where({'id': 1})
       .update({
@@ -21,23 +22,17 @@ module.exports = (knex) => {
         player1_cards: newState.player1_cards,
         player2_cards: newState.player2_cards,
         player1_score: newState.player1_score,
-        player2_score: 10000
-      });
+        player2_score: newState.player2_score
+      })
     };
 
-// move(currentState, p1bid, p2bid, **prize**)
-  matchesRepo.getMatch = (matchID, move) => {
-    knex
-    .select('*')
-    .where({'id': matchID})
-    .from('matches')
-    .then((currentState) => {
-      // TODO: This is pretty hacky
-      currentState[0].player1_cards = JSON.parse(currentState[0].player1_cards);
-      currentState[0].player2_cards = JSON.parse(currentState[0].player2_cards);
-      currentState[0].deck_cards    = JSON.parse(currentState[0].deck_cards);
-      matchesRepo.updateMatch(matchID, currentState[0], move);
-   });
-  };
-return matchesRepo;
+  matchesRepo.getMatchByID = (matchID) => {
+    var id = matchID;
+    console.log(id, typeof id)
+    return knex
+      .select('*')
+      .from('matches')
+      .where({id: id})
+    };
+  return matchesRepo;
 };
