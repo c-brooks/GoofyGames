@@ -13,7 +13,7 @@ module.exports = (knex) => {
       .select('*')
       .from('matches')
       .where({player1_id: playerID})
-      .orWhere({player1_id: playerID})
+      .orWhere({player2_id: playerID})
   };
 
   matchesRepo.newMatch = (gameObj) => {

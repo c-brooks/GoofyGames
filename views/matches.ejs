@@ -1,57 +1,68 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <% const player_id = my_id %>
-    <% include ../views/partials/_head %>
-    <% include ../views/partials/_header %>
-  </head>
 
-  <body class="bump-down">
+<head>
+  <% const player_id = my_id %>
+  <% include ../views/partials/_head %>
+  <% include ../views/partials/_header %>
+</head>
 
-<!-- Because of limited seed data, this is every single match -->
-    <h1>All Matches</h1>
-    <section>
-      <table>
-        <th>Game Type</th>
-        <th>Player 1</th>
-        <th>Player 2</th>
-        <% for(var i = 0; i < allMatches.length; i++) { %>
-          <tr>
-            <% if(allMatches[i].game_id === 1) %>
-            <td><%= 'Goofspiel' %></td>
-            <td><%= allMatches[i].player1_id %></td>
-            <td><%= allMatches[i].player2_id %></td>
-          </tr>
-        <% } %>
-      </table>
-    </section>
+<body class="bump-down">
 
-<h1>My Matches</h1>
-    <section>
-        <%  if (myMatches.length === 0) {  %>
-              You have no active matches!
-        <%  } else { %>
-      <table>
-        <th>Game Type</th>
-        <th>Player 1</th>
-        <th>Player 2</th>
+  <!-- Because of limited seed data, this is every single match -->
+  <h1>All Matches</h1>
+  <section>
+    <table>
+      <th>Game Type</th>
+      <th>Player 1</th>
+      <th>Player 2</th>
+      <% for(var i = 0; i < allMatches.length; i++) { %>
+      <tr>
+        <% if(allMatches[i].game_id === 1) %>
+        <td><%= 'Goofspiel' %></td>
+        <td><%= allMatches[i].player1_id %></td>
+        <td><%= allMatches[i].player2_id %></td>
+      </tr>
+      <% } %>
+    </table>
+  </section>
 
-        <%  for(var i = 0; i < myMatches.length; i++) { %>
-          <tr>
-            <% if(myMatches[i].game_id === 1) %>
-            <td><%= 'Goofspiel' %></td>
-            <td><%= myMatches[i].player1_id %></td>
-            <td><%= myMatches[i].player2_id %></td>
-          </tr>
+  <h1>My Matches</h1>
+  <section>
+    <%  if (myMatches.length === 0) {  %>
+    You have no active matches!
+    <%  } else { %>
+    <table>
+      <th>Game Type</th>
+      <th>Player 1</th>
+      <th>Player 2</th>
+
+      <%  for(var i = 0; i < myMatches.length; i++) { %>
+      <tr>
+        <% if(myMatches[i].game_id === 1) { %>
+          <td><%= 'Goofspiel' %></td>
+        <%  } else if (myMatches[i].game_id === 1) {  %>
+          <td><%= 'Go Fish' %></td>
         <%  } %>
+        <td><%= myMatches[i].player1_id %></td>
+        <td><%= myMatches[i].player2_id %></td>
+      </tr>
       <%  } %>
-        <form>
-        <button> Post a new challenge! </button>
-        </form>
-      </table>
-    </section>
+      <%  } %>
 
-
-  </body>
+    <form id="search-form" action="/matches" method="POST" type="button">
+        <select name="game">
+          <% for (game in games) { %>
+            <option id="gameType" value= <%= games[game].id %>
+            <% if (games[game].id === 1) { %>selected <% } %>>
+              <%= games[game].name %>
+            </option>
+          <% } %>
+        </select>
+      </form>
+      <button id="search-btn" type="submit" name="gameID" form="search-form"> Search! </button>
+    </table>
+  </section>
+</body>
 </html>

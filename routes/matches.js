@@ -9,15 +9,17 @@ module.exports = (knex) => {
   const matchmakingRepo = require('../db/matchmaking')(knex);
   const gamesRepo = require('../db/games.js')(knex);
 
-// Get all games
+// Matches home page - display and look for matches
 router.get("/", (req, res) => {
   Promise.all([
     matchesRepo.getAllMatches(),
-    matchesRepo.getMatchesByPlayerID(req.cookies['user_id'])
+    matchesRepo.getMatchesByPlayerID(req.cookies['user_id']),
+    gamesRepo.getAllGames()
     ]).then( (results) => {
       var templateVars = {
         allMatches: results[0],
         myMatches:  results[1],
+        games:      results[2],
         my_id:      req.cookies['user_id']
       }
       res.render("matches", templateVars)
@@ -54,8 +56,6 @@ router.get("/:id", (req, res) => {
     res.render("game_table", templateVars);
   });
 });
-
-
 
   // POST NEW
   router.post("/", (req, res) => {
@@ -100,6 +100,17 @@ router.get("/:id", (req, res) => {
 
   return router;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 // TODO do all of this in SQL
 function buildMatchData(match, activePlayerID) {
