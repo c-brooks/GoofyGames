@@ -18,11 +18,17 @@
           <%= matchData.activePlayer_score %>
         </div>
 
-        <div class='deck cards col-sm-6'>
+        <div class='myMove cards col-sm-2'>
+        </div>
+
+        <div class='deck cards col-sm-2'>
           <% for (suit in matchData.deck_cards) { %>
             <% var cardNum = matchData.deck_cards[suit]; %>
             <% include ../views/partials/_card %>
           <% } %>
+        </div>
+
+        <div class='theirMove cards col-sm-2'>
         </div>
 
         <div class='opponent-score col-sm-3'>

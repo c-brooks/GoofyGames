@@ -34,7 +34,19 @@ $(() => {
     $.ajax({
       url: '/matches/' + matchID + '/last_turn',
       success: (lastTurn) => {
-        alert(lastTurn);
+        if (lastTurn.activeplayer_last_turn === null) {
+          // // TODO animate the transition
+          // $(this).transition({ x: -moveHere.left, y: -moveHere.top });
+          $('.myMove').append($(this));
+        } else {
+          // Shake the card because it's not their turn
+          $(this).transition({ x: -10 }, 100)
+          .transition({ x: +10 }, 100)
+          .transition({ x: - 10 }, 100)
+          .transition({ x: + 10}, 100)
+          .transition({ x: 0}, 100);
+        }
+        // TODO calculate move
       }
     });
   });
