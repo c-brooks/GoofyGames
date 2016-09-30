@@ -11,8 +11,6 @@ const sass        = require("node-sass-middleware");
 const app         = express();
 const cookieParser = require('cookie-parser')
 
-app.use(cookieParser());
-
 const knexConfig  = require("./knexfile");
 const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
