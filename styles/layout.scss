@@ -8,16 +8,25 @@ body {
   }
 }
 
-section.cards {
+.cards {
   margin: 25px;
 }
 
-section.activePlayer.cards {
-  position: fixed;
-  bottom: 0
+.deck.cards {
+  width: 100%;
+  margin: 22% 42%;
+  .card {
+    position: absolute;
+  }
 }
 
-section.opponent.cards {
-  position: fixed;
-  top: 0
+.activePlayer.cards {
+  position: absolute;
+  bottom: 0px;
 }
+
+.opponent.cards {
+  position: absolute;
+  top: 0px;
+}
+

@@ -5,28 +5,7 @@
   <body>
     <% include ../views/partials/_header %>
 
-  <section id='table'>
-    <section class='activePlayer cards'>
-      <% var activeSuits = matchData.activePlayer_cards; %>
-      <% for (suit in activeSuits) { %>
-        <% var currSuit = activeSuits[suit]; %>
-        <% for (card in currSuit) { %>
-          <% include ../views/partials/_card %>
-        <% } %>
-      <% } %>
-    </section>
-
-<!--     <section class='deck cards'>
-        <% var deckSuits = matchData.deck_cards; %>
-        <% for (suit in deckSuits) { %>
-          <% var currSuit = deckSuits[suit]; %>
-          <% for (card in currSuit) { %>
-            <% include ../views/partials/_card %>
-          <% } %>
-        <% } %>
-    </section>
- -->
-    <section class='opponent cards'>
+    <section class='opponent cards row'>
       <% var opponenetSuits = matchData.opponent_cards; %>
       <% for (suit in opponenetSuits) { %>
         <% var currSuit = opponenetSuits[suit]; %>
@@ -35,7 +14,26 @@
         <% } %>
       <% } %>
     </section>
-  </section>
+
+    <section class='deck cards row'>
+        <% var deckSuits = matchData.deck_cards; %>
+        <% for (suit in deckSuits) { %>
+          <% var currSuit = deckSuits[suit]; %>
+          <% for (card in currSuit) { %>
+            <% include ../views/partials/_card %>
+          <% } %>
+        <% } %>
+    </section>
+
+    <section class='activePlayer cards row'>
+      <% var activeSuits = matchData.activePlayer_cards; %>
+      <% for (suit in activeSuits) { %>
+        <% var currSuit = activeSuits[suit]; %>
+        <% for (card in currSuit) { %>
+          <% include ../views/partials/_card %>
+        <% } %>
+      <% } %>
+    </section>
 
   </body>
 
