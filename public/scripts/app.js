@@ -27,6 +27,30 @@ $(() => {
     });
   });
 
+  $('.activePlayer').find('.card').on('click', function() {
+    var cardValue = $(this).find('span.number').html();
+    var cardSuit = $(this).attr('class').split(/\s+/)[1];
+    var matchID = window.location.href.substr(window.location.href.lastIndexOf('/') + 1);
+    $.ajax({
+      url: '/matches/' + matchID + '/last_turn',
+      success: (lastTurn) => {
+        if (lastTurn.activeplayer_last_turn === null) {
+          // // TODO animate the transition
+          // $(this).transition({ x: -moveHere.left, y: -moveHere.top });
+          $('.myMove').append($(this));
+        } else {
+          // Shake the card because it's not their turn
+          $(this).transition({ x: -10 }, 100)
+          .transition({ x: +10 }, 100)
+          .transition({ x: - 10 }, 100)
+          .transition({ x: + 10}, 100)
+          .transition({ x: 0}, 100);
+        }
+        // TODO calculate move
+      }
+    });
+  });
+
   $('.activePlayer').find('.card').on('mouseover', function() {
     $(this).css({ scale: [2, 2] });
     // $(this).transition({ y: '100px' });

@@ -9,23 +9,5 @@ body {
 }
 
 .play-area {
-  width: 100%;
-
-  .card {
-    position: absolute;
-  }
-}
-
-.activePlayer.cards {
-  position: absolute;
-  bottom: 0px;
-}
-
-.opponent.cards {
-  position: absolute;
-  top: 0px;
-}
-
-.row.play-area {
-  margin-top: 250px;
+  margin: 100px;
 }
