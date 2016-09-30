@@ -10,8 +10,6 @@ module.exports = (knex) => {
 
   router.get("/", (req, res) => {
     matchesRepo.getAllMatches().then( (results) => {
-      console.log(results)
-      console.log(results[0].player1_id)
       var templateVars = {results: results}
       res.render("matches", templateVars)
     });
@@ -32,15 +30,12 @@ module.exports = (knex) => {
 // GET GAME PAGE
   router.get("/:id", (req, res) => {
     matchesRepo.getMatchByID(req.params.id).then( (results) => {
-      console.log(results)
       res.render("matches", {results: results})
     });
   });
 
 // POST NEW
   router.post("/", (req, res) => {
-
-console.log(Object.keys(req));
     matchmakingRepo.new(3,1);
     res.redirect('/matches');
   });
