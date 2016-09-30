@@ -1,11 +1,13 @@
 
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <% const player_id = my_id %>
+    <% include ../views/partials/_head %>
+    <% include ../views/partials/_header %>
+  </head>
 
-  <% const player_id = my_id %>
-  <% include ../views/partials/_head %>
-  <% include ../views/partials/_header %>
-  <body class="container">
+  <body class="bump-down">
 
 <!-- Because of limited seed data, this is every single match -->
     <h1>All Matches</h1>

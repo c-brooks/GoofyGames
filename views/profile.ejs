@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-  <% const player_id = my_id %>
-  <% include ../views/partials/_head %>
 
-  <body>
+  <head>
+    <% const player_id = my_id %>
+    <% include ../views/partials/_head %>
+  </head>
+
+  <body class="bump-down">
     <% include ../views/partials/_header %>
 
     <h1><%= user.username %></h1>
 
-    <section class='container'>
+    <section>
       <h2>Rankings</h2>
       <table>
         <th>Game</th>
