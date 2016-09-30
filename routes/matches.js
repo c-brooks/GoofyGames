@@ -47,12 +47,13 @@ module.exports = (knex) => {
     matchmakingRepo.checkForChallenges(userID, 1).then( (challenge) => {
 
       if(!challenge){
-        matchmakingRepo.new(userID,1);
+        matchmakingRepo.new(userID, 1);
         res.redirect('/matches');
       } else { // delete from challenge table, create new match in table
         matchmakingRepo.remove(userID);
         matchmakingRepo.remove(challenge.user_id);
         console.log(challenge);
+        matchesRepo.
       }
     });
   });
