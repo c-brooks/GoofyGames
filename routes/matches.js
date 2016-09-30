@@ -44,7 +44,14 @@ router.get('/new', (req, res) => {
 router.get("/:id", (req, res) => {
   matchesRepo.getMyMatch(req.cookies.user_id, req.params.id)
   .then((matchData) => {
+    // Return first card from deck
+    for (var card in matchData[0].deck_cards) {
+      matchData[0].deck_cards = matchData[0].deck_cards[card];
+      break;
+    }
+    // Only return opponent card count, not value of cards
     matchData[0].opponent_cards = countCards(matchData[0].opponent_cards);
+
     let templateVars = {
       title: 'Match',
       matchData: matchData[0],

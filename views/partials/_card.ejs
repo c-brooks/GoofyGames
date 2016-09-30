@@ -5,6 +5,10 @@
   hearts: '\u2665'
 } %>
 
+<% if (cardNum === '11') { cardNum = 'J' } %>
+<% if (cardNum === '12') { cardNum = 'K' } %>
+<% if (cardNum === '13') { cardNum = 'Q' } %>
+
 <div class="card <%= suit %> small">
   <div class="front">
     <div class="corner top">
@@ -12,32 +16,32 @@
       <span><%= suitChar[suit] %></span>
     </div>
 
-    <% if (cardNum === 2) { %>
+    <% if (cardNum === '2') { %>
       <span class="suit top_center"><%= suitChar[suit] %></span>
       <span class="suit bottom_center"><%= suitChar[suit] %></span>
-    <% } else if (cardNum === 3) { %>
+    <% } else if (cardNum === '3') { %>
     <span class="suit top_center"><%= suitChar[suit] %></span>
       <span class="suit middle_center"><%= suitChar[suit] %></span>
       <span class="suit bottom_center"><%= suitChar[suit] %></span>
-    <% } else if (cardNum === 4) { %>
+    <% } else if (cardNum === '4') { %>
       <span class="suit top_left"><%= suitChar[suit] %></span>
       <span class="suit top_right"><%= suitChar[suit] %></span>
       <span class="suit bottom_left"><%= suitChar[suit] %></span>
       <span class="suit bottom_right"><%= suitChar[suit] %></span>
-    <% } else if (cardNum === 5) { %>
+    <% } else if (cardNum === '5') { %>
       <span class="suit top_left"><%= suitChar[suit] %></span>
       <span class="suit top_right"><%= suitChar[suit] %></span>
       <span class="suit middle_center"><%= suitChar[suit] %></span>
       <span class="suit bottom_left"><%= suitChar[suit] %></span>
       <span class="suit bottom_right"><%= suitChar[suit] %></span>
-    <% } else if (cardNum === 6) { %>
+    <% } else if (cardNum === '6') { %>
       <span class="suit top_left"><%= suitChar[suit] %></span>
       <span class="suit top_right"><%= suitChar[suit] %></span>
       <span class="suit middle_left"><%= suitChar[suit] %></span>
       <span class="suit middle_right"><%= suitChar[suit] %></span>
       <span class="suit bottom_left"><%= suitChar[suit] %></span>
       <span class="suit bottom_right"><%= suitChar[suit] %></span>
-    <% } else if (cardNum === 7) { %>
+    <% } else if (cardNum === '7') { %>
       <span class="suit top_left"><%= suitChar[suit] %></span>
       <span class="suit top_right"><%= suitChar[suit] %></span>
       <span class="suit middle_left"><%= suitChar[suit] %></span>
@@ -45,7 +49,7 @@
       <span class="suit middle_right"><%= suitChar[suit] %></span>
       <span class="suit bottom_left"><%= suitChar[suit] %></span>
       <span class="suit bottom_right"><%= suitChar[suit] %></span>
-    <% } else if (cardNum === 8) { %>
+    <% } else if (cardNum === '8') { %>
       <span class="suit top_left"><%= suitChar[suit] %></span>
       <span class="suit top_right"><%= suitChar[suit] %></span>
       <span class="suit middle_left"><%= suitChar[suit] %></span>
@@ -54,7 +58,7 @@
       <span class="suit middle_bottom"><%= suitChar[suit] %></span>
       <span class="suit bottom_left"><%= suitChar[suit] %></span>
       <span class="suit bottom_right"><%= suitChar[suit] %></span>
-    <% } else if (cardNum === 9) { %>
+    <% } else if (cardNum === '9') { %>
       <span class="suit top_left"><%= suitChar[suit] %></span>
       <span class="suit top_right"><%= suitChar[suit] %></span>
       <span class="suit middle_top_left"><%= suitChar[suit] %></span>
@@ -64,7 +68,7 @@
       <span class="suit bottom_right"><%= suitChar[suit] %></span>
       <span class="suit middle_bottom_left"><%= suitChar[suit] %></span>
       <span class="suit middle_bottom_right"><%= suitChar[suit] %></span>
-    <% } else if (cardNum === 10) { %>
+    <% } else if (cardNum === '10') { %>
       <span class="suit top_left"><%= suitChar[suit] %></span>
       <span class="suit top_right"><%= suitChar[suit] %></span>
       <span class="suit middle_top_left"><%= suitChar[suit] %></span>
