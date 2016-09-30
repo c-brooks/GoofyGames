@@ -2,10 +2,7 @@
 
 const express = require('express');
 const router  = express.Router();
-<<<<<<< HEAD
 const goofspiel = require('../game-logic/goofspiel');
-=======
->>>>>>> feature/match_table_view
 
 module.exports = (knex) => {
   const matchesRepo = require('../db/matches.js')(knex);
