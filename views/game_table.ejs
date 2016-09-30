@@ -19,13 +19,10 @@
         </div>
 
         <div class='deck cards col-sm-6'>
-            <% var deckSuits = matchData.deck_cards; %>
-            <% for (suit in deckSuits) { %>
-              <% var currSuit = deckSuits[suit]; %>
-              <% for (card in currSuit) { %>
-                <% include ../views/partials/_card %>
-              <% } %>
-            <% } %>
+          <% for (suit in matchData.deck_cards) { %>
+            <% var cardNum = matchData.deck_cards[suit]; %>
+            <% include ../views/partials/_card %>
+          <% } %>
         </div>
 
         <div class='opponent-score col-sm-3'>
@@ -39,6 +36,7 @@
         <% for (suit in activeSuits) { %>
           <% var currSuit = activeSuits[suit]; %>
           <% for (card in currSuit) { %>
+            <% var cardNum = currSuit[card]; %>
             <% include ../views/partials/_card %>
           <% } %>
         <% } %>

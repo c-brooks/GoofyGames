@@ -107,7 +107,9 @@ function buildMatchData(match, activePlayerID) {
   delete match.player1_score;
   delete match.player2_score;
 
+  // Return the top card of the deck
   match.deck_cards = JSON.parse(match.deck_cards);
+  match.deck_cards = { spades: match.deck_cards.spades[0] };
 
   return match;
 }
