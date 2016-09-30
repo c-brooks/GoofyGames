@@ -30,6 +30,13 @@ $(() => {
   $('.activePlayer').find('.card').on('click', function() {
     var cardValue = $(this).find('span.number').html();
     var cardSuit = $(this).attr('class').split(/\s+/)[1];
+    var matchID = window.location.href.substr(window.location.href.lastIndexOf('/') + 1);
+    $.ajax({
+      url: '/matches/' + matchID + '/last_turn',
+      success: (lastTurn) => {
+        alert(lastTurn);
+      }
+    });
   });
 
   $('.activePlayer').find('.card').on('mouseover', function() {

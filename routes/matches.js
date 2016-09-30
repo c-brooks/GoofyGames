@@ -16,46 +16,46 @@ module.exports = (knex) => {
     });
   })
 
-// GET NEW PAGE
-router.get('/new', (req, res) => {
-  Promise.all([
-    gamesRepo.getAllGames(),
-    matchesRepo.getAllMatches()
-    ])
-  .then( (results) => {
-    var templateVars = {games: results[0], allMatches: results[1]}
-    res.render("searchForNewMatch", templateVars);
+  // GET NEW PAGE
+  router.get('/new', (req, res) => {
+    Promise.all([
+      gamesRepo.getAllGames(),
+      matchesRepo.getAllMatches()
+      ])
+    .then( (results) => {
+      var templateVars = {games: results[0], allMatches: results[1]}
+      res.render("searchForNewMatch", templateVars);
+    });
   });
-});
 
-// GET GAME PAGE
-router.get("/:id", (req, res) => {
-  matchesRepo.getMatchByID(req.params.id)
-  .then((match) => {
-    let matchData = buildMatchData(match[0],req.cookies['user_id']);
-    let templateVars = { title: 'Match', matchData: matchData };
-    console.log(matchData);
-    res.render("game_table", templateVars);
+  // GET GAME PAGE
+  router.get("/:id", (req, res) => {
+    matchesRepo.getMatchByID(req.params.id)
+    .then((match) => {
+      let matchData = buildMatchData(match[0],req.cookies['user_id']);
+      let templateVars = { title: 'Match', matchData: matchData };
+      console.log(matchData);
+      res.render("game_table", templateVars);
+    });
   });
-});
 
-// POST NEW
-router.post("/", (req, res) => {
-  let user_id = req.cookies.user_id;
+  // POST NEW
+  router.post("/", (req, res) => {
+    let user_id = req.cookies.user_id;
 
-  if(!user_id){
-    alert('Please login to play!');
-    res.redirect('/');
-  }
+    if(!user_id){
+      alert('Please login to play!');
+      res.redirect('/');
+    }
 
-  matchmakingRepo.checkForChallenges(user_id, 1).then( (challenge) => {
-    console.log('CHALLENGE: ', challenge)
-    if(challenge.player_id === user_id) {
-      alert('You are already looking for a game!');
-      res.redirect('/matches');
-    } else if(!challenge.player_id) {
-      matchmakingRepo.new(user_id, 1);
-      res.redirect('/matches');
+    matchmakingRepo.checkForChallenges(user_id, 1).then( (challenge) => {
+      // console.log('CHALLENGE: ', challenge)
+      if(challenge.player_id === user_id) {
+        alert('You are already looking for a game!');
+        res.redirect('/matches');
+      } else if(!challenge.player_id) {
+        matchmakingRepo.new(user_id, 1);
+        res.redirect('/matches');
       } else { // delete from challenge table, create new match in table
         let newGame = goofspiel.newMatch(user_id, challenge.player_id);
 
@@ -69,12 +69,16 @@ router.post("/", (req, res) => {
         });
           console.log('Challenge posted!');
           //res.redirect('/matches');
-        }
-      });
+      }
     });
+  });
+
+
+
   return router;
 }
 
+// TODO do all of this in SQL
 function buildMatchData(match, activePlayerID) {
   if (match.player1_id === Number(activePlayerID)) {
     // Setup activePlayer = player1
