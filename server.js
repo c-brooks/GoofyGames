@@ -57,7 +57,7 @@ app.use("/matches",  matchesRoutes(knex));
 
 // Home page
 app.get("/", (req, res) => {
-  var templateVars = { title: 'GG Bro' }
+  var templateVars = { title: 'GG Bro', my_id: req.cookies['user_id'] }
   res.render("index", templateVars);
 });
 

@@ -9,9 +9,16 @@ module.exports = (knex) => {
   const matchmakingRepo = require('../db/matchmaking')(knex);
   const gamesRepo = require('../db/games.js')(knex);
 
+// Get all games
   router.get("/", (req, res) => {
-    matchesRepo.getAllMatches().then( (results) => {
-      var templateVars = {results: results}
+    Promise.all([
+    matchesRepo.getAllMatches(),
+    matchesRepo.getMatchesByPlayerID(req.cookies['user_id'])
+    ]).then( (results) => {
+      var templateVars = {
+        allMatches: results[0],
+        myMatches:  results[1]
+      }
       res.render("matches", templateVars)
     });
   })
@@ -65,7 +72,6 @@ router.post("/", (req, res) => {
           matchesRepo.newMatch(goofspiel.newMatch(user_id, challenge.player_id))
           ]).then((results) => {
              res.redirect(`/matches/${results[2]}`);
-          //console.log("             ID: ", game_id)
         });
           console.log('Challenge posted!');
           //res.redirect('/matches');

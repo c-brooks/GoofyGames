@@ -7,21 +7,47 @@
 
 <!-- Because of limited seed data, this is every single match -->
     <h1>All Matches</h1>
-
     <section>
       <table>
         <th>Game Type</th>
         <th>Player 1</th>
         <th>Player 2</th>
-        <% for(var i = 0; i < results.length; i++) { %>
+        <% for(var i = 0; i < allMatches.length; i++) { %>
           <tr>
-            <% if(results[i].game_id === 1) %>
+            <% if(allMatches[i].game_id === 1) %>
             <td><%= 'Goofspiel' %></td>
-            <td><%= results[i].player1_id %></td>
-            <td><%= results[i].player2_id %></td>
+            <td><%= allMatches[i].player1_id %></td>
+            <td><%= allMatches[i].player2_id %></td>
           </tr>
         <% } %>
       </table>
     </section>
+
+<h1>My Matches</h1>
+    <section>
+        <%  if (myMatches.length === 0) {  %>
+              You have no active matches!
+        <%  } else { %>
+      <table>
+        <th>Game Type</th>
+        <th>Player 1</th>
+        <th>Player 2</th>
+
+        <%  for(var i = 0; i < myMatches.length; i++) { %>
+          <tr>
+            <% if(myMatches[i].game_id === 1) %>
+            <td><%= 'Goofspiel' %></td>
+            <td><%= myMatches[i].player1_id %></td>
+            <td><%= myMatches[i].player2_id %></td>
+          </tr>
+        <%  } %>
+      <%  } %>
+        <form>
+        <button> Post a new challenge! </button>
+        </form>
+      </table>
+    </section>
+
+
   </body>
 </html>

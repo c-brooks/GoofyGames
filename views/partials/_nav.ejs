@@ -1,2 +1,13 @@
-<nav>
+
+<nav id="nav-bar">
+  <span class="header">Goofy Games</span>
+
+  <form id="login" method="post" action="/login">
+    <input id="playerID" type="text" name="id" value = "" placeholder="ID">
+    <button id="login-btn">Login</button>
+
+    <% if (player_id) { %>
+    <div id="login-state">Player ID: <%= player_id %> </div>
+    <% } %>
+  </form>
 </nav>

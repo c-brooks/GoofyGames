@@ -8,6 +8,14 @@ module.exports = (knex) => {
       .from('matches');
   };
 
+    matchesRepo.getMatchesByPlayerID = (playerID) => {
+    return knex
+      .select('*')
+      .from('matches')
+      .where({player1_id: playerID})
+      .orWhere({player1_id: playerID})
+  };
+
   matchesRepo.newMatch = (gameObj) => {
     return knex('matches').returning('id').insert(gameObj);
   };
