@@ -104,6 +104,15 @@ router.get("/:id", (req, res) => {
     });
   });
 
+  // Post turn for player
+  router.post("/:id/play_turn", (req, res) => {
+    // TODO check that play is valid (card is in player's hand)
+    matchesRepo.playCard(req.cookies.user_id,req.params.id)
+    .then((turn) => {
+      // TODO remove card from players hand
+    });
+  });
+
   return router;
 }
 
