@@ -8,15 +8,13 @@ module.exports = (knex) => {
       .from('matches');
   };
 
-  matchesRepo.newMatch = (newMatch) => {
-    knex('matches').insert(newMatch(1, 2));
+  matchesRepo.newMatch = (gameObj) => {
+    return knex('matches').returning('id').insert(gameObj);
   };
 
   matchesRepo.updateMatch = (matchID, currentState, move, moveParams) => {
-  //  console.log('Before move: ', currentState);
 
     var newState = move(currentState, 1, 5, 12);
-  //  console.log('After move: ', newState);
       knex.table('matches')
       .where({'id': 1})
       .update({
@@ -28,7 +26,6 @@ module.exports = (knex) => {
       })
     };
 
-// move(currentState, p1bid, p2bid, **prize**)
   matchesRepo.getMatchByID = (matchID) => {
     var id = matchID;
     console.log(id, typeof id)
@@ -37,14 +34,5 @@ module.exports = (knex) => {
       .from('matches')
       .where({id: id})
     };
-   //  .then((currentState) => {
-   //    // TODO: This is pretty hacky
-   //    currentState[0].player1_cards = JSON.parse(currentState[0].player1_cards);
-   //    currentState[0].player2_cards = JSON.parse(currentState[0].player2_cards);
-   //    currentState[0].deck_cards    = JSON.parse(currentState[0].deck_cards);
-   //    matchesRepo.updateMatch(matchID, currentState[0], move, moveParams);
-   // });
-
-
-return matchesRepo;
+  return matchesRepo;
 };

@@ -6,50 +6,53 @@ const MATCH_ID = 1;
 var goofObj = {};
 const suits = ['spades', 'hearts', 'clubs', 'diamonds'];
 
-function newMatch (p1_id, p2_id) {
-  // const suits = ['spades', 'hearts', 'clubs', 'diamonds'];
-  // shuffle the suits array
-  var randSuits   = shuffle(suits);
-  const p1_suit   = randSuits[0];
-  const p2_suit   = randSuits[1];
-  const deck_suit = randSuits[2];
+module.exports = {
+  newMatch: function (p1_id, p2_id) {
+    // const suits = ['spades', 'hearts', 'clubs', 'diamonds'];
+    // shuffle the suits array
+    var randSuits   = shuffle(suits);
+    const p1_suit   = randSuits[0];
+    const p2_suit   = randSuits[1];
+    const deck_suit = randSuits[2];
 
-  var newMatch =
-  {
-    game_id: 1,
-    player1_id: p1_id,
-    player2_id: p2_id,
-    player1_score: 0,
-    player2_score: 0,
-    whose_move: 1,
-    deck_cards:
+    var newMatch =
     {
-      spades:   [],
-      hearts:   [],
-      clubs:    [],
-      diamonds: []
-    },
-    player1_cards:
-    {
-      spades: [],
-      hearts: [],
-      clubs: [],
-      diamonds: []
-    },
-    player2_cards:
-    {
-      spades: [],
-      hearts: [],
-      clubs: [],
-      diamonds: []
-    },
-    game_start: new Date
+      game_id: 1,
+      player1_id: p1_id,
+      player2_id: p2_id,
+      player1_score: 0,
+      player2_score: 0,
+      whose_move: 1,
+      deck_cards:
+      {
+        spades:   [],
+        hearts:   [],
+        clubs:    [],
+        diamonds: []
+      },
+      player1_cards:
+      {
+        spades: [],
+        hearts: [],
+        clubs: [],
+        diamonds: []
+      },
+      player2_cards:
+      {
+        spades: [],
+        hearts: [],
+        clubs: [],
+        diamonds: []
+      },
+      game_start: new Date
+    }
+    newMatch.deck_cards[deck_suit]  = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+    newMatch.player1_cards[p1_suit] = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+    newMatch.player2_cards[p2_suit] = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+
+    return newMatch;
   }
-  newMatch.deck_cards[deck_suit]  = [1,2,3,4,5,6,7,8,9,10,11,12,13];
-  newMatch.player1_cards[p1_suit] = [1,2,3,4,5,6,7,8,9,10,11,12,13];
-  newMatch.player2_cards[p2_suit] = [1,2,3,4,5,6,7,8,9,10,11,12,13];
-}
-
+};
 
 
 
@@ -81,10 +84,10 @@ function checkGameEnd(match){
   }
 };
 
-module.exports = (knex) => {
-  //match(knex).getMatch(MATCH_ID, move);
-  match(knex).newMatch(newMatch)
-};
+// module.exports = (knex) => {
+//   //match(knex).getMatch(MATCH_ID, move);
+//   match(knex).newMatch(newMatch)
+// };
 
 
 // Shuffles array of cards randomly

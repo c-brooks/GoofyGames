@@ -7,8 +7,10 @@ module.exports = (knex) => {
     .from('matchmaking')
   };
 
-  matchmakingRepo.remove = () => {
-    return true;
+  matchmakingRepo.remove = (playerID) => {
+    knex('matchmaking')
+    .where({playerID: playerID})
+    .del()
   }
 
   matchmakingRepo.checkForChallenges = (playerID, gameID) => {
@@ -24,7 +26,7 @@ module.exports = (knex) => {
     .insert(
       {player_id: playerID, game_id: gameID}
     ).then( () => {
-    console.log("\ninserted " + playerID + " into " + " matchmaking")
+    console.log("\nInserted " + playerID + " into " + "matchmaking")
     })
   };
   return matchmakingRepo;
