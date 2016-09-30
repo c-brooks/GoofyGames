@@ -34,7 +34,7 @@ module.exports = (knex) => {
     .then((match) => {
       let matchData = buildMatchData(match[0],req.cookies['user_id']);
       let templateVars = { title: 'Match', matchData: matchData };
-      console.log(matchData);
+      // console.log(matchData);
       res.render("game_table", templateVars);
     });
   });
@@ -74,9 +74,10 @@ module.exports = (knex) => {
   });
 
   // Get last turn for player
-  router.get("/:id/latest", (req, res) => {
-    matchesRepo.getLastTurn(req.cookies['user_id'].req.params.id)
+  router.get("/:id/last_turn", (req, res) => {
+    matchesRepo.getLastTurn(req.cookies['user_id'],req.params.id)
     .then((turn) => {
+      console.log(turn);
       res.json(turn);
     });
   });
