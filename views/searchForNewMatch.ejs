@@ -6,9 +6,9 @@
   <% include ../views/partials/_head %>
   <% include ../views/partials/_header %>
 
- </head>
+</head>
 
-  <body>
+<body>
   <div class="bump-down">
     <h1>Look for a new match!</h1>
     <!-- Select which game to play -->
@@ -36,7 +36,7 @@
         <% for(var i = 0; i < allMatches.length; i++) { %>
           <tr>
 
-            <td><%= games[allMatches[i].game_id].name %></td>
+            <td><%= allMatches[i].game_id %></td>
             <td><%= allMatches[i].player1_id %></td>
             <td><%= allMatches[i].player2_id %></td>
             <a type="button" href="/matches/<%=allMatches[i].id%>" value="Play">Play</a>

@@ -14,17 +14,20 @@ router.get("/", (req, res) => {
   Promise.all([
     matchesRepo.getAllMatches(),
     matchesRepo.getMatchesByPlayerID(req.cookies['user_id']),
-    gamesRepo.getAllGames()
-    ]).then( (results) => {
-      var templateVars = {
-        allMatches: results[0],
-        myMatches:  results[1],
-        games:      results[2],
-        my_id:      req.cookies['user_id']
-      }
-      res.render("matches", templateVars)
-    });
-  })
+    gamesRepo.getAllGames(),
+    matchmakingRepo.getUserChallenges(req.cookies['user_id'])
+    ])
+  .then( (results) => {
+    var templateVars = {
+      allMatches:   results[0],
+      myMatches:    results[1],
+      games:        results[2],
+      myChallenges: results[3],
+      my_id:      req.cookies['user_id']
+    }
+    res.render("matches", templateVars)
+  });
+});
 
 // GET NEW PAGE
 router.get('/new', (req, res) => {
@@ -60,32 +63,34 @@ router.get("/:id", (req, res) => {
   // POST NEW
   router.post("/", (req, res) => {
     let user_id = req.cookies.user_id;
+    let game_id = req.body.game;
 
     if(!user_id){
       alert('Please login to play!');
-      res.redirect('/');
+      res.redirect('/matches');
     }
 
-    matchmakingRepo.checkForChallenges(user_id, 1).then( (challenge) => {
-      // console.log('CHALLENGE: ', challenge)
+    matchmakingRepo.checkForChallenges(user_id, game_id).then( (challenge) => {
+      if(!challenge) {
+        matchmakingRepo.new(user_id, game_id);
+        res.redirect('/matches');
+      }
       if(challenge.player_id === user_id) {
         alert('You are already looking for a game!');
-        res.redirect('/matches');
-      } else if(!challenge.player_id) {
-        matchmakingRepo.new(user_id, 1);
         res.redirect('/matches');
       } else { // delete from challenge table, create new match in table
         let newGame = goofspiel.newMatch(user_id, challenge.player_id);
 
         Promise.all([
-          matchmakingRepo.remove(user_id),
-          matchmakingRepo.remove(challenge.player_id),
+          matchmakingRepo.removeOneByUserID(user_id),
+          matchmakingRepo.removeOneByUserID(challenge.player_id),
+          // NOTE: only supports Goofspiel right now
           matchesRepo.newMatch(goofspiel.newMatch(user_id, challenge.player_id))
           ]).then((results) => {
-           res.redirect(`/matches/${results[2]}`);
+           //res.redirect(`/matches/${results[2]}`);  Go to
+           res.redirect('/matches');
          });
-          console.log('Challenge posted!');
-          //res.redirect('/matches');
+          res.redirect('/matches');
         }
       });
   });
