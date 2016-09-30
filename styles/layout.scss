@@ -8,13 +8,9 @@ body {
   }
 }
 
-.cards {
-  margin: 25px;
-}
-
-.deck.cards {
+.play-area {
   width: 100%;
-  margin: 22% 42%;
+
   .card {
     position: absolute;
   }
@@ -30,3 +26,6 @@ body {
   top: 0px;
 }
 
+.row.play-area {
+  margin-top: 250px;
+}

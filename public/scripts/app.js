@@ -27,12 +27,12 @@ $(() => {
     });
   });
 
-  $('.card').on('mouseover', function() {
+  $('.activePlayer').find('.card').on('mouseover', function() {
     $(this).css({ scale: [2, 2] });
     // $(this).transition({ y: '100px' });
   });
 
-  $('.card').on('mouseout', function() {
+  $('.activePlayer').find('.card').on('mouseout', function() {
     $(this).css({ scale: [1, 1] });
   });
 });
