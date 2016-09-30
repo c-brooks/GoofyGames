@@ -3,6 +3,7 @@
 const express = require('express');
 const router  = express.Router();
 
+
 module.exports = (knex) => {
   const matchesRepo = require('../db/matches.js')(knex);
   const matchmakingRepo = require('../db/matchmaking')(knex);
@@ -36,9 +37,24 @@ module.exports = (knex) => {
 
 // POST NEW
   router.post("/", (req, res) => {
-    matchmakingRepo.new(3,1);
-    res.redirect('/matches');
-  });
+    let userID = req.cookies.user_id;
 
+    if(!userID){
+      alert('Please login to play!');
+      res.redirect('/');
+    }
+
+    matchmakingRepo.checkForChallenges(userID, 1).then( (challenge) => {
+
+      if(!challenge){
+        matchmakingRepo.new(userID,1);
+        res.redirect('/matches');
+      } else { // delete from challenge table, create new match in table
+        matchmakingRepo.remove(userID);
+        matchmakingRepo.remove(challenge.user_id);
+        console.log(challenge);
+      }
+    });
+  });
   return router;
 }
