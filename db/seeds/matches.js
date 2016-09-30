@@ -18,24 +18,24 @@ exports.seed = function(knex, Promise) {
           whose_move: 1,
           deck_cards:
           {
-            spades:   [1,2,3,4,5,6,7,8,9,10,11,12,13],
-            hearts:   [1,2,3,4,5,6,7,8,9,10,11,12,13],
-            clubs:    [1,2,3,4,5,6,7,8,9,10,11,12,13],
-            diamonds: [1,2,3,4,5,6,7,8,9,10,11,12,13]
+            spades:   [6,7,8,9,10,11,13],
+            hearts:   [1,2,3,4,5,11,12],
+            clubs:    [6,7,8,9,10,11,13],
+            diamonds: [1,2,3,4,5,11,12]
           },
           player1_cards:
           {
-            spades: [],
-            hearts: [],
-            clubs: [],
-            diamonds: []
+            spades: [1,2,3,4,5],
+            hearts: [6,7,8,9,10],
+            clubs: [12],
+            diamonds: [13]
           },
           player2_cards:
           {
-            spades: [],
-            hearts: [],
-            clubs: [],
-            diamonds: []
+            spades: [12],
+            hearts: [13],
+            clubs: [1,2,3,4,5],
+            diamonds: [6,7,8,9,10]
           },
           game_start: '1999-01-08 04:05:06'
         })
