@@ -9,7 +9,7 @@ module.exports = (knex) => {
 
 
   matchesRepo.deleteMatchByID = (matchID) => {
-     knex('matches')
+     return knex('matches')
       .del()
       .where({
         id: matchID

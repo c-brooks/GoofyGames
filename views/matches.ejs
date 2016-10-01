@@ -17,29 +17,35 @@
     You have no active matches!
     <%  } else { %>
 
-      <%  for(var i = 0; i < myMatches.length; i++) { %>
-      <% if (/* my turn */ true ) { %>
-      <a class="jumbotron myMove" href="/matches/<%= myMatches[i].id %>">
-      <% } else { %>
-      <a class="jumbotron theirMove" href="/matches/<%= myMatches[i].id %>">
-      <% } %>
+      <%  for (var i = 0; i < myMatches.length; i++) { %>
+        <%  if ((myMatches[i].player1_id == my_id && myMatches[i].player1_last_turn)
+            || (myMatches[i].player2_id == my_id && myMatches[i].player2_last_turn)) { %>
+              <a class="jumbotron" style="background-color: #E8CAA4" href="/matches/<%= myMatches[i].id %>">
+              <% } else { %>
+              <a class="jumbotron" style="background-color: #CC2A41" href="/matches/<%= myMatches[i].id %>">
+              <% } %>
 
         <p class="text-center">
-        <% if(myMatches[i].game_id === 1) { %>
-          Goofspiel
+        <%  if(myMatches[i].game_id === 1) { %>
+              Goofspiel
         <%  } else if (myMatches[i].game_id === 2) {  %>
-          Go Fish
+                Go Fish
         <%  } %> <!--  end game type logic  -->
         </p>
+
         <p class="text-center">
           Against Player
-          <%= myMatches[i].player1_id === my_id ? myMatches[i].player2_id : myMatches[i].player1_id %>
+          <% if (myMatches[i].player1_id == my_id) { %>
+          <%= myMatches[i].player2_id %>
+          <% } else { %>
+          <%= myMatches[i].player1_id %>
+          <% } %>
         </p>
 
 
           <form action="/matches/delete" method="POST">
           <input type="hidden" name="match_id" value="<%= myMatches[i].id %>">
-          <button type="submit" class="btn btn-default">
+          <button type="submit" class="btn btn-default" style="float: right">
             Resign?
           </button>
           </form>
@@ -51,7 +57,7 @@
 
 
     <form id="search-form" action="/matches" method="POST">
-     <input type="submit" class="jumbotron">
+     <input type="submit" class="jumbotron" style="background-color: #E8CAA4">
         <select name="game" class="form-control" style="width:100px">
           <% for (game in games) { %>
             <option value= <%= games[game].id %> >

@@ -106,14 +106,10 @@ router.get("/:id", (req, res) => {
   // TODO: make restful route (install method-override)
   router.post('/delete', (req, res) => {
     let match_id = req.body.match_id;
-    matchesRepo.deleteMatchByID(match_id);
-    res.redirect('/matches');
+    matchesRepo.deleteMatchByID(match_id).then(() => {
+      res.redirect('/matches');
+    });
   })
-
-
-
-
-
 
 
 
