@@ -53,10 +53,12 @@ module.exports = {
     return newMatch;
   },
 
-  move: function(oldState, p1bid , p2bid, prize) {
-    // for testing
-
+  move: function(oldState) {
+    // Setup required variables from old state
     var newState = oldState;
+    var p1bid = oldState.player1_last_turn.value;
+    var p2bid = oldState.player2_last_turn.value;
+    var prize = Number(oldState.deck_cards[0].value);
 
     // remove  cards from hand and deck
     newState.player1_cards   = remove(oldState.player1_cards, p1bid);

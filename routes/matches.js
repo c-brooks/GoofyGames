@@ -118,7 +118,10 @@ router.get("/:id", (req, res) => {
       matchesRepo.getLastTurn(opponent[0].opponent_id, req.params.id)
       .then((turn) => {
         if (turn[0].player_turn !== null) {
-
+          matchesRepo.getMatchByID(req.params.id)
+          .then((match) => {
+            // TODO Update game instance
+          });
         }
         res.json(turn[0]);
       });
