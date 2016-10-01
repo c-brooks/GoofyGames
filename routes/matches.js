@@ -1,29 +1,34 @@
 "use strict";
 
-const express = require('express');
-const router  = express.Router();
+const express   = require('express');
+const router    = express.Router();
 const goofspiel = require('../game-logic/goofspiel');
 const _ = require('underscore');
 
 module.exports = (knex) => {
-  const matchesRepo = require('../db/matches.js')(knex);
+  const matchesRepo     = require('../db/matches.js')(knex);
   const matchmakingRepo = require('../db/matchmaking')(knex);
-  const gamesRepo = require('../db/games.js')(knex);
+  const gamesRepo       = require('../db/games.js')(knex);
 
-// Get all games
+// Matches home page - display and look for matches
 router.get("/", (req, res) => {
   Promise.all([
     matchesRepo.getAllMatches(),
-    matchesRepo.getMatchesByPlayerID(req.cookies['user_id'])
-    ]).then( (results) => {
-      var templateVars = {
-        allMatches: results[0],
-        myMatches:  results[1],
-        my_id:      req.cookies['user_id']
-      }
-      res.render("matches", templateVars)
-    });
-  })
+    matchesRepo.getMatchesByPlayerID(req.cookies['user_id']),
+    gamesRepo.getAllGames(),
+    matchmakingRepo.getUserChallenges(req.cookies['user_id'])
+    ])
+  .then( (results) => {
+    var templateVars = {
+      allMatches:   results[0],
+      myMatches:    results[1],
+      games:        results[2],
+      myChallenges: results[3],
+      my_id:      req.cookies['user_id']
+    }
+    res.render("matches", templateVars)
+  });
+});
 
 // GET NEW PAGE
 router.get('/new', (req, res) => {
@@ -60,39 +65,41 @@ router.get("/:id", (req, res) => {
   });
 });
 
-
-
   // POST NEW
   router.post("/", (req, res) => {
-    let user_id = req.cookies.user_id;
+    var user_id = req.cookies.user_id;
+    var game_id = req.body.game;
 
-    if(!user_id){
+    if (!user_id) {
       alert('Please login to play!');
-      res.redirect('/');
+      res.redirect('/matches');
     }
 
-    matchmakingRepo.checkForChallenges(user_id, 1).then( (challenge) => {
-      // console.log('CHALLENGE: ', challenge)
-      if(challenge.player_id === user_id) {
-        alert('You are already looking for a game!');
+    matchmakingRepo.checkForChallenges(user_id, game_id)
+    .then( (challenge) => {
+      console.log('\nChallenge:', challenge);
+
+      if(challenge == undefined) {
+        matchmakingRepo.new(user_id, game_id)
         res.redirect('/matches');
-      } else if(!challenge.player_id) {
-        matchmakingRepo.new(user_id, 1);
+      } else if(challenge.player_id === user_id) {
+        alert('Something went wrong. You cannot challenge yourself!');
         res.redirect('/matches');
       } else { // delete from challenge table, create new match in table
-        let newGame = goofspiel.newMatch(user_id, challenge.player_id);
-
+        //let newGame = goofspiel.newMatch(user_id, challenge.player_id);
         Promise.all([
-          matchmakingRepo.remove(user_id),
-          matchmakingRepo.remove(challenge.player_id),
+          matchmakingRepo.removeOneByUserID(user_id),
+          matchmakingRepo.removeOneByUserID(challenge.player_id),
+          // NOTE: only supports Goofspiel right now
           matchesRepo.newMatch(goofspiel.newMatch(user_id, challenge.player_id))
-          ]).then((results) => {
-           res.redirect(`/matches/${results[2]}`);
-         });
-          console.log('Challenge posted!');
-          //res.redirect('/matches');
-        }
-      });
+          ])
+        .then((results) => {
+          //res.redirect(`/matches/${results[2]}`);
+          res.redirect('/matches');
+          });
+        //res.redirect('/matches');
+      }
+    });
   });
 
   // Get last turn for player
@@ -131,6 +138,7 @@ router.get("/:id", (req, res) => {
       }
     });
   });
+
 
   return router;
 }

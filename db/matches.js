@@ -13,7 +13,7 @@ module.exports = (knex) => {
       .select('*')
       .from('matches')
       .where({player1_id: playerID})
-      .orWhere({player1_id: playerID})
+      .orWhere({player2_id: playerID})
   };
 
   matchesRepo.newMatch = (gameObj) => {
@@ -21,8 +21,8 @@ module.exports = (knex) => {
   };
 
   matchesRepo.updateMatch = (matchID, currentState, move, moveParams) => {
-
-    var newState = move(currentState, 1, 5, 12);
+// Numbers hardcoded for testing. should be passed in moveParams
+    let newState = move(currentState, 1, 5, 12);
       knex.table('matches')
       .where({'id': 1})
       .update({
@@ -35,7 +35,7 @@ module.exports = (knex) => {
     };
 
   matchesRepo.getMatchByID = (matchID) => {
-    var id = matchID;
+    let id = matchID;
     return knex
       .select('*')
       .from('matches')

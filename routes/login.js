@@ -12,9 +12,7 @@ module.exports = (knex) => {
 
   router.post("/", (req, res) => {
     res.cookie('user_id', req.body.id);
-    res.redirect('/');
+    res.redirect('/matches');
   });
-
-
   return router;
 }
