@@ -2,14 +2,16 @@
 
 const express   = require('express');
 const router    = express.Router();
-const fs = require('fs');
+const _         = require('underscore');
+
+// Game logic
 const goofspiel = require('../game-logic/goofspiel');
-const _ = require('underscore');
 
 module.exports = (knex) => {
   const matchesRepo     = require('../db/matches.js')(knex);
   const matchmakingRepo = require('../db/matchmaking')(knex);
   const gamesRepo       = require('../db/games.js')(knex);
+
 
   // Matches home page - display and look for matches
   router.get("/", (req, res) => {
@@ -128,7 +130,9 @@ router.get("/:id", (req, res) => {
         if (turn[0].player_turn !== null) {
           matchesRepo.getMatchByID(req.params.id)
           .then((match) => {
-            // TODO Update game instance
+            let oldState = match[0];
+            let newState = goofspiel.move(oldState);
+            // matchesRepo.updateMatch(oldState, newState);
           });
         }
         res.json(turn[0]);
@@ -144,13 +148,13 @@ router.get("/:id", (req, res) => {
       matchesRepo.whichPlayer(req.cookies.user_id, req.params.id)
     ]).then((results) => {
       let playerHand = results[0][0].activeplayer_cards;
-      let player = results[1][0].player;
+      let player     = results[1][0].player;
 
-      let findCard = _.matcher(req.body);
+      let findCard  = _.matcher(req.body);
       let cardFound = _.filter(playerHand, findCard);
 
       if (!_.isEmpty(cardFound)) {
-        let card = JSON.stringify(cardFound[0]);
+        let card    = JSON.stringify(cardFound[0]);
         let newHand = JSON.stringify(_.without(playerHand, cardFound[0]));
 
         Promise.all([
