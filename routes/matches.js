@@ -1,13 +1,13 @@
 "use strict";
 
-const express = require('express');
-const router  = express.Router();
+const express   = require('express');
+const router    = express.Router();
 const goofspiel = require('../game-logic/goofspiel');
 
 module.exports = (knex) => {
-  const matchesRepo = require('../db/matches.js')(knex);
+  const matchesRepo     = require('../db/matches.js')(knex);
   const matchmakingRepo = require('../db/matchmaking')(knex);
-  const gamesRepo = require('../db/games.js')(knex);
+  const gamesRepo       = require('../db/games.js')(knex);
 
 // Matches home page - display and look for matches
 router.get("/", (req, res) => {
@@ -69,33 +69,35 @@ router.get("/:id", (req, res) => {
     var user_id = req.cookies.user_id;
     var game_id = req.body.game;
 
-    if(!user_id){
+    if (!user_id) {
       alert('Please login to play!');
-      res.redirect('/matches');
+///      res.redirect('/matches');
+      res.redirect('/');
     }
 
     matchmakingRepo.checkForChallenges(user_id, game_id)
     .then( (challenge) => {
-      console.log('Challenge:', challenge);
+      console.log('\nChallenge:', challenge);
+
       if(challenge == undefined) {
         matchmakingRepo.new(user_id, game_id)
-          res.redirect('/matches');
+        res.redirect('/');
       } else if(challenge.player_id === user_id) {
-        alert('You are already looking for a game!');
-        res.redirect('/matches');
+        alert('Something went wrong. You cannot challenge yourself!');
+        res.redirect('/');
       } else { // delete from challenge table, create new match in table
-        let newGame = goofspiel.newMatch(user_id, challenge.player_id);
+        //let newGame = goofspiel.newMatch(user_id, challenge.player_id);
         Promise.all([
-          matchmakingRepo.removeOneByUserID(user_id),
-          matchmakingRepo.removeOneByUserID(challenge.player_id),
+          matchmakingRepo.removeOneByUserID(user_id)
+          //matchmakingRepo.removeOneByUserID(challenge.player_id),
           // NOTE: only supports Goofspiel right now
-          matchesRepo.newMatch(goofspiel.newMatch(user_id, challenge.player_id))
+          //matchesRepo.newMatch(goofspiel.newMatch(user_id, challenge.player_id))
           ])
         .then((results) => {
           //res.redirect(`/matches/${results[2]}`);
           res.redirect('/matches');
           });
-        res.redirect('/matches');
+        //res.redirect('/matches');
       }
     });
   });

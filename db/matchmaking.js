@@ -8,12 +8,17 @@ module.exports = (knex) => {
   };
 
   matchmakingRepo.removeOneByUserID = (player_id) => {
+    console.log("\nSHOULD DELETE", player_id);
     return
-    knex
-    ('matchmaking')
-    .where({player_id1: player_id})
-    .limit(1)
-    .del();
+    knex('matchmaking').del().where({player_id: player_id});
+    // .then(() => {
+    //   return Promise
+    // });
+    // .where({
+    //   player_id: player_id
+    // });
+    //.limit(1)
+
   }
 
   matchmakingRepo.checkForChallenges = (player_id, gameID) => {
@@ -22,14 +27,11 @@ module.exports = (knex) => {
     .from('matchmaking')
     .where({game_id: gameID})
     .whereNot({player_id: player_id})
-    .then((rows) => {
-      console.log('CHALLENGE: ', rows);
-    })
   };
 
   matchmakingRepo.getUserChallenges = (player_id) => {
     return knex
-    .first('*')
+    .select('*')
     .from('matchmaking')
     .where({player_id: player_id})
   };
@@ -37,9 +39,11 @@ module.exports = (knex) => {
   matchmakingRepo.new = (player_id, gameID) => {
     return
     knex('matchmaking')
-    .insert(
-      {player_id: player_id, game_id: gameID}
-    ).then( () => {
+    .insert({
+        player_id: player_id,
+        game_id: gameID
+      })
+    .then( () => {
     console.log("\nInserted " + player_id + " into " + "matchmaking")
     })
   };

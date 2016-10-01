@@ -68,12 +68,12 @@
       <%  for(var i = 0; i < myChallenges.length; i++) { %>
       <tr>
         <td>
-          <%= myChallenges.id %>
+          <%= myChallenges[i].id %>
         </td>
 
         <td>
         <% if(myChallenges[i].game_id === 1) { %>
-          games
+          Goofspiel
         <%  } else if (myChallenges[i].game_id === 2) {  %>
           Go Fish
         </td>
