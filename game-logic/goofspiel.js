@@ -33,7 +33,15 @@ module.exports = {
 
       game_start: new Date
     }
-    console.log(newMatch)
+
+    function getCards(suit) {
+      var cards = []
+      for (var i = 0; i < 13; i++) {
+        cards.push({suit: suit, value: i+1});
+      }
+      return cards;
+    }
+
     return newMatch;
   },
 
@@ -43,16 +51,6 @@ module.exports = {
     var p1bid = oldState.player1_last_turn.value;
     var p2bid = oldState.player2_last_turn.value;
     var prize = Number(oldState.deck_cards[0].value);
-
-
-function getCards(suit) {
-  var cards = []
-  for (var i = 0; i < 13; i++) {
-    cards.push({suit: suit, value: i+1});
-  }
-  return cards;
-}
-
 
     // remove  cards from hand and deck
     newState.player1_cards   = remove(oldState.player1_cards, p1bid);
