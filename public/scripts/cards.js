@@ -8,8 +8,8 @@ function generateCard(suit, val) {
 
   if (val === '1') { val = 'A' }
   if (val === '11') { val = 'J' }
-  if (val === '12') { val = 'K' }
-  if (val === '13') { val = 'Q' }
+  if (val === '12') { val = 'Q' }
+  if (val === '13') { val = 'K' }
 
   const card = _.template(`
     <div class="card <%= suit %> small">

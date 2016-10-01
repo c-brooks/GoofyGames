@@ -163,12 +163,16 @@ router.get("/:id", (req, res) => {
       let playerHand = results[0][0].activeplayer_cards;
       let player     = results[1][0].player;
 
-      let findCard  = _.matcher(req.body);
+      let cardValue = goofspiel.calcFaceValue(req.body.value);
+      let cardToFind    = { suit: req.body.suit, value: cardValue.toString() };
+      let findCard  = _.matcher(cardToFind);
       let cardFound = _.filter(playerHand, findCard);
 
       if (!_.isEmpty(cardFound)) {
-        let card    = JSON.stringify(cardFound[0]);
-        let newHand = JSON.stringify(_.without(playerHand, cardFound[0]));
+        let cardSuit  = cardFound[0].suit;
+        let cardValue = cardFound[0].value;
+        let card      = JSON.stringify({ suit: cardSuit, value: cardValue });
+        let newHand   = JSON.stringify(_.without(playerHand, cardFound[0]));
 
         Promise.all([
           // Update player's turn in db

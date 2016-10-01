@@ -69,7 +69,8 @@ $(() => {
     $(this).css({ scale: [1, 1] });
   });
 
-  setInterval(checkMoves, 100); // Check moves when loading game
+  // setInterval(checkMoves, 100); // Check moves when loading game
+  checkMoves()
   function checkMoves() {
     // If active player has made a move
     if ($('.myMove').find('.card').length !== 0) {

@@ -41,26 +41,37 @@ module.exports = {
   move: function(oldState) {
     // Setup required variables from old state
     var newState = oldState;
-    var p1bid = calcFaceValue(oldState.player1_last_turn.value);
-    var p2bid = calcFaceValue(oldState.player2_last_turn.value);
+    var player1_last_turn = oldState.player1_last_turn;
+    var player2_last_turn = oldState.player2_last_turn;
+    var p1bid = this.calcFaceValue(player1_last_turn.value);
+    var p2bid = this.calcFaceValue(player2_last_turn.value);
     var prize = oldState.deck_cards[0];
 
     // remove  cards from hand and deck
-    newState.player1_cards   = remove(oldState.player1_cards, p1bid);
-    newState.player2_cards   = remove(oldState.player2_cards, p2bid);
+    newState.player1_cards   = remove(oldState.player1_cards, player1_last_turn);
+    newState.player2_cards   = remove(oldState.player2_cards, player2_last_turn);
     newState.deck_cards      = remove(oldState.deck_cards, prize);
 
     // Winner gets the value of prize
     if(p1bid > p2bid ) {
-      newState.player1_score = oldState.player1_score + calcFaceValue(prize.value);
+      newState.player1_score = oldState.player1_score + this.calcFaceValue(prize.value);
     } else if (p2bid  > p1bid ) {
-      newState.player2_score = oldState.player2_score + calcFaceValue(prize.value);
+      newState.player2_score = oldState.player2_score + this.calcFaceValue(prize.value);
     } // In case of a tie, no points awarded
 
     if(checkGameEnd(oldState)){
       console.log('Game End!'); // Do game-end logic
     }
     return newState;
+  },
+  calcFaceValue: function(value) {
+    return Number(
+      value.toString()
+      .replace('A', 1)
+      .replace('J', 11)
+      .replace('Q', 12)
+      .replace('K', 13)
+    );
   }
 };
 
@@ -83,9 +94,7 @@ function shuffle (cards) {
 
 // Takes cards as an object with keys for every suit
 function remove(cards, removal) {
-  suits.forEach((suit) => {
-    cards = _.without(cards, removal);
-  });
+  cards = _.without(cards, removal);
   return cards;
 }
 
@@ -95,14 +104,4 @@ function getCards(suit) {
     cards.push({suit: suit, value: i+1});
   }
   return cards;
-}
-
-function calcFaceValue(value) {
-  return Number(
-    value.toString()
-    .replace('A', 1)
-    .replace('J', 11)
-    .replace('Q', 12)
-    .replace('K', 13)
-  );
 }
