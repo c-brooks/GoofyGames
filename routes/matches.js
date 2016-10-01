@@ -109,12 +109,6 @@ router.get("/:id", (req, res) => {
     });
   })
 
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> styling
   // Get last turn for player
   router.get("/:id/last_turn", (req, res) => {
     matchesRepo.getLastTurn(req.cookies.user_id,req.params.id)
