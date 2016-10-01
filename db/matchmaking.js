@@ -9,16 +9,10 @@ module.exports = (knex) => {
 
   matchmakingRepo.removeOneByUserID = (player_id) => {
     console.log("\nSHOULD DELETE", player_id);
-    return
-    knex('matchmaking').del().where({player_id: player_id});
-    // .then(() => {
-    //   return Promise
-    // });
-    // .where({
-    //   player_id: player_id
-    // });
-    //.limit(1)
+    //return
+    knex('matchmaking').first().del().where({player_id: player_id}).then(() => {
 
+    });
   }
 
   matchmakingRepo.checkForChallenges = (player_id, gameID) => {

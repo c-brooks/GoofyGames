@@ -71,8 +71,7 @@ router.get("/:id", (req, res) => {
 
     if (!user_id) {
       alert('Please login to play!');
-///      res.redirect('/matches');
-      res.redirect('/');
+      res.redirect('/matches');
     }
 
     matchmakingRepo.checkForChallenges(user_id, game_id)
@@ -81,17 +80,17 @@ router.get("/:id", (req, res) => {
 
       if(challenge == undefined) {
         matchmakingRepo.new(user_id, game_id)
-        res.redirect('/');
+        res.redirect('/matches');
       } else if(challenge.player_id === user_id) {
         alert('Something went wrong. You cannot challenge yourself!');
-        res.redirect('/');
+        res.redirect('/matches');
       } else { // delete from challenge table, create new match in table
         //let newGame = goofspiel.newMatch(user_id, challenge.player_id);
         Promise.all([
-          matchmakingRepo.removeOneByUserID(user_id)
-          //matchmakingRepo.removeOneByUserID(challenge.player_id),
+          matchmakingRepo.removeOneByUserID(user_id),
+          matchmakingRepo.removeOneByUserID(challenge.player_id),
           // NOTE: only supports Goofspiel right now
-          //matchesRepo.newMatch(goofspiel.newMatch(user_id, challenge.player_id))
+          matchesRepo.newMatch(goofspiel.newMatch(user_id, challenge.player_id))
           ])
         .then((results) => {
           //res.redirect(`/matches/${results[2]}`);
