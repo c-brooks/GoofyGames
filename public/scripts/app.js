@@ -1,5 +1,5 @@
 $(() => {
-  // Use ajax to ge rankings for game
+  // Use ajax to get rankings for game
   $('select.rankings-game').on('change', function() {
     $.ajax({
       url: '/rankings/' + $(this).val(),
@@ -27,6 +27,8 @@ $(() => {
     });
   });
 
+  () => {alert('hey!')}();
+
   $('.activePlayer').find('.card').on('click', function() {
     var cardValue = $(this).find('span.number').html();
     var cardSuit = $(this).attr('class').split(/\s+/)[1];
@@ -47,8 +49,8 @@ $(() => {
           // Shake the card because it's not their turn
           $(this).transition({ x: -10 }, 100)
           .transition({ x: +10 }, 100)
-          .transition({ x: - 10 }, 100)
-          .transition({ x: + 10}, 100)
+          .transition({ x: -10 }, 100)
+          .transition({ x: +10}, 100)
           .transition({ x: 0}, 100);
         }
         // TODO calculate move

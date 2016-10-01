@@ -1,3 +1,4 @@
+"use strict";
 var matchesRepo = {};
 
 module.exports = (knex) => {
