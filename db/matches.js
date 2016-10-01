@@ -32,8 +32,6 @@ module.exports = (knex) => {
   };
 
   matchesRepo.updateMatch = (oldState, newState) => {
-    console.log(oldState);
-    console.log(newState);
     // knex.table('matches')
     // .where({'id': 1})
     // .update({
