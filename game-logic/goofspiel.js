@@ -42,19 +42,20 @@ module.exports = {
     var newState = oldState;
     var p1bid = oldState.player1_last_turn.value;
     var p2bid = oldState.player2_last_turn.value;
-    var prize = Number(oldState.deck_cards[0].value);
-console.log(oldState);
+    var prize = oldState.deck_cards[0];
+
     // remove  cards from hand and deck
     newState.player1_cards   = remove(oldState.player1_cards, p1bid);
     newState.player2_cards   = remove(oldState.player2_cards, p2bid);
     newState.deck_cards      = remove(oldState.deck_cards, prize);
-console.log(newState);
+
     // Winner gets the value of prize
-    if(p1bid  > p2bid ) {
-      newState.player1_score = oldState.player1_score + prize;
+    if(p1bid > p2bid ) {
+      newState.player1_score = oldState.player1_score + Number(prize.value);
     } else if (p2bid  > p1bid ) {
-      newState.player2_score = oldState.player2_score + prize;
-    }
+      newState.player2_score = oldState.player2_score + Number(prize.value);
+    } // In case of a tie, no points awarded
+
     if(checkGameEnd(oldState)){
       console.log('Game End!'); // Do game-end logic
     }

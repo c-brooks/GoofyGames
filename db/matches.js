@@ -10,16 +10,15 @@ module.exports = (knex) => {
   };
 
   matchesRepo.deleteMatchByID = (matchID) => {
-     knex('matches')
-      .del()
-      .where({
-        id: matchID
-      }).then( () => {
-        console.log();
-      });
-    };
+    return knex('matches')
+    .del()
+    .where({ id: matchID })
+    .then( () => {
+      console.log();
+    });
+  };
 
-    matchesRepo.getMatchesByPlayerID = (playerID) => {
+  matchesRepo.getMatchesByPlayerID = (playerID) => {
     return knex
       .select('*')
       .from('matches')
@@ -32,23 +31,24 @@ module.exports = (knex) => {
   };
 
   matchesRepo.updateMatch = (oldState, newState) => {
-    // knex.table('matches')
-    // .where({'id': 1})
-    // .update({
-    //   deck_cards:    newState.deck_cards,
-    //   player1_cards: newState.player1_cards,
-    //   player2_cards: newState.player2_cards,
-    //   player1_score: newState.player1_score,
-    //   player2_score: newState.player2_score
-    // })
+    return knex.table('matches')
+    .where({ id: oldState.id })
+    .update({
+      deck_cards:    JSON.stringify(newState.deck_cards),
+      player1_cards: JSON.stringify(newState.player1_cards),
+      player2_cards: JSON.stringify(newState.player2_cards),
+      player1_score: newState.player1_score,
+      player2_score: newState.player2_score,
+      player1_last_turn: null,
+      player2_last_turn: null
+    });
   };
 
   matchesRepo.getMatchByID = (matchID) => {
-    let id = matchID;
     return knex
       .select('*')
       .from('matches')
-      .where({id: id})
+      .where({ id: matchID })
   };
 
   matchesRepo.getMyMatch = (userID, matchID) => {
