@@ -18,6 +18,7 @@ module.exports = {
     let deck_cards  = JSON.stringify(shuffle(getCards(deck_suit)));
     let p1_cards    = JSON.stringify(getCards(p1_suit));
     let p2_cards    = JSON.stringify(getCards(p2_suit));
+
     let newMatch =
     {
       game_id: 1,
@@ -76,12 +77,6 @@ function checkGameEnd(match){
     return match.deck_cards.length === 0;
   }
 };
-
-// module.exports = (knex) => {
-//   //match(knex).getMatch(MATCH_ID, move);
-//   match(knex).newMatch(newMatch)
-// };
-
 
 // Shuffles array of cards randomly
 function shuffle (cards) {

@@ -10,71 +10,68 @@
 
 <body class="bump-down">
 
-<section id="matches">
-  <h1>My Matches</h1>
+<section id="matches" class="container-fluid">
+  <h1 class="page-header">My Matches</h1>
 
     <%  if (myMatches.length === 0) {  %>
     You have no active matches!
     <%  } else { %>
-    <table class="table">
-      <th>Game Type</th>
-      <th>Player 1</th>
-      <th>Player 2</th>
 
       <%  for(var i = 0; i < myMatches.length; i++) { %>
-      <tr>
+      <% if (/* my turn */ true ) { %>
+      <a class="jumbotron myMove" href="/matches/<%= myMatches[i].id %>">
+      <% } else { %>
+      <a class="jumbotron theirMove" href="/matches/<%= myMatches[i].id %>">
+      <% } %>
 
-        <td>
+        <p class="text-center">
         <% if(myMatches[i].game_id === 1) { %>
           Goofspiel
         <%  } else if (myMatches[i].game_id === 2) {  %>
           Go Fish
-        </td>
         <%  } %> <!--  end game type logic  -->
+        </p>
+        <p class="text-center">
+          Against Player
+          <%= myMatches[i].player1_id === my_id ? myMatches[i].player2_id : myMatches[i].player1_id %>
+        </p>
 
-        <td><%= myMatches[i].player1_id %></td>
-        <td><%= myMatches[i].player2_id %></td>
-        <td>
-          <a type="buttton" class="btn btn-default" href="/matches/<%= myMatches[i].id %>">
-            Play!
-          </a>
-        </td>
 
-        <td>
           <form action="/matches/delete" method="POST">
           <input type="hidden" name="match_id" value="<%= myMatches[i].id %>">
           <button type="submit" class="btn btn-default">
-            Resign...
+            Resign?
           </button>
           </form>
-        </td>
+      </a>
 
-      </tr>
       <%  } %> <!--  end matches loop  -->
+      </div>
     <%  } %> <!--  end else statement  -->
 
+
     <form id="search-form" action="/matches" method="POST">
+     <input type="submit" class="jumbotron">
         <select name="game" class="form-control" style="width:100px">
           <% for (game in games) { %>
-            <option id="gameType" value= <%= games[game].id %> >
+            <option value= <%= games[game].id %> >
               <%= games[game].name %>
             </option>
           <% } %>
         </select>
       </form>
-      <button class="btn btn-default" id="search-btn" type="submit" name="gameID" form="search-form"> Search! </button>
-    </table>
-  </section>
+<!-- <button class="btn btn-default" id="search-btn" type="submit"> New Challenge! </button> -->
+</section>
 
 
 
 
-  <section id="seeking">
-  <h1>Seeking</h1>
+  <div class="" id="seeking">
+  <h1 class="page-header">Seeking</h1>
     <%  if (myChallenges.length === 0) {  %>
     You have no active challenges!
     <%  } else { %>
-    <table>
+    <table class="table">
       <th>Matchmaking ID</th>
       <th>Game Type</th>
 

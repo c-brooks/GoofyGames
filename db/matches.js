@@ -1,7 +1,6 @@
 var matchesRepo = {};
 
 module.exports = (knex) => {
-
   matchesRepo.getAllMatches = () => {
     return knex
       .select('*')
