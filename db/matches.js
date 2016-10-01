@@ -90,8 +90,6 @@ module.exports = (knex) => {
   }
 
   matchesRepo.updatePlayer = (playerColumn, matchID, value) => {
-    console.log(playerColumn);
-    console.log(value);
     return knex('matches')
     .update(playerColumn, value)
     .where({ id: matchID });
