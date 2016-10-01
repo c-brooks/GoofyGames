@@ -34,14 +34,6 @@ module.exports = {
       game_start: new Date
     }
 
-    function getCards(suit) {
-      var cards = []
-      for (var i = 0; i < 13; i++) {
-        cards.push({suit: suit, value: i+1});
-      }
-      return cards;
-    }
-
     return newMatch;
   },
 
@@ -101,7 +93,13 @@ function remove(cards, removal) {
   return cards;
 }
 
-
+function getCards(suit) {
+  var cards = []
+  for (var i = 0; i < 13; i++) {
+    cards.push({suit: suit, value: i+1});
+  }
+  return cards;
+}
 
 /*
 function() {
