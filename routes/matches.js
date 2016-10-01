@@ -29,6 +29,7 @@ module.exports = (knex) => {
       }
       res.render("matches", templateVars)
     });
+  });
 
   // GET NEW PAGE
   router.get('/new', (req, res) => {
