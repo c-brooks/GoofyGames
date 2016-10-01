@@ -64,6 +64,7 @@ module.exports = {
     }
     return newState;
   },
+
   calcFaceValue: function(value) {
     return Number(
       value.toString()
@@ -101,7 +102,7 @@ function remove(cards, removal) {
 function getCards(suit) {
   var cards = []
   for (var i = 0; i < 13; i++) {
-    cards.push({suit: suit, value: i+1});
+    cards.push({suit: suit, value: (i+1).toString()});
   }
   return cards;
 }
