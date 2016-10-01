@@ -102,11 +102,22 @@ router.get("/:id", (req, res) => {
     });
   });
 
-  // Get last turn for player
+  // Get last turn for active player
   router.get("/:id/last_turn", (req, res) => {
     matchesRepo.getLastTurn(req.cookies.user_id,req.params.id)
     .then((turn) => {
       res.json(turn[0]);
+    });
+  });
+
+  // Get last turn for opponent
+  router.get("/:id/opp_turn", (req, res) => {
+    matchesRepo.getOpponentID(req.cookies.user_id, req.params.id)
+    .then(opponent => {
+      matchesRepo.getLastTurn(opponent[0].opponent_id, req.params.id)
+      .then((turn) => {
+        res.json(turn[0]);
+      });
     });
   });
 

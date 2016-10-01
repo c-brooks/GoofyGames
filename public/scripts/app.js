@@ -1,4 +1,7 @@
 $(() => {
+  // Set match ID from URL
+  var matchID = window.location.href.substr(window.location.href.lastIndexOf('/') + 1);
+
   // Use ajax to get rankings for game
   $('select.rankings-game').on('change', function() {
     $.ajax({
@@ -27,16 +30,13 @@ $(() => {
     });
   });
 
-  () => {alert('hey!')}();
-
   $('.activePlayer').find('.card').on('click', function() {
     var cardValue = $(this).find('span.number').html();
     var cardSuit = $(this).attr('class').split(/\s+/)[1];
-    var matchID = window.location.href.substr(window.location.href.lastIndexOf('/') + 1);
     $.ajax({
       url: '/matches/' + matchID + '/last_turn',
       success: (lastTurn) => {
-        if (lastTurn.activeplayer_last_turn === null) {
+        if (lastTurn.player_last_turn === null) {
           // // TODO animate the transition
           // $(this).transition({ x: -moveHere.left, y: -moveHere.top });
           $('.myMove').append($(this));
@@ -53,7 +53,7 @@ $(() => {
           .transition({ x: +10}, 100)
           .transition({ x: 0}, 100);
         }
-        // TODO calculate move
+        checkMoves();
       }
     });
   });
@@ -66,4 +66,23 @@ $(() => {
   $('.activePlayer').find('.card').on('mouseout', function() {
     $(this).css({ scale: [1, 1] });
   });
+
+  checkMoves(); // Check moves when loading game
+  function checkMoves() {
+    // If active player has made a move
+    if ($('.myMove').find('.card').html().length) {
+      $.ajax({
+        url: '/matches/' + matchID + '/opp_turn',
+        success: (lastTurn) => {
+
+          alert(lastTurn);
+          // if (lastTurn.activeplayer_last_turn === null) {
+          //   // // TODO animate the transition
+          //   // $(this).transition({ x: -moveHere.left, y: -moveHere.top });
+          //   $('.myMove').append($(this));
+          // }
+        }
+      });
+    };
+  }
 });

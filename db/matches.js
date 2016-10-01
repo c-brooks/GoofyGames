@@ -76,10 +76,16 @@ module.exports = (knex) => {
     .where({ id: matchID });
   }
 
+  matchesRepo.getOpponentID = (userID, matchID) => {
+    return knex
+    .select(knex.raw(`CASE WHEN player1_id != ${userID} THEN player1_id WHEN player2_id != ${userID} THEN player2_id END AS opponent_id`))
+    .from('matches')
+    .where({ id: matchID });
+  }
+
   matchesRepo.getLastTurn = (userID, matchID) => {
     return knex
-    .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_last_turn WHEN player2_id = ${userID} THEN player2_last_turn END AS activePlayer_last_turn`))
-    .select(knex.raw(`CASE WHEN player1_id != ${userID} THEN player1_last_turn WHEN player2_id != ${userID} THEN player2_last_turn END AS opponent_last_turn`))
+    .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_last_turn WHEN player2_id = ${userID} THEN player2_last_turn END AS player_last_turn`))
     .from('matches')
     .where({ id: matchID });
   };
