@@ -1,58 +1,51 @@
+"use strict"
 const _ = require('underscore');
 const match = require('../db/matches.js');
 
 const MATCH_ID = 1;
 
-var goofObj = {};
 const suits = ['spades', 'hearts', 'clubs', 'diamonds'];
 
 module.exports = {
   newMatch: function (p1_id, p2_id) {
     // const suits = ['spades', 'hearts', 'clubs', 'diamonds'];
     // shuffle the suits array
-    var randSuits   = shuffle(suits);
+    const randSuits = shuffle(suits);
     const p1_suit   = randSuits[0];
     const p2_suit   = randSuits[1];
     const deck_suit = randSuits[2];
 
-    var newMatch =
+    let deck_cards  = JSON.stringify(shuffle(getCards(deck_suit)));
+    let p1_cards    = JSON.stringify(getCards(p1_suit));
+    let p2_cards    = JSON.stringify(getCards(p2_suit));
+    let newMatch =
     {
       game_id: 1,
       player1_id: p1_id,
       player2_id: p2_id,
       player1_score: 0,
       player2_score: 0,
-      whose_move: 1,
-      deck_cards:
-      {
-        spades:   [],
-        hearts:   [],
-        clubs:    [],
-        diamonds: []
-      },
-      player1_cards:
-      {
-        spades: [],
-        hearts: [],
-        clubs: [],
-        diamonds: []
-      },
-      player2_cards:
-      {
-        spades: [],
-        hearts: [],
-        clubs: [],
-        diamonds: []
-      },
+      player1_last_turn: null,
+      player2_last_turn: null,
+      deck_cards: deck_cards,
+      player1_cards: p1_cards,
+      player2_cards: p2_cards,
+
       game_start: new Date
     }
-    newMatch.deck_cards[deck_suit]  = [1,2,3,4,5,6,7,8,9,10,11,12,13];
-    newMatch.player1_cards[p1_suit] = [1,2,3,4,5,6,7,8,9,10,11,12,13];
-    newMatch.player2_cards[p2_suit] = [1,2,3,4,5,6,7,8,9,10,11,12,13];
-
+    console.log(newMatch)
     return newMatch;
   }
 };
+
+
+function getCards(suit) {
+  var cards = []
+  for (var i = 0; i < 13; i++) {
+    cards.push({suit: suit, value: i+1});
+  }
+  return cards;
+}
 
 
 

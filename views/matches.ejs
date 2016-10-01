@@ -10,13 +10,13 @@
 
 <body class="bump-down">
 
-
+<section id="matches">
   <h1>My Matches</h1>
-  <section>
+
     <%  if (myMatches.length === 0) {  %>
     You have no active matches!
     <%  } else { %>
-    <table>
+    <table class="table">
       <th>Game Type</th>
       <th>Player 1</th>
       <th>Player 2</th>
@@ -35,15 +35,17 @@
         <td><%= myMatches[i].player1_id %></td>
         <td><%= myMatches[i].player2_id %></td>
         <td>
-          <a type="buttton" href="matches/<%= myMatches[i].id %>">
+          <a type="buttton" class="btn btn-default" href="/matches/<%= myMatches[i].id %>">
             Play!
           </a>
         </td>
 
         <td>
-          <form type="buttton" action="/matches/delete" method="POST">
+          <form action="/matches/delete" method="POST">
           <input type="hidden" name="match_id" value="<%= myMatches[i].id %>">
-          <button type="submit" value="Resign"> Resign...</button>
+          <button type="submit" class="btn btn-default">
+            Resign...
+          </button>
           </form>
         </td>
 
@@ -51,8 +53,8 @@
       <%  } %> <!--  end matches loop  -->
     <%  } %> <!--  end else statement  -->
 
-    <form id="search-form" action="/matches" method="POST" type="button">
-        <select name="game">
+    <form id="search-form" action="/matches" method="POST">
+        <select name="game" class="form-control" style="width:100px">
           <% for (game in games) { %>
             <option id="gameType" value= <%= games[game].id %> >
               <%= games[game].name %>
@@ -60,15 +62,15 @@
           <% } %>
         </select>
       </form>
-      <button id="search-btn" type="submit" name="gameID" form="search-form"> Search! </button>
+      <button class="btn btn-default" id="search-btn" type="submit" name="gameID" form="search-form"> Search! </button>
     </table>
   </section>
 
 
 
 
+  <section id="seeking">
   <h1>Seeking</h1>
-  <section>
     <%  if (myChallenges.length === 0) {  %>
     You have no active challenges!
     <%  } else { %>
@@ -94,16 +96,6 @@
       <%  } %> <!--  end matches loop  -->
     <%  } %> <!--  end else statement  -->
 
-    <form id="search-form" action="/matches" method="POST" type="button">
-        <select name="game">
-          <% for (game in games) { %>
-            <option id="gameType" value= <%= games[game].id %> >
-              <%= games[game].name %>
-            </option>
-          <% } %>
-        </select>
-      </form>
-      <button id="search-btn" type="submit" name="gameID" form="search-form"> Search! </button>
     </table>
   </section>
 

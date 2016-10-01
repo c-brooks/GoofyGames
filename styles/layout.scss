@@ -1,9 +1,11 @@
 @import "node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 
 body {
-  background-color: #EEE;
+  background-color: #98AA80;
+  color:  #351330;
   h1 {
     color: #244751;
+    /*color: #E8CAA4;*/
   }
 }
 
@@ -13,4 +15,13 @@ body {
 
 .play-area {
   margin: 100px;
+}
+
+
+#matches {
+  margin: 40px;
+}
+
+#seeking {
+  margin: 40px;
 }
