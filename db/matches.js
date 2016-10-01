@@ -2,7 +2,6 @@
 var matchesRepo = {};
 
 module.exports = (knex) => {
-
   matchesRepo.getAllMatches = () => {
     return knex
       .select('*')
@@ -10,13 +9,15 @@ module.exports = (knex) => {
   };
 
   matchesRepo.deleteMatchByID = (matchID) => {
-    return knex('matches')
-    .del()
-    .where({ id: matchID })
-    .then( () => {
-      console.log();
-    });
-  };
+
+     return knex('matches')
+      .del()
+      .where({
+        id: matchID
+      }).then( () => {
+        console.log();
+      });
+    };
 
   matchesRepo.getMatchesByPlayerID = (playerID) => {
     return knex
