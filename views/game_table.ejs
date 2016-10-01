@@ -21,6 +21,11 @@
         </div>
 
         <div class='myMove cards col-sm-2'>
+          <% if (matchData.activeplayer_last_turn !== null) { %>
+            <% var suit = matchData.activeplayer_last_turn.suit %>
+            <% var cardNum = matchData.activeplayer_last_turn.value %>
+            <% include ../views/partials/_card %>
+          <% } %>
         </div>
 
         <div class='deck cards col-sm-2'>
