@@ -97,7 +97,6 @@ router.get("/:id", (req, res) => {
           //res.redirect(`/matches/${results[2]}`);
           res.redirect('/matches');
           });
-        //res.redirect('/matches');
       }
     });
   });
