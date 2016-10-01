@@ -51,31 +51,29 @@ module.exports = {
     newMatch.player2_cards[p2_suit] = [1,2,3,4,5,6,7,8,9,10,11,12,13];
 
     return newMatch;
+  },
+
+  move: function(oldState, p1bid , p2bid, prize) {
+    // for testing
+
+    var newState = oldState;
+
+    // remove  cards from hand and deck
+    newState.player1_cards   = remove(oldState.player1_cards, p1bid);
+    newState.player2_cards   = remove(oldState.player2_cards, p2bid);
+    newState.deck_cards      = remove(oldState.deck_cards, prize);
+
+    // Winner gets the value of prize
+    if(p1bid  > p2bid ) {
+      newState.player1_score = oldState.player1_score + prize;
+    } else if (p2bid  > p1bid ) {
+      newState.player2_score = oldState.player2_score + prize;
+    }
+    if(checkGameEnd(oldState)){
+      console.log('Game End!'); // Do game-end logic
+    }
+    return newState;
   }
-};
-
-
-
-function move(oldState, p1bid , p2bid, prize) {
-  // for testing
-
-var newState = oldState;
-
-  // remove  cards from hand and deck
-  newState.player1_cards   = remove(oldState.player1_cards, p1bid);
-  newState.player2_cards   = remove(oldState.player2_cards, p2bid);
-  newState.deck_cards      = remove(oldState.deck_cards, prize);
-
-  // Winner gets the value of prize
-  if(p1bid  > p2bid ) {
-    newState.player1_score = oldState.player1_score + prize;
-  } else if (p2bid  > p1bid ) {
-    newState.player2_score = oldState.player2_score + prize;
-  }
-  if(checkGameEnd(oldState)){
-    console.log('Game End!'); // Do game-end logic
-  }
-  return newState;
 };
 
 function checkGameEnd(match){

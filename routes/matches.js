@@ -2,7 +2,7 @@
 
 const express   = require('express');
 const router    = express.Router();
-const fs = require('fs')
+const fs = require('fs');
 const goofspiel = require('../game-logic/goofspiel');
 const _ = require('underscore');
 
@@ -117,6 +117,9 @@ router.get("/:id", (req, res) => {
     .then(opponent => {
       matchesRepo.getLastTurn(opponent[0].opponent_id, req.params.id)
       .then((turn) => {
+        if (turn[0].player_turn !== null) {
+
+        }
         res.json(turn[0]);
       });
     });
