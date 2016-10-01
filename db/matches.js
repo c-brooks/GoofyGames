@@ -90,10 +90,11 @@ module.exports = (knex) => {
     .where({ id: matchID });
   };
 
-  matchesRepo.getPlayerHand = (userID) => {
+  matchesRepo.getPlayerHand = (userID, matchID) => {
     return knex
     .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_cards WHEN player2_id = ${userID} THEN player2_cards END AS activePlayer_cards`))
-    .from('matches');
+    .from('matches')
+    .where({ id: matchID });
   }
 
   matchesRepo.updatePlayer = (playerColumn, matchID, value) => {

@@ -44,7 +44,7 @@ $(() => {
             method: 'post',
             url: '/matches/' + matchID + '/play_card',
             data: { suit: cardSuit, value: cardValue }
-          })
+          });
         } else {
           // Shake the card because it's not their turn
           $(this).transition({ x: -10 }, 100)
@@ -74,13 +74,11 @@ $(() => {
       $.ajax({
         url: '/matches/' + matchID + '/opp_turn',
         success: (lastTurn) => {
-
-          alert(lastTurn);
-          // if (lastTurn.activeplayer_last_turn === null) {
-          //   // // TODO animate the transition
-          //   // $(this).transition({ x: -moveHere.left, y: -moveHere.top });
-          //   $('.myMove').append($(this));
-          // }
+          if (lastTurn.player_last_turn !== null) {
+            // var html = new EJS({ url: '/partials/_card'}).render(lastTurn.player_last_turn);
+            // alert(html);
+            // $('.theirTurn').append(html);
+          }
         }
       });
     };

@@ -125,7 +125,7 @@ router.get("/:id", (req, res) => {
   // TODO refactor this disgusting mess
   router.post("/:id/play_card", (req, res) => {
     Promise.all([
-      matchesRepo.getPlayerHand(req.params.id),
+      matchesRepo.getPlayerHand(req.cookies.user_id, req.params.id),
       matchesRepo.whichPlayer(req.cookies.user_id, req.params.id)
     ]).then((results) => {
       let playerHand = results[0][0].activeplayer_cards;
