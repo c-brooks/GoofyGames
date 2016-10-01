@@ -2,6 +2,7 @@
 
 const express   = require('express');
 const router    = express.Router();
+const fs = require('fs')
 const goofspiel = require('../game-logic/goofspiel');
 const _ = require('underscore');
 
@@ -10,41 +11,41 @@ module.exports = (knex) => {
   const matchmakingRepo = require('../db/matchmaking')(knex);
   const gamesRepo       = require('../db/games.js')(knex);
 
-// Matches home page - display and look for matches
-router.get("/", (req, res) => {
-  Promise.all([
-    matchesRepo.getAllMatches(),
-    matchesRepo.getMatchesByPlayerID(req.cookies['user_id']),
-    gamesRepo.getAllGames(),
-    matchmakingRepo.getUserChallenges(req.cookies['user_id'])
-    ])
-  .then( (results) => {
-    var templateVars = {
-      allMatches:   results[0],
-      myMatches:    results[1],
-      games:        results[2],
-      myChallenges: results[3],
-      my_id:      req.cookies['user_id']
-    }
-    res.render("matches", templateVars)
+  // Matches home page - display and look for matches
+  router.get("/", (req, res) => {
+    Promise.all([
+      matchesRepo.getAllMatches(),
+      matchesRepo.getMatchesByPlayerID(req.cookies['user_id']),
+      gamesRepo.getAllGames(),
+      matchmakingRepo.getUserChallenges(req.cookies['user_id'])
+      ])
+    .then( (results) => {
+      var templateVars = {
+        allMatches:   results[0],
+        myMatches:    results[1],
+        games:        results[2],
+        myChallenges: results[3],
+        my_id:      req.cookies['user_id']
+      }
+      res.render("matches", templateVars)
+    });
   });
-});
 
-// GET NEW PAGE
-router.get('/new', (req, res) => {
-  Promise.all([
-    gamesRepo.getAllGames(),
-    matchesRepo.getAllMatches()
-    ])
-  .then( (results) => {
-    var templateVars = {
-      games: results[0],
-      allMatches: results[1],
-      my_id: req.cookies['user_id']
-    }
-    res.render("searchForNewMatch", templateVars);
+  // GET NEW PAGE
+  router.get('/new', (req, res) => {
+    Promise.all([
+      gamesRepo.getAllGames(),
+      matchesRepo.getAllMatches()
+      ])
+    .then( (results) => {
+      var templateVars = {
+        games: results[0],
+        allMatches: results[1],
+        my_id: req.cookies['user_id']
+      }
+      res.render("searchForNewMatch", templateVars);
+    });
   });
-});
 
 // GET MATCH PAGE
 router.get("/:id", (req, res) => {
@@ -149,7 +150,6 @@ router.get("/:id", (req, res) => {
       }
     });
   });
-
 
   return router;
 }

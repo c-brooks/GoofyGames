@@ -74,10 +74,9 @@ $(() => {
       $.ajax({
         url: '/matches/' + matchID + '/opp_turn',
         success: (lastTurn) => {
-          if (lastTurn.player_last_turn !== null) {
-            // var html = new EJS({ url: '/partials/_card'}).render(lastTurn.player_last_turn);
-            // alert(html);
-            // $('.theirTurn').append(html);
+          var opponent_turn = lastTurn.player_last_turn;
+          if (opponent_turn !== null && $.trim($('.theirMove').html()).length === 0) {
+            $('.theirMove').append(generateCard(opponent_turn.suit, opponent_turn.value));
           }
         }
       });
