@@ -3,6 +3,7 @@
 const express = require('express');
 const router  = express.Router();
 const goofspiel = require('../game-logic/goofspiel');
+const _ = require('underscore');
 
 module.exports = (knex) => {
   const matchesRepo = require('../db/matches.js')(knex);
@@ -103,11 +104,31 @@ router.get("/:id", (req, res) => {
   });
 
   // Post turn for player
-  router.post("/:id/play_turn", (req, res) => {
-    // TODO check that play is valid (card is in player's hand)
-    matchesRepo.playCard(req.cookies.user_id,req.params.id)
-    .then((turn) => {
-      // TODO remove card from players hand
+  // TODO refactor this disgusting mess
+  router.post("/:id/play_card", (req, res) => {
+    Promise.all([
+      matchesRepo.getPlayerHand(req.params.id),
+      matchesRepo.whichPlayer(req.cookies.user_id, req.params.id)
+    ]).then((results) => {
+      let playerHand = results[0][0].activeplayer_cards;
+      let player = results[1][0].player;
+
+      let findCard = _.matcher(req.body);
+      let cardFound = _.filter(playerHand, findCard);
+
+      if (!_.isEmpty(cardFound)) {
+        let card = JSON.stringify(cardFound[0]);
+        let newHand = JSON.stringify(_.without(playerHand, cardFound[0]));
+
+        Promise.all([
+          // Update player's turn in db
+          matchesRepo.updatePlayer(player + '_last_turn', req.params.id, card),
+          // Remove card from player's hand
+          matchesRepo.updatePlayer(player + '_cards', req.params.id, newHand)
+        ]).then((result) => {
+            // TODO handle errors
+        });
+      }
     });
   });
 

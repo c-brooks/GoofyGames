@@ -40,8 +40,8 @@ $(() => {
           $('.myMove').append($(this));
           $.ajax({
             method: 'post',
-            url: '/matches/' + matchID + '/play_turn',
-            data: { cardValue: cardValue, cardSuit: cardSuit }
+            url: '/matches/' + matchID + '/play_card',
+            data: { suit: cardSuit, value: cardValue }
           })
         } else {
           // Shake the card because it's not their turn

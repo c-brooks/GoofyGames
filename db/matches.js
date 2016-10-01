@@ -68,6 +68,13 @@ module.exports = (knex) => {
     .where({ id: matchID })
   };
 
+  matchesRepo.whichPlayer = (userID, matchID) => {
+    return knex
+    .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN 'player1' WHEN player2_id = ${userID} THEN 'player2' END AS player`))
+    .from('matches')
+    .where({ id: matchID });
+  }
+
   matchesRepo.getLastTurn = (userID, matchID) => {
     return knex
     .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_last_turn WHEN player2_id = ${userID} THEN player2_last_turn END AS activePlayer_last_turn`))
@@ -75,6 +82,20 @@ module.exports = (knex) => {
     .from('matches')
     .where({ id: matchID });
   };
+
+  matchesRepo.getPlayerHand = (userID) => {
+    return knex
+    .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_cards WHEN player2_id = ${userID} THEN player2_cards END AS activePlayer_cards`))
+    .from('matches');
+  }
+
+  matchesRepo.updatePlayer = (playerColumn, matchID, value) => {
+    console.log(playerColumn);
+    console.log(value);
+    return knex('matches')
+    .update(playerColumn, value)
+    .where({ id: matchID });
+  }
 
   return matchesRepo;
 };
