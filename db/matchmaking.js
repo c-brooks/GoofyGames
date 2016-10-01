@@ -8,10 +8,11 @@ module.exports = (knex) => {
   };
 
   matchmakingRepo.removeOneByUserID = (player_id) => {
-    console.log("\nSHOULD DELETE", player_id);
-    //return
-    knex('matchmaking').first().del().where({player_id: player_id}).then(() => {
-
+    return knex('matchmaking')
+    .first()
+    .del()
+    .where({player_id: player_id})
+    .then( () => {
     });
   }
 
@@ -31,14 +32,12 @@ module.exports = (knex) => {
   };
 
   matchmakingRepo.new = (player_id, gameID) => {
-    return
-    knex('matchmaking')
+    return knex('matchmaking')
     .insert({
         player_id: player_id,
         game_id: gameID
       })
     .then( () => {
-    console.log("\nInserted " + player_id + " into " + "matchmaking")
     })
   };
   return matchmakingRepo;
