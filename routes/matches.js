@@ -29,7 +29,6 @@ module.exports = (knex) => {
       }
       res.render("matches", templateVars)
     });
-  });
 
   // GET NEW PAGE
   router.get('/new', (req, res) => {
@@ -81,8 +80,9 @@ router.get("/:id", (req, res) => {
       console.log('\nChallenge:', challenge);
 
       if(challenge == undefined) {
-        matchmakingRepo.new(user_id, game_id)
+        matchmakingRepo.new(user_id, game_id).then(() => {
         res.redirect('/matches');
+        })
       } else if(challenge.player_id === user_id) {
         alert('Something went wrong. You cannot challenge yourself!');
         res.redirect('/matches');
@@ -98,12 +98,19 @@ router.get("/:id", (req, res) => {
           //res.redirect(`/matches/${results[2]}`);
           res.redirect('/matches');
           });
-        //res.redirect('/matches');
       }
     });
   });
 
-  // Get last turn for active player
+  // DELETE
+  // TODO: make restful route (install method-override)
+  router.post('/delete', (req, res) => {
+    let match_id = req.body.match_id;
+    matchesRepo.deleteMatchByID(match_id);
+    res.redirect('/matches');
+  })
+
+  // Get last turn for player
   router.get("/:id/last_turn", (req, res) => {
     matchesRepo.getLastTurn(req.cookies.user_id,req.params.id)
     .then((turn) => {

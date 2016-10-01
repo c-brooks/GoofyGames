@@ -9,6 +9,17 @@ module.exports = (knex) => {
       .from('matches');
   };
 
+
+  matchesRepo.deleteMatchByID = (matchID) => {
+     knex('matches')
+      .del()
+      .where({
+        id: matchID
+      }).then( () => {
+        console.log();
+      });
+    };
+
     matchesRepo.getMatchesByPlayerID = (playerID) => {
     return knex
       .select('*')
