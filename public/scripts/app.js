@@ -43,10 +43,7 @@ $(() => {
           $.ajax({
             method: 'post',
             url: '/matches/' + matchID + '/play_card',
-            data: { suit: cardSuit, value: cardValue },
-            success: (results) => {
-              checkMoves();
-            }
+            data: { suit: cardSuit, value: cardValue }
           });
         } else {
           // Shake the card because it's not their turn
@@ -69,7 +66,7 @@ $(() => {
     $(this).css({ scale: [1, 1] });
   });
 
-  setInterval(checkMoves, 5000); // Check moves when loading game
+  setInterval(checkMoves, 800); // Check moves when loading game
   function checkMoves() {
     // If active player has made a move
     if ($('.myMove').find('.card').length !== 0) {
