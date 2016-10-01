@@ -6,7 +6,7 @@ exports.seed = function(knex, Promise) {
       return Promise.all([
         // Inserts seed entries
         knex('games').insert({id: 1, name: 'Goofspiel'}),
-        knex('games').insert({id: 2, name: 'Go Fish'})
+        knex('games').insert({id: 2, name: 'Blackjack'})
       ]);
     });
 };
