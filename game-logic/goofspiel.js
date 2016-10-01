@@ -40,9 +40,9 @@ module.exports = {
   move: function(oldState) {
     // Setup required variables from old state
     var newState = oldState;
-    var p1bid = oldState.player1_last_turn.value;
-    var p2bid = oldState.player2_last_turn.value;
-    var prize = oldState.deck_cards[0];
+    var p1bid = calcFaceValue(oldState.player1_last_turn.value);
+    var p2bid = calcFaceValue(oldState.player2_last_turn.value);
+    var prize = calcFaceValue(oldState.deck_cards[0]);
 
     // remove  cards from hand and deck
     newState.player1_cards   = remove(oldState.player1_cards, p1bid);
@@ -100,4 +100,12 @@ function getCards(suit) {
     cards.push({suit: suit, value: i+1});
   }
   return cards;
+}
+
+function calcFaceValue(value) {
+  return value
+    .replace('A', 1)
+    .replace('J', 11)
+    .replace('Q', 12)
+    .replace('K', 13);
 }
