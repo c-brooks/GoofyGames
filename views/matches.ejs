@@ -34,7 +34,18 @@
 
         <td><%= myMatches[i].player1_id %></td>
         <td><%= myMatches[i].player2_id %></td>
-        <td> <a type="buttton" href="matches/<%= myMatches[i].id %>"> Play! </a></td>
+        <td>
+          <a type="buttton" href="matches/<%= myMatches[i].id %>">
+            Play!
+          </a>
+        </td>
+
+        <td>
+          <form type="buttton" action="/matches/delete" method="POST">
+          <input type="hidden" name="match_id" value="<%= myMatches[i].id %>">
+          <button type="submit" value="Resign"> Resign...</button>
+          </form>
+        </td>
 
       </tr>
       <%  } %> <!--  end matches loop  -->
@@ -78,7 +89,7 @@
           Go Fish
         </td>
 
-        <%  } %> <!--  end game type logic  -->
+        <%  } %> <!--  end gameType logic  -->
       </tr>
       <%  } %> <!--  end matches loop  -->
     <%  } %> <!--  end else statement  -->
