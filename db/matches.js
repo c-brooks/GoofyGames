@@ -32,18 +32,22 @@ module.exports = (knex) => {
   };
 
   matchesRepo.updateMatch = (oldState, newState) => {
-    return knex.table('matches')
-    .where({ id: oldState.id })
-    .update({
-      deck_cards:    JSON.stringify(newState.deck_cards),
-      player1_cards: JSON.stringify(newState.player1_cards),
-      player2_cards: JSON.stringify(newState.player2_cards),
-      player1_score: newState.player1_score,
-      player2_score: newState.player2_score,
-      player1_last_turn: null,
-      player2_last_turn: null,
-      game_end: newState.game_end || null
-    });
+    newState.deck_cards = newState.deck_cards[0] || newState.deck_cards
+    console.log(newState.id);
+
+      return knex.table('matches')
+      .where({ id: newState.id })
+      .update({
+        deck_cards:    JSON.stringify(newState.deck_cards),
+        player1_cards: JSON.stringify(newState.player1_cards),
+        player2_cards: JSON.stringify(newState.player2_cards),
+        player1_score:  newState.player1_score,
+         player2_score: newState.player2_score,
+        player1_last_turn: null,
+        player2_last_turn: null,
+        game_end: newState.game_end || null,
+        whose_move: newState.whose_move || null
+      });
   };
 
   matchesRepo.getMatchByID = (matchID) => {
@@ -55,11 +59,8 @@ module.exports = (knex) => {
 
   matchesRepo.getMyMatch = (userID, matchID) => {
     return knex
-<<<<<<< Updated upstream
     .select('id', 'deck_cards', 'game_start', 'game_end', 'game_id')
-=======
-    .select('deck_cards', 'game_start', 'game_id')
->>>>>>> Stashed changes
+
     // Setup activePlayer
     // id
     .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_id WHEN player2_id = ${userID} THEN player2_id END AS activePlayer_id`))

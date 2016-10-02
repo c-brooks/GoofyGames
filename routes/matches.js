@@ -148,7 +148,8 @@ router.get("/:id", (req, res) => {
             } else if (match.game_id === 2){
               newState = goofspiel.move(oldState);
             }
-            matchesRepo.updateMatch(oldState, newState)
+            if(oldState && newState){
+              matchesRepo.updateMatch(oldState, newState)
             .then((results) => {
               matchesRepo.getMyMatch(req.cookies.user_id, req.params.id)
               .then ((match) => {
@@ -158,6 +159,7 @@ router.get("/:id", (req, res) => {
                 res.json(matchData);
               })
             });
+          } else res.json(oldState);
           });
         } else {
           // Return opponent's turn
@@ -166,6 +168,82 @@ router.get("/:id", (req, res) => {
       });
     });
   });
+
+
+
+// ---------------------------- MY BLACKJACK CODE ---------------------------- //
+// ----------------------------  (MOSTLY STOLEN)  ---------------------------- //
+
+  router.post('/:id/hit', (req, res) => {
+    console.log(req.params, req.body);
+    Promise.all([
+      matchesRepo.getPlayerHand(req.cookies.user_id, req.params.id),
+      matchesRepo.whichPlayer(req.cookies.user_id, req.params.id)
+      ])
+    .then( (results) => {
+      var playerHand  = results[0][0].activeplayer_cards;
+      console.log(playerHand)
+      if(!playerHand) {
+        playerHand = [];
+      }
+      let player      = results[1][0].player;
+
+      let cardValue   = goofspiel.calcFaceValue(req.body.value);
+      let cardHit     = { suit: req.body.suit, value: cardValue.toString() };
+
+      console.log(player, playerHand, cardValue)
+      if (cardHit) {
+        let cardSuit  = cardHit.suit;
+        let cardValue = cardHit.value;
+        let card      = JSON.stringify({ suit: cardSuit, value: cardValue });
+        console.log(playerHand)
+        playerHand.push(cardHit);
+        console.log(playerHand)
+        let newHand   = JSON.stringify(playerHand);
+
+        // convert newHand array to obj
+        console.log(card)
+        console.log(newHand)
+        Promise.all([
+          // Update player's turn in db
+          matchesRepo.updatePlayer(player + '_last_turn', req.params.id, card),
+          // Remove card from player's hand
+          matchesRepo.updatePlayer(player + '_cards', req.params.id, newHand)
+        ]).then((result) => {
+
+            res.sendStatus(200);
+        });
+      }
+    })
+  })
+
+  router.get('/:id/hit', (req, res) => {
+    matchesRepo.getMatchByID(req.params.id)
+    .then( (oldState) => {
+      let newState = blackjack.hit(oldState)
+      if(oldState && newState){
+        matchesRepo.updateMatch(oldState, newState)
+      }
+      res.json(newState);
+    })
+  })
+
+    router.post('/:id/stand', (req, res) => {
+      matchesRepo.getMatchByID(req.params.id)
+      .then( (results) => {
+        let oldState  = results;
+        var newState = blackjack.stand(oldState[0])
+        console.log(newState);
+          matchesRepo.updateMatch(oldState, newState)
+          .then((result) => {
+            // TODO handle errors
+            res.sendStatus(200);
+        });
+      })
+    })
+
+
+// ------------------------------------------------------------------------------------- //
 
   // Post turn for player
   // TODO refactor this disgusting mess
