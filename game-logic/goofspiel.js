@@ -78,7 +78,7 @@ module.exports = {
 
 function checkGameEnd(match){
   if(match.deck_cards){
-    return true;
+    return match.deck_cards.length === 0;
   }
 };
 
