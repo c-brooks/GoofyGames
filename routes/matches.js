@@ -60,7 +60,11 @@ router.get("/:id", (req, res) => {
       matchData: matchData,
       my_id: req.cookies['user_id']
     };
-    res.render("game_table", templateVars);
+    if(match[0].game_id === 1){
+      res.render("game_table", templateVars);
+    } else if (match[0].game_id === 2){
+      res.render("blackjack_game_table", templateVars);
+    }
   });
 });
 
@@ -72,8 +76,9 @@ router.get("/:id", (req, res) => {
     if (!user_id) {
       res.redirect('/matches');
     }
-
+    var newMatch;
     matchmakingRepo.checkForChallenges(user_id, game_id)
+
     .then( (challenge) => {
       console.log('\nChallenge:', challenge);
 
@@ -85,10 +90,10 @@ router.get("/:id", (req, res) => {
         alert('Something went wrong. You cannot challenge yourself!');
         res.redirect('/matches');
       } else {
-      if (challenge.game_id === 1){ // delete from challenge table, create new match in tablex
-        let newMatch = goofspiel.newMatch(user_id, challenge.player_id);
+      if (challenge.game_id === 1){ // delete from challenge table, create new match in table
+        newMatch = goofspiel.newMatch(user_id, challenge.player_id);
       } else if(challenge.game_id === 2) {
-        let newMatch = blackjack.newMatch(user_id, challenge.player_id);
+        newMatch = blackjack.newMatch(user_id, challenge.player_id);
       }
         Promise.all([
           matchmakingRepo.removeOneByUserID(user_id),
@@ -96,7 +101,6 @@ router.get("/:id", (req, res) => {
           matchesRepo.newMatch(newMatch)
           ])
         .then((results) => {
-          //res.redirect(`/matches/${results[2]}`);
           res.redirect('/matches');
           });
       }
@@ -134,11 +138,16 @@ router.get("/:id", (req, res) => {
       ]).then((turn) => {
         let activePlayer = turn[0][0];
         let opponent = turn[1][0];
+        var newState;
         if (activePlayer.player_last_turn !== null && opponent.player_last_turn !== null) {
           matchesRepo.getMatchByID(req.params.id)
           .then((match) => {
             let oldState = match[0];
-            let newState = goofspiel.move(oldState);
+            if (match.game_id === 1){
+              newState = goofspiel.move(oldState);
+            } else if (match.game_id === 2){
+              newState = goofspiel.move(oldState);
+            }
             matchesRepo.updateMatch(oldState, newState)
             .then((results) => {
               matchesRepo.getMyMatch(req.cookies.user_id, req.params.id)

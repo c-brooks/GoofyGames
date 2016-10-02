@@ -9,9 +9,11 @@
   <body class="bump-down">
     <div class='container'>
       <div class = 'row opponent cards'>
+      <% if (matchData.activeplayer_cards) { %>
         <% for (i = 0; i < matchData.activeplayer_cards.length; i++) { %>
           <% include ../views/partials/_blank_card %>
         <% } %>
+      <% } %>
       </div>
 
       <div class='row play-area'>

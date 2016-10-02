@@ -4,8 +4,9 @@
   top: 0;
   width: 100%;
   float: left;
-  background-color: #C16B6B;
-  color: #e8fdff;
+  background-color: #758a5c;
+  font-weight: bold;
+  color: #351330;
   line-height: 2.2;
   z-index: 999;
 }

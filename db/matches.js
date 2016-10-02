@@ -55,7 +55,11 @@ module.exports = (knex) => {
 
   matchesRepo.getMyMatch = (userID, matchID) => {
     return knex
+<<<<<<< Updated upstream
     .select('id', 'deck_cards', 'game_start', 'game_end', 'game_id')
+=======
+    .select('deck_cards', 'game_start', 'game_id')
+>>>>>>> Stashed changes
     // Setup activePlayer
     // id
     .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_id WHEN player2_id = ${userID} THEN player2_id END AS activePlayer_id`))

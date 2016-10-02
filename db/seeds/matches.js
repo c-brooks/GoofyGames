@@ -48,13 +48,13 @@ var player2_cards = JSON.stringify([
 ]);
 
 exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
+  // // Deletes ALL existing entries
   return knex('matches').del()
     .then(function () {
-      return Promise.all([
+       return Promise.all([
         // Reset id sequence to start at 1
         knex.schema.raw("select setval('archived_matches_id_seq',1)"),
-        // Inserts seed entries
+//        Inserts seed entries
         knex('matches').insert(
         {
           id: 1,
@@ -69,6 +69,6 @@ exports.seed = function(knex, Promise) {
           player2_cards: player2_cards,
           game_start: '1999-01-08 04:05:06'
         })
-      ]);
+     ]);
     });
 };
