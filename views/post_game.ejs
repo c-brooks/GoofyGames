@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% const player_id = my_id %>
+  <% include ../views/partials/_head %>
+  <% /*include ../views/partials/_header*/ %>
+</head>
+
+  <body class="bump-down">
+    <div class='container'>
+      <div class='row scoreboard'>
+        <div class='activePlayer-score col-sm-6'>
+          <h2>YOU</h2>
+          <span class='score'><%= matchData.activeplayer_score %></span>
+        </div>
+
+        <div class='opponent-score col-sm-6'>
+          <h2>THEM</h2>
+          <span class='score'><%= matchData.opponent_score %></span>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <% include ../views/partials/_footer %>
+</html>

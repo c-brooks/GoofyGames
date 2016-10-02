@@ -11,7 +11,7 @@ module.exports = (knex) => {
   const matchesRepo     = require('../db/matches.js')(knex);
   const matchmakingRepo = require('../db/matchmaking')(knex);
   const gamesRepo       = require('../db/games.js')(knex);
-
+  const rankingsRepo    = require('../db/rankings.js')(knex);
 
   // Matches home page - display and look for matches
   router.get("/", (req, res) => {
@@ -141,9 +141,8 @@ router.get("/:id", (req, res) => {
               matchesRepo.getMyMatch(req.cookies.user_id, req.params.id)
               .then ((match) => {
                 let matchData = obfuscateMatchData(match[0], opponent.player_last_turn);
-                if (matchData.game_end !== null) {
-                  console.log('end this shit!');
-                }
+                // Archive the match if it's over
+                if (matchData.game_end) { archiveMatch(matchData); }
                 res.json(matchData);
               })
             });
@@ -201,7 +200,40 @@ router.get("/:id", (req, res) => {
     matchData.opponent_last_turn = opponent_last_turn;
 
     return matchData;
-  }
+  };
+
+  function archiveMatch(matchData) {
+    console.log('archiving...');
+    let archiveData         = {};
+    archiveData.match_id    = matchData.id;
+    archiveData.game_id     = matchData.game_id;
+    archiveData.game_start  = matchData.game_start;
+    archiveData.game_end    = matchData.game_end;
+
+    if (matchData.activeplayer_score > matchData.opponent_score) {
+      archiveData.winner_id     = matchData.activeplayer_id;
+      archiveData.winner_score  = matchData.activeplayer_score;
+
+      archiveData.loser_id      = matchData.opponent_id;
+      archiveData.loser_score   = matchData.opponent_score;
+    } else {
+      archiveData.winner_id     = matchData.opponent_id;
+      archiveData.winner_score  = matchData.opponent_score;
+
+      archiveData.loser_id      = matchData.activeplayer_id;
+      archiveData.loser_score   = matchData.activeplayer_score;
+    }
+
+    // This gets called by both players when the match ends and produces
+    // a lot of big, red, ugly text in the console... sorry!
+    matchesRepo.archiveMatch(archiveData)
+    .then((players) => {
+      // TODO actually delete matches once BOTH players have seen results
+      // matchesRepo.deleteMatchByID(matchData.id)
+      rankingsRepo.addWin(players[0].winner_id),
+      rankingsRepo.addLoss(players[0].loser_id)
+    })
+  };
 
   return router;
 }
