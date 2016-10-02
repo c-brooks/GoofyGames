@@ -15,8 +15,21 @@ module.exports = (knex) => {
     .from('rankings')
     .leftJoin('users', 'rankings.player_id', 'users.id')
     .where('game_id', '=', game_id)
-    .orderBy('wins', 'desc')
+    .orderBy('wins', 'desc');
   }
+
+  rankingsRepo.addWin = (player_id) => {
+    return knex('rankings')
+    .where('player_id', '=', player_id)
+    .increment('wins', 1);
+  }
+
+  rankingsRepo.addLoss = (player_id) => {
+    return knex('rankings')
+    .where('player_id', '=', player_id)
+    .increment('losses', 1);
+  }
+
 
   return rankingsRepo;
 }

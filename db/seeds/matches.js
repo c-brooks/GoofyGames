@@ -12,20 +12,7 @@ var deck_cards = JSON.stringify(
     { suit: 'spades', value: '10' },
     { suit: 'spades', value: '11' },
     { suit: 'spades', value: '12' },
-    { suit: 'spades', value: '13' },
-    { suit: 'diamonds', value: '1' },
-    { suit: 'diamonds', value: '2' },
-    { suit: 'diamonds', value: '3' },
-    { suit: 'diamonds', value: '4' },
-    { suit: 'diamonds', value: '5' },
-    { suit: 'diamonds', value: '6' },
-    { suit: 'diamonds', value: '7' },
-    { suit: 'diamonds', value: '8' },
-    { suit: 'diamonds', value: '9' },
-    { suit: 'diamonds', value: '10' },
-    { suit: 'diamonds', value: '11' },
-    { suit: 'diamonds', value: '12' },
-    { suit: 'diamonds', value: '13' }
+    { suit: 'spades', value: '13' }
   ]);
 
 var player1_cards = JSON.stringify([
@@ -74,8 +61,8 @@ exports.seed = function(knex, Promise) {
           game_id: 1,
           player1_id: 1,
           player2_id: 2,
-          player1_score: 5,
-          player2_score: 12,
+          player1_score: 0,
+          player2_score: 0,
           whose_move: 1,
           deck_cards: deck_cards,
           player1_cards: player1_cards,

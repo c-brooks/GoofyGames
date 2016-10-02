@@ -41,7 +41,8 @@ module.exports = (knex) => {
       player1_score: newState.player1_score,
       player2_score: newState.player2_score,
       player1_last_turn: null,
-      player2_last_turn: null
+      player2_last_turn: null,
+      game_end: newState.game_end || null
     });
   };
 
@@ -54,7 +55,7 @@ module.exports = (knex) => {
 
   matchesRepo.getMyMatch = (userID, matchID) => {
     return knex
-    .select('deck_cards', 'game_start')
+    .select('id', 'deck_cards', 'game_start', 'game_end', 'game_id')
     // Setup activePlayer
     // id
     .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_id WHEN player2_id = ${userID} THEN player2_id END AS activePlayer_id`))
@@ -110,6 +111,13 @@ module.exports = (knex) => {
     return knex('matches')
     .update(playerColumn, value)
     .where({ id: matchID });
+  }
+
+  // TODO move this to archived_matches.js
+  matchesRepo.archiveMatch = (matchData) => {
+    return knex('archived_matches')
+    .insert(matchData)
+    .returning(['match_id', 'winner_id', 'loser_id']);
   }
 
   return matchesRepo;
