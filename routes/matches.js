@@ -93,7 +93,7 @@ router.get("/:id", (req, res) => {
         Promise.all([
           matchmakingRepo.removeOneByUserID(user_id),
           matchmakingRepo.removeOneByUserID(challenge.player_id),
-          matchesRepo.newMatch(newMatch);
+          matchesRepo.newMatch(newMatch)
           ])
         .then((results) => {
           //res.redirect(`/matches/${results[2]}`);
@@ -197,7 +197,9 @@ router.get("/:id", (req, res) => {
     matchData.deck_cards = matchData.deck_cards[0];
 
     // Only return opponent card count, not value of cards
-    matchData.opponent_cards = matchData.opponent_cards.length;
+    if(matchData.opponent_cards){
+      matchData.opponent_cards = matchData.opponent_cards.length;
+    }
 
     // Return the opponent's last turn to display
     matchData.opponent_last_turn = opponent_last_turn;
