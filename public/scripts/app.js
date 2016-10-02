@@ -83,26 +83,53 @@ $(() => {
               // Remove card from their hand
               $('.opponent.cards > div.card').last().remove();
 
-              // Update scores
-              $('.activePlayer-score').find('.score').html(results.activeplayer_score);
-              $('.opponent-score').find('.score').html(results.opponent_score);
-
               // Clear board and set new prize
               setTimeout(
-                 function(){
-                  $('.myMove > div.card').remove();
-                  $('.theirMove > div.card').remove();
-                  $('.deck > div.card').remove();
+                function(){
+                  var activeplayer_score    = $('.activePlayer-score').find('.score');
+                  var opponent_score        = $('.opponent-score').find('.score');
+                  var currActivePlayerScore = +activeplayer_score.html();
+                  var currOpponentScore     = +opponent_score.html();
 
-                  // Display end game items if applicable
-                  if (results.game_end !== null) {
-                    clearInterval(checkMovesInterval);
-                    $('.deck').html('<h2>GAME OVER</h2>');
-                  } else {
-                    $('.deck').append(generateCard(results.deck_cards.suit, results.deck_cards.value));
+                  var myCard    = $('.myMove').find('.card');
+                  var theirCard = $('.theirMove').find('.card');
+                  var deckCard  = $('.deck').find('.card');
+
+                  // Slide cards to winner & update scores
+                  // Score is set to be 8x scale and 0 opacity
+                  if (currActivePlayerScore < results.activeplayer_score) {
+                    myCard.transition({ x: -9000 }, 1500);
+                    theirCard.transition({ x: -9000 }, 1500);
+                    deckCard.transition({ x: -9000 }, 1500);
+                    activeplayer_score.css({ scale: [8, 8], opacity: 0 });
+                  } else if (currOpponentScore < results.opponent_score) {
+                    myCard.transition({ x: +9000 }, 1500);
+                    theirCard.transition({ x: +9000 }, 1500);
+                    deckCard.transition({ x: +9000 }, 1500);
+                    opponent_score.css({ scale: [8, 8], opacity: 0 });
                   }
+
+                  // Score transitions back to 1x scale with full opacity
+                  activeplayer_score.html(results.activeplayer_score).transition({ scale: [1, 1], opacity: 1 });
+                  opponent_score.html(results.opponent_score).transition({ scale: [1, 1], opacity: 1 });
+
+                  // Remove cards from board and add new deck card (after animations done)
+                  setTimeout(() => {
+                    myCard.remove();
+                    theirCard.remove();
+                    deckCard.remove();
+
+                    // Display end game items if applicable
+                    if (results.game_end !== null) {
+                      clearInterval(checkMovesInterval);
+                      $('.deck').html('<h2>GAME OVER</h2>');
+                    } else {
+                      $('.deck').append(generateCard(results.deck_cards.suit, results.deck_cards.value));
+                    }
+                  }, 1500);
+
                  },
-                 2000
+                 1000
               );
             }
             checking = false;
@@ -165,25 +192,22 @@ $(() => {
   }
 
   $('.game-search').on('click', function(e) {
-    console.log(e.target);
-    if (e.target !== 'select#game-dropdown.form-control') {
-      var gameID = $('#game-dropdown').find(':selected').val();
-      var gameName = $('#game-dropdown').find(':selected').html();
-      $.ajax({
-        url: '/matches',
-        method: 'POST',
-        data: { game: gameID },
-        success: function(result) {
-          var newSearchBox = $(`
-            <div class="panel panel-default match-btn search">
-              <div class="panel-body text-center">
-              </div>
-            </div>`)
-          $('.matches-box').append(newSearchBox);
-          newSearchBox.html(new Spinner(dynamicOpts).spin().el);
-          newSearchBox.append('Searching for ' + gameName + '...');
-        }
-      });
-    }
+    var gameID = $('#game-dropdown').find(':selected').val();
+    var gameName = $('#game-dropdown').find(':selected').html();
+    $.ajax({
+      url: '/matches',
+      method: 'POST',
+      data: { game: gameID },
+      success: function(result) {
+        var newSearchBox = $(`
+          <div class="panel panel-default match-btn search">
+            <div class="panel-body text-center">
+            </div>
+          </div>`)
+        $('.matches-box').append(newSearchBox);
+        newSearchBox.html(new Spinner(dynamicOpts).spin().el);
+        newSearchBox.append('Searching for ' + gameName + '...');
+      }
+    });
   });
 });

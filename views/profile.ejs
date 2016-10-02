@@ -1,54 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <% const player_id = my_id %>
-    <% include ../views/partials/_head %>
-  </head>
+  <% const player_id = my_id %>
+  <% include ../views/partials/_head %>
 
-  <body class="bump-down">
-    <% include ../views/partials/_header %>
+  <body>
+    <section id="profile" class="container-fluid">
+      <% include ../views/partials/_header %>
 
-    <h1><%= user.username %></h1>
+      <h1 class="page-header"><%= user.username %></h1>
 
-    <section>
-      <h2>Rankings</h2>
-      <table>
-        <th>Game</th>
-        <th>Wins</th>
-        <th>Losses</th>
-        <% for (rank in rankings) { %>
-          <tr>
-            <% var currRank = rankings[rank]; %>
-            <td><%= currRank.name %></td>
-            <td><%= currRank.wins%></td>
-            <td><%= currRank.losses %></td>
-          </tr>
-        <% } %>
-      </table>
-    </section>
-
-    <section>
-      <h2>Previous Matches</h2>
-      <table>
-        <% for (match in archivedMatches) { %>
-          <tr>
-            <% var currMatch = archivedMatches[match]; %>
-            <% if (currMatch.winner_id === user.id) { %>
-              <% outcome = 'W'; %>
-              <% opponent = currMatch.loser_name; %>
-              <% opponentID = currMatch.loser_id; %>
-            <% } else { %>
-             <% outcome = 'L'; %>
-             <% opponent = currMatch.winner_name; %>
-             <% opponentID = currMatch.winner_id; %>
+      <section>
+        <h2>Rankings</h2>
+        <table class="table table-hover">
+          <thead>
+            <th>Game</th>
+            <th>Wins</th>
+            <th>Losses</th>
+          </thead>
+          <tbody>
+            <% for (rank in rankings) { %>
+              <tr>
+                <% var currRank = rankings[rank]; %>
+                <td><%= currRank.name %></td>
+                <td><%= currRank.wins%></td>
+                <td><%= currRank.losses %></td>
+              </tr>
             <% } %>
-            <td><%= outcome %></td>
-            <td><a href="/users/<%= opponentID %>"><%= opponent %></a></td>
-            <td><%= currMatch.winner_score %> - <%= currMatch.loser_score %></td>
-          </tr>
-        <% } %>
-      </table>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Previous Matches</h2>
+        <table class="table table-hover">
+          <thead>
+            <th></th>
+            <th>Opponent</th>
+            <th>Score</th>
+          </thead>
+          <tbody>
+            <% for (match in archivedMatches) { %>
+              <tr>
+                <% var currMatch = archivedMatches[match]; %>
+                <% if (currMatch.winner_id === user.id) { %>
+                  <% outcome = 'W'; %>
+                  <% opponent = currMatch.loser_name; %>
+                  <% opponentID = currMatch.loser_id; %>
+                <% } else { %>
+                 <% outcome = 'L'; %>
+                 <% opponent = currMatch.winner_name; %>
+                 <% opponentID = currMatch.winner_id; %>
+                <% } %>
+                <td><%= outcome %></td>
+                <td><a href="/users/<%= opponentID %>"><%= opponent %></a></td>
+                <td><%= currMatch.winner_score %> - <%= currMatch.loser_score %></td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </section>
     </section>
   </body>
 

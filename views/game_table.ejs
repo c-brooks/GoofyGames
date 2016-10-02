@@ -3,11 +3,11 @@
 <head>
   <% const player_id = my_id %>
   <% include ../views/partials/_head %>
-  <% /*include ../views/partials/_header*/ %>
+  <% include ../views/partials/_header %>
 </head>
 
-  <body class="bump-down">
-    <div class='container'>
+  <body>
+    <div class='container-fluid'>
       <div class = 'row opponent cards'>
         <% for (i = 0; i < matchData.activeplayer_cards.length; i++) { %>
           <% include ../views/partials/_blank_card %>
@@ -15,9 +15,13 @@
       </div>
 
       <div class='row play-area'>
-        <div class='activePlayer-score col-sm-3'>
-          <h2>YOU</h2>
-          <span class='score'><%= matchData.activeplayer_score %></span>
+        <div class='scoreboard'>
+          <div class='activePlayer-score col-sm-3'>
+            <center>
+              <h5>HOME</h5>
+              <h2 class='score'><%= matchData.activeplayer_score %></h2>
+            </center>
+          </div>
         </div>
 
         <div class='myMove cards col-sm-2'>
@@ -29,17 +33,21 @@
         </div>
 
         <div class='deck cards col-sm-2'>
-          <% var suit = matchData.deck_cards.suit %>
-          <% var cardNum = matchData.deck_cards.value %>
-          <% include ../views/partials/_card %>
+            <% var suit = matchData.deck_cards.suit %>
+            <% var cardNum = matchData.deck_cards.value %>
+            <% include ../views/partials/_card %>
         </div>
 
         <div class='theirMove cards col-sm-2'>
         </div>
 
-        <div class='opponent-score col-sm-3'>
-          <h2>THEM</h2>
-          <span class='score'><%= matchData.opponent_score %></span>
+        <div class='scoreboard'>
+          <div class='opponent-score col-sm-3'>
+            <center>
+              <h5>AWAY</h5>
+              <h2 class='score'><%= matchData.opponent_score %></h2>
+            </center>
+          </div>
         </div>
       </div>
 

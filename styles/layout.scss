@@ -2,6 +2,7 @@
 
 $primary-color: #CC2A41;
 $secondary-color: #351330;
+$link-hover-color: darken($secondary-color, 15%);
 
 body {
   background-color: #fff;
@@ -12,12 +13,29 @@ body {
   }
 }
 
+a {
+  color: $secondary-color;
+  text-decoration: none;
+
+  &:hover {
+    color: $link-hover-color;
+    text-decoration: underline;
+  }
+}
+
 .play-area {
   margin: 100px;
 }
 
-#matches {
+.cards {
+  min-height: 100px;
+}
+
+.container-fluid {
   margin: 40px;
+  .opponent {
+    margin-top: 25px;
+  }
 }
 
 #seeking {
@@ -40,10 +58,51 @@ body {
   float: left;
 }
 
+.content-panel {
+  margin: 10px;
+  padding: 10px;
+}
+
 .btn {
   color: $secondary-color;
 }
 
 .match-btn .row .btn {
   min-width: 80px;
+}
+
+.highlight-turn {
+  -webkit-animation-name: highlightPulse;
+  -webkit-animation-duration: 3s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes highlightPulse {
+  from {
+    border: 1px solid #D5D5D5;
+    border-radius: 4px;
+  }
+  50% {
+    border-color: $primary-color;
+    box-shadow: 0 1px 1px white inset, 0 0 8px $primary-color;
+    outline: 0 none;
+  }
+  to {
+    border: 1px solid #D5D5D5;
+    border-radius: 4px;
+  }
+}
+
+.scoreboard {
+  $scoreboard-padding: 15px;
+  color: white;
+  .activePlayer-score {
+    padding: $scoreboard-padding;
+    background-color: $primary-color;
+  }
+  .opponent-score {
+    padding: $scoreboard-padding;
+    background-color: $secondary-color;
+  }
 }

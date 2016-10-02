@@ -8,19 +8,24 @@
   <% include ../views/partials/_header %>
 </head>
 
-<body class="bump-down">
+<body>
 
 <section id="matches" class="container-fluid">
 
   <h1 class="page-header">My Matches</h1>
   <section class="matches-box">
     <%  if (myMatches.length === 0) {  %>
-      <h2>You have no active matches!</h2>
+
     <% } else { %>
       <% for (var i = 0; i < myMatches.length; i++) { %>
         <!-- start match box -->
-        <div class="panel panel-default match-btn">
-          <div class="panel-body text-center">
+        <%  if ((myMatches[i].player1_id == my_id && myMatches[i].player1_last_turn === null)
+        || (myMatches[i].player2_id == my_id && myMatches[i].player2_last_turn === null)) { %>
+          <div class="panel panel-default match-btn highlight-turn">
+        <% } else { %>
+          <div class="panel panel-default match-btn highlight-turn">
+        <% } %>
+            <div class="panel-body text-center">
               <!-- game name -->
               <span>Playing
                 <%  if(myMatches[i].game_id === 1) { %>
@@ -52,9 +57,6 @@
             </div>
           </div>
         </div>
-        <%  if ((myMatches[i].player1_id == my_id && myMatches[i].player1_last_turn)
-              || (myMatches[i].player2_id == my_id && myMatches[i].player2_last_turn)) {} %>
-
       <% } %> <!--  end matches loop  -->
     </div>
     <% } %> <!--  end else statement  -->
@@ -74,7 +76,7 @@
     <% } %> <!--  end matches loop  -->
   </section>
 
-  <div class="panel panel-default match-btn btn btn-default game-search">
+  <div class="panel panel-default match-btn btn btn-default">
     <div class="panel-body">
       <div class="form-group">
         <label for="game-dropdown">Select a game from the list...</label>
@@ -86,7 +88,7 @@
           <% } %>
         </select>
       </div>
-      <h1>Search</h1>
+      <h1 class="game-search">Search</h1>
     </div>
   </div>
 
