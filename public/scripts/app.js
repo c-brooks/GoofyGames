@@ -31,7 +31,7 @@ $(() => {
   });
 
   $('.activePlayer').find('.card').on('click', function() {
-    if ($('.myMove').find('.card').length === 0) {
+    if ($('.myMove').find('.card').length === 0 && $('.deck > h2').html() !== 'GAME OVER') {
       // Play card on table
       $('.myMove').append($(this));
 
@@ -77,11 +77,6 @@ $(() => {
           success: (results) => {
             console.log(results);
             if (results.opponent_last_turn !== null) {
-              if (results.game_end !== null) {
-                clearInterval(checkMovesInterval);
-                $('.deck').html('<h2>GAME OVER</h2>');
-              }
-
               // Show their card
               $('.theirMove').append(generateCard(results.opponent_last_turn.suit, results.opponent_last_turn.value));
 
@@ -98,7 +93,14 @@ $(() => {
                   $('.myMove > div.card').remove();
                   $('.theirMove > div.card').remove();
                   $('.deck > div.card').remove();
-                  $('.deck').append(generateCard(results.deck_cards.suit, results.deck_cards.value));
+
+                  // Display end game items if applicable
+                  if (results.game_end !== null) {
+                    clearInterval(checkMovesInterval);
+                    $('.deck').html('<h2>GAME OVER</h2>');
+                  } else {
+                    $('.deck').append(generateCard(results.deck_cards.suit, results.deck_cards.value));
+                  }
                  },
                  2000
               );

@@ -160,8 +160,8 @@ router.get("/:id", (req, res) => {
       matchesRepo.getPlayerHand(req.cookies.user_id, req.params.id),
       matchesRepo.whichPlayer(req.cookies.user_id, req.params.id)
     ]).then((results) => {
-      let playerHand = results[0][0].activeplayer_cards;
-      let player     = results[1][0].player;
+      let playerHand  = results[0][0].activeplayer_cards;
+      let player      = results[1][0].player;
 
       let cardValue   = goofspiel.calcFaceValue(req.body.value);
       let cardToFind  = { suit: req.body.suit, value: cardValue.toString() };
