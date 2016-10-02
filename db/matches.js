@@ -41,7 +41,8 @@ module.exports = (knex) => {
       player1_score: newState.player1_score,
       player2_score: newState.player2_score,
       player1_last_turn: null,
-      player2_last_turn: null
+      player2_last_turn: null,
+      game_end: newState.game_end || null
     });
   };
 
@@ -54,7 +55,7 @@ module.exports = (knex) => {
 
   matchesRepo.getMyMatch = (userID, matchID) => {
     return knex
-    .select('deck_cards', 'game_start')
+    .select('deck_cards', 'game_start', 'game_end')
     // Setup activePlayer
     // id
     .select(knex.raw(`CASE WHEN player1_id = ${userID} THEN player1_id WHEN player2_id = ${userID} THEN player2_id END AS activePlayer_id`))

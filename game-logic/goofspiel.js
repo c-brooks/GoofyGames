@@ -59,8 +59,8 @@ module.exports = {
       newState.player2_score = oldState.player2_score + this.calcFaceValue(prize.value);
     } // In case of a tie, no points awarded
 
-    if(checkGameEnd(oldState)){
-      console.log('Game End!'); // Do game-end logic
+    if(checkGameEnd(oldState)) {
+      newState.game_end = new Date;
     }
     return newState;
   },
@@ -78,7 +78,7 @@ module.exports = {
 
 function checkGameEnd(match){
   if(match.deck_cards){
-    return match.deck_cards.length === 0;
+    return true;
   }
 };
 

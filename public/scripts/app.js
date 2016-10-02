@@ -31,30 +31,27 @@ $(() => {
   });
 
   $('.activePlayer').find('.card').on('click', function() {
-    var cardValue = $(this).find('span.number').html();
-    var cardSuit = $(this).attr('class').split(/\s+/)[1];
-    $.ajax({
-      url: '/matches/' + matchID + '/last_turn',
-      success: (lastTurn) => {
-        if (lastTurn.player_last_turn === null) {
-          // // TODO animate the transition
-          // $(this).transition({ x: -moveHere.left, y: -moveHere.top });
-          $('.myMove').append($(this));
-          $.ajax({
-            method: 'post',
-            url: '/matches/' + matchID + '/play_card',
-            data: { suit: cardSuit, value: cardValue }
-          });
-        } else {
-          // Shake the card because it's not their turn
-          $(this).transition({ x: -10 }, 100)
-          .transition({ x: +10 }, 100)
-          .transition({ x: -10 }, 100)
-          .transition({ x: +10}, 100)
-          .transition({ x: 0}, 100);
-        }
-      }
-    });
+    if ($('.myMove').find('.card').length === 0) {
+      // Play card on table
+      $('.myMove').append($(this));
+
+      // Play card on server
+      var cardSuit = $(this).attr('class').split(/\s+/)[1];
+      var cardValue = $(this).find('span.number').html();
+      // Doesn't handle errors with playing a card
+      $.ajax({
+        method: 'post',
+        url: '/matches/' + matchID + '/play_card',
+        data: { suit: cardSuit, value: cardValue }
+      });
+    } else {
+      // Shake the card because it's not their turn
+      $(this).transition({ x: -10 }, 100)
+      .transition({ x: +10 }, 100)
+      .transition({ x: -10 }, 100)
+      .transition({ x: +10}, 100)
+      .transition({ x: 0}, 100);
+    }
   });
 
   $('.activePlayer').find('.card').on('mouseover', function() {
@@ -66,35 +63,52 @@ $(() => {
     $(this).css({ scale: [1, 1] });
   });
 
-  setInterval(checkMoves, 800); // Check moves when loading game
+  // Check moves
+  // Assign to variable so we can stop checking when needed
+  var checking = false;
+  var checkMovesInterval = setInterval(checkMoves, 100);
   function checkMoves() {
-    // If active player has made a move
-    if ($('.myMove').find('.card').length !== 0) {
-      $.ajax({
-        url: '/matches/' + matchID + '/opp_turn',
-        success: (results) => {
-          // Show their card
-          $('.theirMove').append(generateCard(results.opponent_last_turn.suit, results.opponent_last_turn.value));
+    if (!checking) {
+      checking = true;
+      // If active player has made a move
+      if ($('.myMove').find('.card').length !== 0) {
+        $.ajax({
+          url: '/matches/' + matchID + '/opp_turn',
+          success: (results) => {
+            console.log(results);
+            if (results.opponent_last_turn !== null) {
+              if (results.game_end !== null) {
+                clearInterval(checkMovesInterval);
+                $('.deck').html('<h2>GAME OVER</h2>');
+              }
 
-          // Remove card from their hand
-          $('.opponent.cards > div.card').last().remove();
+              // Show their card
+              $('.theirMove').append(generateCard(results.opponent_last_turn.suit, results.opponent_last_turn.value));
 
-          // Update scores
-          $('.activePlayer-score').find('.score').html(results.activeplayer_score);
-          $('.opponent-score').find('.score').html(results.opponent_score);
+              // Remove card from their hand
+              $('.opponent.cards > div.card').last().remove();
 
-          // Clear board and set new prize
-          setTimeout(
-             function(){
-              $('.myMove > div.card').remove();
-              $('.theirMove > div.card').remove();
-              $('.deck > div.card').remove();
-              $('.deck').append(generateCard(results.deck_cards.suit, results.deck_cards.value));
-             },
-             5000
-          );
-        }
-      });
-    };
+              // Update scores
+              $('.activePlayer-score').find('.score').html(results.activeplayer_score);
+              $('.opponent-score').find('.score').html(results.opponent_score);
+
+              // Clear board and set new prize
+              setTimeout(
+                 function(){
+                  $('.myMove > div.card').remove();
+                  $('.theirMove > div.card').remove();
+                  $('.deck > div.card').remove();
+                  $('.deck').append(generateCard(results.deck_cards.suit, results.deck_cards.value));
+                 },
+                 2000
+              );
+            }
+            checking = false;
+          }
+        })
+      } else {
+        checking = false;
+      };
+    }
   }
 });

@@ -123,7 +123,7 @@ router.get("/:id", (req, res) => {
     matchesRepo.getOpponentID(req.cookies.user_id, req.params.id)
     .then(opponent => {
       Promise.all([
-        // Check last turn of both players (just to avoid cheating)
+        // Make sure both player's moves have been made
         // Active player last turn
         matchesRepo.getLastTurn(req.cookies.user_id, req.params.id),
         // Opponent last turn
@@ -147,7 +147,7 @@ router.get("/:id", (req, res) => {
           });
         } else {
           // Return opponent's turn
-          res.json(opponent);
+          res.json({ opponent_last_turn: null });
         }
       });
     });
@@ -163,10 +163,10 @@ router.get("/:id", (req, res) => {
       let playerHand = results[0][0].activeplayer_cards;
       let player     = results[1][0].player;
 
-      let cardValue = goofspiel.calcFaceValue(req.body.value);
-      let cardToFind    = { suit: req.body.suit, value: cardValue.toString() };
-      let findCard  = _.matcher(cardToFind);
-      let cardFound = _.filter(playerHand, findCard);
+      let cardValue   = goofspiel.calcFaceValue(req.body.value);
+      let cardToFind  = { suit: req.body.suit, value: cardValue.toString() };
+      let findCard    = _.matcher(cardToFind);
+      let cardFound   = _.filter(playerHand, findCard);
 
       if (!_.isEmpty(cardFound)) {
         let cardSuit  = cardFound[0].suit;
