@@ -9,7 +9,7 @@ const bodyParser    = require("body-parser");
 const cookieParser  = require('cookie-parser');
 const sass          = require("node-sass-middleware");
 const app           = express();
-console.log('DB SHIT: ' + process.env.DATABASE_URL);
+
 const knexConfig  = require("./knexfile");
 const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
