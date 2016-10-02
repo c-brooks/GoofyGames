@@ -141,6 +141,9 @@ router.get("/:id", (req, res) => {
               matchesRepo.getMyMatch(req.cookies.user_id, req.params.id)
               .then ((match) => {
                 let matchData = obfuscateMatchData(match[0], opponent.player_last_turn);
+                if (matchData.game_end !== null) {
+                  console.log('end this shit!');
+                }
                 res.json(matchData);
               })
             });
