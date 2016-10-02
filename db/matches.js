@@ -32,8 +32,9 @@ module.exports = (knex) => {
   };
 
   matchesRepo.updateMatch = (oldState, newState) => {
-    newState.deck_cards = newState.deck_cards[0] || newState.deck_cards
-    console.log(newState.id);
+    if(newState.game_id == 2){
+       newState.deck_cards = newState.deck_cards[0];
+     }
 
       return knex.table('matches')
       .where({ id: newState.id })
