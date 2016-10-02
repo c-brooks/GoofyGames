@@ -1,14 +1,14 @@
-<link rel="stylesheet" href="/styles/nav.css" type="text/css" />
-
-<div id="nav-bar" class="nav">
-  <span class="header">Goofy Games</span>
-
-  <form id="login" method="post" action="/login">
-    <input id="playerID" type="text" name="id" value = "" placeholder="ID">
-    <button id="login-btn">Login</button>
-
-    <% if (player_id) { %>
-    <div id="login-state">Player ID: <%= player_id %> </div>
-    <% } %>
-  </form>
-</div>
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <h1 class="pull-left">Goofy Games</h1>
+    <form id="login" method="post" action="/login" class="pull-right form-inline">
+      <input id="playerID" type="text" name="id" value = "" class="form-control" placeholder="ID">
+      <button class="btn btn-default">Login</button>
+      <% if (player_id) { %>
+      <div id="login-state">Player ID: <%= player_id %> </div>
+      <% } %>
+    </form>
+  </div>
+  <div class="container">
+  </div>
+</nav>

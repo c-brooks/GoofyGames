@@ -1,22 +1,20 @@
 @import "node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 
+$primary-color: #CC2A41;
+$secondary-color: #351330;
+
 body {
-  background-color: #98AA80;
-  color:  #351330;
+  background-color: #fff;
+  color:  $primary-color;
+  margin-top: 85px;
   h1 {
-    color: #244751;
-    /*color: #E8CAA4;*/
+    color: $primary-color;
   }
 }
-
-.bump-down {
-    margin-top: 100px;
-  }
 
 .play-area {
   margin: 100px;
 }
-
 
 #matches {
   margin: 40px;
@@ -26,14 +24,26 @@ body {
   margin: 40px;
 }
 
-.panel-group {
+.panel-body {
+  min-height: 200px;
 }
 
+.match-btn.search {
+  height: 222px;
+}
 
-.jumbotron {
+.match-btn {
   margin: 10px;
-  padding: 20px;
-  width: 300px;
-  height: 150px;
+  padding: 10px;
+  width: 250px;
+  min-height: 200px;
   float: left;
+}
+
+.btn {
+  color: $secondary-color;
+}
+
+.match-btn .row .btn {
+  min-width: 80px;
 }

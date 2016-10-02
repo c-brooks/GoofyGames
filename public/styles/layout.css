@@ -7737,17 +7737,13 @@ button.close {
 }
 
 body {
-  background-color: #98AA80;
-  color: #351330;
+  background-color: #fff;
+  color: #CC2A41;
+  margin-top: 85px;
 }
 
 body h1 {
-  color: #244751;
-  /*color: #E8CAA4;*/
-}
-
-.bump-down {
-  margin-top: 100px;
+  color: #CC2A41;
 }
 
 .play-area {
@@ -7762,10 +7758,26 @@ body h1 {
   margin: 40px;
 }
 
-.jumbotron {
+.panel-body {
+  min-height: 200px;
+}
+
+.match-btn.search {
+  height: 222px;
+}
+
+.match-btn {
   margin: 10px;
-  padding: 20px;
-  width: 300px;
-  height: 150px;
+  padding: 10px;
+  width: 250px;
+  min-height: 200px;
   float: left;
+}
+
+.btn {
+  color: #351330;
+}
+
+.match-btn .row .btn {
+  min-width: 80px;
 }

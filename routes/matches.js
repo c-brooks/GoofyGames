@@ -79,7 +79,8 @@ router.get("/:id", (req, res) => {
 
       if(challenge == undefined) {
         matchmakingRepo.new(user_id, game_id).then(() => {
-        res.redirect('/matches');
+          res.sendStatus(200);
+        // res.redirect('/matches');
         })
       } else if(challenge.player_id === user_id) {
         alert('Something went wrong. You cannot challenge yourself!');
