@@ -139,11 +139,13 @@ router.get("/:id", (req, res) => {
         if (activePlayer.player_last_turn !== null && opponent.player_last_turn !== null) {
           matchesRepo.getMatchByID(req.params.id)
           .then((match) => {
+            console.log(match[0]);
             let oldState = match[0];
-            if(match.game_id == 1){
-              let newState = goofspiel.move(oldState);
-            } else if (match.game_id == 2) {
-              let newState = blackjack.stand(oldState);
+            var newState;
+            if(match[0].game_id == 1){
+              newState = goofspiel.move(oldState);
+            } else if (match[0].game_id == 2) {
+              newState = blackjack.stand(oldState);
             }
             //if(oldState && newState) {
               matchesRepo.updateMatch(newState)
