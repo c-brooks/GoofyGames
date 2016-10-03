@@ -1,54 +1,17 @@
 
-#nav-bar {
+$primary-color: #CC2A41;
+$header-color: #CC2A41;
 
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  float: left;
-
-  background-color: #758a5c;
-  font-weight: bold;
-  color: #351330;
-  line-height: 2.2;
+.navbar {
+  background-color: $primary-color;
+  color: #fff;
+  line-height: 2;
+  border-bottom: 2px solid #351330;
   z-index: 999;
-
-
-  .header {
-    font-size: 3em;
-    padding: 0 0 0 10px;
-    height: auto;
-    float: left;
+  h1 {
+    color: white;
   }
-
-  #login {
-  float: right;
-  height: 100%;
-  padding: 10px;
-
-    #login-btn {
-      margin: 10px;
-      width: 8em;
-      background-color: white;
-      color: green;
-      font-size: 20px;
-      float: left;
-    }
-
-    #login-state {
-      margin: 10px;
-      float: left;
-      margin: 15px 30px 0 0;
-      font-size: 20px;
-    }
-
-    #playerID {
-      margin: 10px;
-      color: black;
-      float: left;
-      width: 50px;
-      height: 40px;
-      font-size:20px;
-    }
+  form {
+    padding: 10px;
   }
 }

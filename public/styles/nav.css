@@ -1,50 +1,15 @@
-#nav-bar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  float: left;
-  background-color: #758a5c;
-  font-weight: bold;
-  color: #351330;
-  line-height: 2.2;
+.navbar {
+  background-color: #CC2A41;
+  color: #fff;
+  line-height: 2;
+  border-bottom: 2px solid #351330;
   z-index: 999;
 }
 
-#nav-bar .header {
-  font-size: 3em;
-  padding: 0 0 0 10px;
-  height: auto;
-  float: left;
+.navbar h1 {
+  color: white;
 }
 
-#nav-bar #login {
-  float: right;
-  height: 100%;
+.navbar form {
   padding: 10px;
-}
-
-#nav-bar #login #login-btn {
-  margin: 10px;
-  width: 8em;
-  background-color: white;
-  color: green;
-  font-size: 20px;
-  float: left;
-}
-
-#nav-bar #login #login-state {
-  margin: 10px;
-  float: left;
-  margin: 15px 30px 0 0;
-  font-size: 20px;
-}
-
-#nav-bar #login #playerID {
-  margin: 10px;
-  color: black;
-  float: left;
-  width: 50px;
-  height: 40px;
-  font-size: 20px;
 }

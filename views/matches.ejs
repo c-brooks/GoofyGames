@@ -2,105 +2,92 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <% const player_id = my_id %>
-  <% include ../views/partials/_head %>
-  <% include ../views/partials/_header %>
-</head>
+<% const player_id = my_id %>
+<% include ../views/partials/_head %>
 
-<body class="bump-down">
+<body>
+    <% include ../views/partials/_header %>
 
-<section id="matches" class="container-fluid">
-  <h1 class="page-header">My Matches</h1>
+    <section id="matches" class="container-fluid">
+      <h1 class="page-header">My Matches</h1>
+      <section class="matches-box">
+        <%  if (myMatches.length === 0) {  %>
 
-    <%  if (myMatches.length === 0) {  %>
-    You have no active matches!
-    <%  } else { %>
+        <% } else { %>
+          <% for (var i = 0; i < myMatches.length; i++) { %>
+            <!-- start match box -->
+            <%  if ((myMatches[i].player1_id == my_id && myMatches[i].player1_last_turn === null)
+            || (myMatches[i].player2_id == my_id && myMatches[i].player2_last_turn === null)) { %>
+              <div class="panel panel-default match-btn highlight-turn">
+            <% } else { %>
+              <div class="panel panel-default match-btn highlight-turn">
+            <% } %>
+                <div class="panel-body text-center">
+                  <!-- game name -->
+                  <span>Playing
+                    <%  if(myMatches[i].game_id === 1) { %>
+                      Goofspiel
+                    <% } else if (myMatches[i].game_id === 2) { %>
+                      Go Fish
+                    <% } %>
+                  </span>
 
-      <%  for (var i = 0; i < myMatches.length; i++) { %>
-        <%  if ((myMatches[i].player1_id == my_id && myMatches[i].player1_last_turn)
-            || (myMatches[i].player2_id == my_id && myMatches[i].player2_last_turn)) { %>
-              <a class="jumbotron" style="background-color: #E8CAA4" href="/matches/<%= myMatches[i].id %>">
-              <% } else { %>
-              <a class="jumbotron" style="background-color: #CC2A41" href="/matches/<%= myMatches[i].id %>">
+                <!-- VS -->
+                <h2>VS</h2>
+
+                <!-- opponent name -->
+                <h3>
+                  <% if (myMatches[i].player1_id == my_id) { %>
+                    <%= myMatches[i].player2_id %>
+                  <% } else { %>
+                    <%= myMatches[i].player1_id %>
+                  <% } %>
+                </h3>
+
+                <div class="row center-block">
+                  <a href="/matches/<%= myMatches[i].id %>" class="btn btn-default col-xs-6">Play</a>
+
+                  <form action="/matches/delete" method="POST" class="col-xs-6">
+                    <input type="hidden" name="match_id" value="<%= myMatches[i].id %>">
+                    <button type="submit" class="btn btn-default">Resign</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          <% } %> <!--  end matches loop  -->
+        </div>
+        <% } %> <!--  end else statement  -->
+      </section>
+
+      <section class="searches-box">
+        <%  for(var i = 0; i < myChallenges.length; i++) { %>
+          <div class="panel panel-default match-btn search">
+            <div class="panel-body">
+              <% if(myChallenges[i].game_id === 1) { %>
+                Searching for Goofspiel...
+              <% } else if (myChallenges[i].game_id === 2) {  %>
+                Searching for Go Fish...
+              <% } %> <!--  end gameType logic  -->
+            </div>
+          </div>
+        <% } %> <!--  end matches loop  -->
+      </section>
+
+      <div class="panel panel-default match-btn btn btn-default">
+        <div class="panel-body">
+          <div class="form-group">
+            <label for="game-dropdown">Select a game from the list...</label>
+            <select name="game" id="game-dropdown" class="form-control">
+              <% for (game in games) { %>
+                <option value= <%= games[game].id %> >
+                  <%= games[game].name %>
+                </option>
               <% } %>
-
-        <p class="text-center">
-        <%  if(myMatches[i].game_id === 1) { %>
-              Goofspiel
-        <%  } else if (myMatches[i].game_id === 2) {  %>
-                Blackjack
-        <%  } %> <!--  end game type logic  -->
-        </p>
-
-        <p class="text-center">
-          Against Player
-          <% if (myMatches[i].player1_id == my_id) { %>
-          <%= myMatches[i].player2_id %>
-          <% } else { %>
-          <%= myMatches[i].player1_id %>
-          <% } %>
-        </p>
-
-
-          <form action="/matches/delete" method="POST">
-          <input type="hidden" name="match_id" value="<%= myMatches[i].id %>">
-          <button type="submit" class="btn btn-default" style="float: right">
-            Resign?
-          </button>
-          </form>
-      </a>
-
-      <%  } %> <!--  end matches loop  -->
+            </select>
+          </div>
+          <h1 class="game-search">Search</h1>
+        </div>
       </div>
-    <%  } %> <!--  end else statement  -->
-
-
-    <form id="search-form" action="/matches" method="POST">
-     <input type="submit" class="jumbotron" style="background-color: #E8CAA4">
-        <select name="game" class="form-control" style="width:100px">
-          <% for (game in games) { %>
-            <option value= <%= games[game].id %> >
-              <%= games[game].name %>
-            </option>
-          <% } %>
-        </select>
-      </form>
-<!-- <button class="btn btn-default" id="search-btn" type="submit"> New Challenge! </button> -->
-</section>
-
-
-
-
-  <div class="" id="seeking">
-  <h1 class="page-header">Seeking</h1>
-    <%  if (myChallenges.length === 0) {  %>
-    You have no active challenges!
-    <%  } else { %>
-    <table class="table">
-      <th>Matchmaking ID</th>
-      <th>Game Type</th>
-
-      <%  for(var i = 0; i < myChallenges.length; i++) { %>
-      <tr>
-        <td>
-          <%= myChallenges[i].id %>
-        </td>
-
-        <td>
-        <% if(myChallenges[i].game_id === 1) { %>
-          Goofspiel
-        <%  } else if (myChallenges[i].game_id === 2) {  %>
-          Go Fish
-        </td>
-
-        <%  } %> <!--  end gameType logic  -->
-      </tr>
-      <%  } %> <!--  end matches loop  -->
-    <%  } %> <!--  end else statement  -->
-
-    </table>
-  </section>
-
-</body>
+    </section>
+  </body>
 </html>

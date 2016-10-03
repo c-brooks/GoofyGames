@@ -6,43 +6,44 @@
   <% include ../views/partials/_header %>
 </head>
 
-  <body class='bump-down'>
+  <body>
 
+    <section id="rankings" class="container-fluid">
 
-    <h1>Global Rankings</h1>
-
-    Select Game:
-    <select name="game" class="rankings-game">
-      <% for (game in games) { %>
-        <option value= <%= games[game].id %> <% if (games[game].id === 1) { %>selected <% } %>>
-          <%= games[game].name %>
-        </option>
-      <% } %>
-    </select>
-
-
-    <section>
-      <table class="rankings">
-        <thead>
-          <th>Rank</th>
-          <th>Player</th>
-          <th>Wins</th>
-          <th>Losses</th>
-        </thead>
-        <tbody>
-          <% for (i = 0; i < rankings.length; i++) { %>
-            <tr>
-              <% var currRank = rankings[i]; %>
-              <td><%= i + 1 %></td>
-              <td><a href="/users/<%= currRank.id %>"><%= currRank.username %></a></td>
-              <td><%= currRank.wins %></td>
-              <td><%= currRank.losses %></td>
-            </tr>
+      <h1 class="page-header">Global Rankings</h1>
+      <section class="content-panel">
+        <section class="form-group form-inline">
+        <h4>Select Game:</h4>
+        <select name="game" class="rankings-game form-control">
+          <% for (game in games) { %>
+            <option value= <%= games[game].id %> <% if (games[game].id === 1) { %>selected <% } %>>
+              <%= games[game].name %>
+            </option>
           <% } %>
-        </tbody>
-      </table>
-    </section>
+        </select>
+        </section>
 
+        <table class="rankings table table-hover">
+          <thead>
+            <th>Rank</th>
+            <th>Player</th>
+            <th>Wins</th>
+            <th>Losses</th>
+          </thead>
+          <tbody>
+            <% for (i = 0; i < rankings.length; i++) { %>
+              <tr>
+                <% var currRank = rankings[i]; %>
+                <td><%= i + 1 %></td>
+                <td><a href="/users/<%= currRank.id %>"><%= currRank.username %></a></td>
+                <td><%= currRank.wins %></td>
+                <td><%= currRank.losses %></td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </section>
+    </section>
   </body>
 
   <% include ../views/partials/_footer %>

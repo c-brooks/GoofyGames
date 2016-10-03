@@ -17,6 +17,7 @@ module.exports = (knex) => {
       let templateVars =
         {
           title: 'Rankings',
+          my_id: req.cookies.user_id,
           games: results[0],
           rankings: results[1]
         };

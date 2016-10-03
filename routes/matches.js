@@ -54,7 +54,9 @@ module.exports = (knex) => {
 router.get("/:id", (req, res) => {
   matchesRepo.getMyMatch(req.cookies.user_id, req.params.id)
   .then((match) => {
+    console.log(match[0]);
     let matchData = obfuscateMatchData(match[0]);
+    console.log(matchData);
     let templateVars = {
       title: 'Match',
       matchData: matchData,
@@ -184,14 +186,13 @@ router.get("/:id", (req, res) => {
       var playerHand  = results[0][0].activeplayer_cards;
       console.log(playerHand)
       if(!playerHand) {
-        playerHand = [];
+        playerHand    = [];
       }
       let player      = results[1][0].player;
 
       let cardValue   = goofspiel.calcFaceValue(req.body.value);
       let cardHit     = { suit: req.body.suit, value: cardValue.toString() };
 
-      console.log(player, playerHand, cardValue)
       if (cardHit) {
         let cardSuit  = cardHit.suit;
         let cardValue = cardHit.value;
@@ -281,8 +282,9 @@ router.get("/:id", (req, res) => {
 
   function obfuscateMatchData(matchData, opponent_last_turn) {
     // Return first card from deck
-    matchData.deck_cards = matchData.deck_cards[0];
-
+    if(matchData.game_id == 1){
+      matchData.deck_cards = matchData.deck_cards[0];
+    }
     // Only return opponent card count, not value of cards
     if(matchData.opponent_cards){
       matchData.opponent_cards = matchData.opponent_cards.length;
@@ -296,11 +298,11 @@ router.get("/:id", (req, res) => {
 
   function archiveMatch(matchData) {
     console.log('archiving...');
-    let archiveData         = {};
-    archiveData.match_id    = matchData.id;
-    archiveData.game_id     = matchData.game_id;
-    archiveData.game_start  = matchData.game_start;
-    archiveData.game_end    = matchData.game_end;
+    let archiveData             = {};
+    archiveData.match_id        = matchData.id;
+    archiveData.game_id         = matchData.game_id;
+    archiveData.game_start      = matchData.game_start;
+    archiveData.game_end        = matchData.game_end;
 
     if (matchData.activeplayer_score > matchData.opponent_score) {
       archiveData.winner_id     = matchData.activeplayer_id;

@@ -32,9 +32,6 @@ module.exports = (knex) => {
   };
 
   matchesRepo.updateMatch = (oldState, newState) => {
-    if(newState.game_id == 2){
-       newState.deck_cards = newState.deck_cards[0];
-     }
 
       return knex.table('matches')
       .where({ id: newState.id })
@@ -42,12 +39,12 @@ module.exports = (knex) => {
         deck_cards:    JSON.stringify(newState.deck_cards),
         player1_cards: JSON.stringify(newState.player1_cards),
         player2_cards: JSON.stringify(newState.player2_cards),
-        player1_score:  newState.player1_score,
-         player2_score: newState.player2_score,
+        player1_score: newState.player1_score,
+        player2_score: newState.player2_score,
         player1_last_turn: null,
         player2_last_turn: null,
         game_end: newState.game_end || null,
-        whose_move: newState.whose_move || null
+        whose_move: newState.whose_move
       });
   };
 
