@@ -15,7 +15,7 @@ module.exports = {
       deck_cards.push(getCards(SUITS[i]));
     }
     deck_cards = JSON.stringify(_.flatten(deck_cards));
-    console.log(deck_cards);
+    console.log('Creating new deck', deck_cards);
 // whose_move is true if p1 to move, false if p2 to move
     let newMatch =
     {
@@ -66,28 +66,41 @@ module.exports = {
         newState.move_count = parseInt(oldState.move_count) + 1;
       }
     }
-    console.log(oldState.deck_cards);
-    newState.deck_cards = oldState.deck_cards.shift()
+    oldState.deck_cards.shift()
     return newState;
   },
 
+  // If player gets 21 or under, his cards are added to score.
+  // If player busts, everything over 21 is subtracted.
   stand: function(oldState) {
     let newState = oldState;
+    var sumCards = 0;
     // p1 stands
     if(oldState.whose_move == 0) {
       for(var i in newState.player1_cards) {
-        newState.player1_score += +newState.player1_cards[i].value
+        sumCards += +newState.player1_cards[i].value;
+      }
+      if(sumCards <= BUST) {
+        newState.player1_score += sumCards;
+      }  else {
+        newState.player1_score -= (sumCards - BUST)
       }
       newState.player1_cards = [];
-    } else { // p2 stands
+    }
+    else {
       for(var i in newState.player2_cards) {
-        newState.player2_score += +newState.player2_cards[i].value
+        sumCards += +newState.player2_cards[i].value;
+      }
+      if(sumCards <= BUST) {
+        newState.player2_score += sumCards;
+      }  else {
+        newState.player2_score -= (sumCards - BUST)
       }
       newState.player2_cards = [];
-    }
+
     newState.whose_move = oldState.whose_move  ? 0 : 1;
     newState.move_count = parseInt(oldState.move_count) + 1;
-
+    }
     return newState;
   },
 

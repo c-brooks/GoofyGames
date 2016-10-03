@@ -13,7 +13,7 @@ module.exports = (knex) => {
       currentState[0].player1_cards = JSON.parse(currentState[0].player1_cards);
       currentState[0].player2_cards = JSON.parse(currentState[0].player2_cards);
       currentState[0].deck_cards    = JSON.parse(currentState[0].deck_cards);
-      matchesRepo.updateMatch(matchID, currentState[0], move, moveParams);
+      matchesRepo.updateMatch(currentState[0]);
 
     });
   });

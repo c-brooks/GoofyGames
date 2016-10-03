@@ -114,7 +114,7 @@ $(() => {
                   opponent_score.html(results.opponent_score).transition({ scale: [1, 1], opacity: 1 });
 
                   // Remove cards from board and add new deck card (after animations done)
-                  setTimeout(() => {
+                  setTimeout( () => {
                     myCard.remove();
                     theirCard.remove();
                     deckCard.remove();

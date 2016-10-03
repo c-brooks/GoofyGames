@@ -52,9 +52,9 @@ module.exports = (knex) => {
 router.get("/:id", (req, res) => {
   matchesRepo.getMyMatch(req.cookies.user_id, req.params.id)
   .then((match) => {
-    console.log(match[0]);
+    console.log('match[0]', match[0]);
     let matchData = obfuscateMatchData(match[0]);
-    console.log(matchData);
+    console.log('matchData', matchData);
     let templateVars = {
       title: 'Match',
       matchData: matchData,
@@ -80,8 +80,6 @@ router.get("/:id", (req, res) => {
     matchmakingRepo.checkForChallenges(user_id, game_id)
 
     .then( (challenge) => {
-      console.log('\nChallenge:', challenge);
-
       if(challenge == undefined) {
         matchmakingRepo.new(user_id, game_id).then(() => {
         res.redirect('/matches');
@@ -142,9 +140,13 @@ router.get("/:id", (req, res) => {
           matchesRepo.getMatchByID(req.params.id)
           .then((match) => {
             let oldState = match[0];
-            let newState = goofspiel.move(oldState);
-            if(oldState && newState){
-              matchesRepo.updateMatch(oldState, newState)
+            if(match.game_id == 1){
+              let newState = goofspiel.move(oldState);
+            } else if (match.game_id == 2) {
+              let newState = blackjack.stand(oldState);
+            }
+            //if(oldState && newState) {
+              matchesRepo.updateMatch(newState)
             .then((results) => {
               matchesRepo.getMyMatch(req.cookies.user_id, req.params.id)
               .then ((match) => {
@@ -154,7 +156,7 @@ router.get("/:id", (req, res) => {
                   res.json(matchData);
                 })
               });
-            } else res.json(oldState);
+            //} else res.json(oldState);
           });
         } else {
           // Return opponent's turn
@@ -165,7 +167,6 @@ router.get("/:id", (req, res) => {
   });
 
 
-
 // ---------------------------- MY BLACKJACK CODE ---------------------------- //
 // ----------------------------  (MOSTLY STOLEN)  ---------------------------- //
 
@@ -173,16 +174,17 @@ router.get("/:id", (req, res) => {
     console.log(req.params, req.body);
     Promise.all([
       matchesRepo.getPlayerHand(req.cookies.user_id, req.params.id),
-      matchesRepo.whichPlayer(req.cookies.user_id, req.params.id)
+      matchesRepo.whichPlayer(req.cookies.user_id, req.params.id),
+      matchesRepo.getMatchByID(req.params.id)
       ])
     .then( (results) => {
-      var playerHand  = results[0][0].activeplayer_cards;
-      console.log(playerHand)
+      let playerHand  = results[0][0].activeplayer_cards;
+      let deck_cards  = results[2][0].deck_cards;
+      deck_cards.shift();
       if(!playerHand) {
         playerHand    = [];
       }
       let player      = results[1][0].player;
-
       let cardValue   = goofspiel.calcFaceValue(req.body.value);
       let cardHit     = { suit: req.body.suit, value: cardValue.toString() };
 
@@ -190,22 +192,20 @@ router.get("/:id", (req, res) => {
         let cardSuit  = cardHit.suit;
         let cardValue = cardHit.value;
         let card      = JSON.stringify({ suit: cardSuit, value: cardValue });
-        console.log(playerHand)
         playerHand.push(cardHit);
-        console.log(playerHand)
         let newHand   = JSON.stringify(playerHand);
 
-        // convert newHand array to obj
-        console.log(card)
-        console.log(newHand)
         Promise.all([
           // Update player's turn in db
           matchesRepo.updatePlayer(player + '_last_turn', req.params.id, card),
           // Remove card from player's hand
           matchesRepo.updatePlayer(player + '_cards', req.params.id, newHand)
         ]).then((result) => {
-
-            res.sendStatus(200);
+          let returnParams = {
+            deck_cards: deck_cards,
+            playerHand: newHand
+          }
+          res.json(returnParams);
         });
       }
     })
@@ -216,9 +216,13 @@ router.get("/:id", (req, res) => {
     .then( (oldState) => {
       let newState = blackjack.hit(oldState)
       if(oldState && newState){
-        matchesRepo.updateMatch(oldState, newState)
+        matchesRepo.updateMatch(newState)
+        .then( () => {
+          console.log(newState);
+          res.json(newState);
+        })
       }
-      res.json(newState);
+      //res.json(newState);
     })
   })
 
@@ -227,15 +231,27 @@ router.get("/:id", (req, res) => {
       .then( (results) => {
         let oldState  = results;
         var newState = blackjack.stand(oldState[0])
-        console.log(newState);
-          matchesRepo.updateMatch(oldState, newState)
+
+          matchesRepo.updateMatch(newState)
           .then((result) => {
             // TODO handle errors
-            res.sendStatus(200);
+            res.json(newState);
         });
       })
     })
 
+    router.get('/:id/stand', (req, res) => {
+      matchesRepo.getMatchByID(req.params.id)
+      .then( (results) => {
+        let oldState  = results;
+        var newState = blackjack.stand(oldState[0])
+        console.log(newState);
+          matchesRepo.updateMatch(newState)
+          .then((result) => {
+            res.json(newState);
+        });
+      })
+    })
 
 // ------------------------------------------------------------------------------------- //
 

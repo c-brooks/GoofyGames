@@ -31,7 +31,7 @@ module.exports = (knex) => {
     return knex('matches').returning('id').insert(gameObj);
   };
 
-  matchesRepo.updateMatch = (oldState, newState) => {
+  matchesRepo.updateMatch = (newState) => {
 
       return knex.table('matches')
       .where({ id: newState.id })

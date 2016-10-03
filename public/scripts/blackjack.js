@@ -5,7 +5,9 @@ $(() => {
 // MY TURN
   // HIT
   $('.deck > div.card').on('click', function() {
-    if ($('.deck').length !== 0 && $('.deck > h2').html() !== 'GAME OVER') {
+    // Check if it's my turn
+
+    if ($('.deck').length !== 0) {
 
       var cardSuit = $(this).attr('class').split(/\s+/)[1];
       var cardValue = $(this).find('span.number').html();
@@ -13,11 +15,7 @@ $(() => {
       $.ajax({
         method: 'post',
         url: '/matches/' + matchID + '/hit',
-        data: { suit: cardSuit, value: cardValue },
-        success: (results) => {
-         $('.activePlayer').append(generateCard(cardSuit, cardValue));
-         $('.deck > div.card').find('.card').remove();
-        }
+        data: { suit: cardSuit, value: cardValue }
       })
 
       $.ajax({
@@ -25,10 +23,10 @@ $(() => {
         url: '/matches/' + matchID + '/hit',
         data: { game_id: 2 },
         success: (results) => {
-          console.log('\n\nResults:', results.deck_cards);
-          //$('.activePlayer').append(generateCard(results.deck_cards[0].suit, results.deck_cards[0].value));
-          //$('.deck > div.card').find('.card').remove();
-          //$('.deck > div.card').append(generateCard(results.deck_cards[1].suit, results.deck_cards[1].value));
+          console.log('\n\nResults:', results);
+          $('.activePlayer').append($(this));
+          $('.deck > div.card').find('.card').remove();
+          $('.deck').append(generateCard(results.deck_cards[0].suit, results.deck_cards[0].value));
         }
       })
 
@@ -44,16 +42,24 @@ $(() => {
 
     // STAND
   $('.activePlayer').find('.card').on('click', () => {
-
-      $.ajax({
-        method: 'POST',
-        url: '/matches/' + matchID + '/stand',
-        success: () => {
-      $('.activePlayer > div.card').remove()
+    $.ajax({
+      method: 'POST',
+      url: '/matches/' + matchID + '/stand',
+      success: () => {
+        $('.activePlayer > div.card').remove()
 
         }
       });
-  //  }
+
+    $.ajax({
+      method: 'get',
+      url: '/matches/' + matchID + '/stand',
+      success: (result) => {
+        console.log('GET STAND', result);
+
+
+      }
+    })
   })
 
 
@@ -73,7 +79,6 @@ $(() => {
 
 
 
-
   // Check moves
   // Assign to variable so we can stop checking when needed
   var checking = false;
@@ -86,25 +91,39 @@ $(() => {
         $.ajax({
           url: '/matches/' + matchID + '/opp_turn',
           success: (results) => {
-            console.log(results);
+            console.log('opp_turn results:', results);
             if (results.opponent_last_turn !== null) {
               // Show their card
-              //$('.theirMove').append(generateCard(results.opponent_last_turn.suit, results.opponent_last_turn.value));
-
-              // Remove card from their hand
-              $('.opponent.cards > div.card').last().remove();
+              $('.opponent.cards').append(generateCard(results.opponent_last_turn.suit, results.opponent_last_turn.value));
 
               // Update scores
               $('.activePlayer-score').find('.score').html(results.activeplayer_score);
               $('.opponent-score').find('.score').html(results.opponent_score);
 
               // Clear board and set new prize
-              setTimeout(
-                 function(){
-                  //$('.myMove > div.card').remove();
-                  $('.theirMove > div.card').remove();
-                  $('.deck > div.card').remove();
+              setTimeout( () => {
+                   var activeplayer_score    = $('.activePlayer-score').find('.score');
+                   var opponent_score        = $('.opponent-score').find('.score');
+                   var currActivePlayerScore = +activeplayer_score.html();
+                   var currOpponentScore     = +opponent_score.html();
 
+
+
+                   if (currActivePlayerScore < results.activeplayer_score) {
+                     activeplayer_score.css({ scale: [8, 8], opacity: 0 });
+                   } else if (currOpponentScore < results.opponent_score) {
+                     opponent_score.css({ scale: [8, 8], opacity: 0 });
+                   }
+
+                   // Score transitions back to 1x scale with full opacity
+                   activeplayer_score.html(results.activeplayer_score).transition({ scale: [1, 1], opacity: 1 });
+                   opponent_score.html(results.opponent_score).transition({ scale: [1, 1], opacity: 1 });
+
+
+                   setTimeout( () => {
+                     myCard.remove();
+                     theirCard.remove();
+                     deckCard.remove();
                   // Display end game items if applicable
                   if (results.game_end !== null) {
                     clearInterval(checkMovesInterval);
@@ -112,16 +131,15 @@ $(() => {
                   } else {
                     $('.deck').append(generateCard(results.deck_cards.suit, results.deck_cards.value));
                   }
-                 },
-                 2000
-              );
-            }
+                 }, 1500);
+               }, 1000);
+             }
             checking = false;
-          }
+          } // end results
         })
       } else {
         checking = false;
-      };
+      }
     }
   }
 });
