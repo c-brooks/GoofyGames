@@ -7,7 +7,6 @@ $link-hover-color: darken($secondary-color, 15%);
 body {
   background-color: #fff;
   color:  $primary-color;
-  margin-top: 85px;
   h1 {
 
     color: $primary-color;
@@ -32,11 +31,8 @@ a {
   min-height: 100px;
 }
 
-.container-fluid {
-  margin: 40px;
-  .opponent {
-    margin-top: 25px;
-  }
+.opponent {
+  margin-top: 25px;
 }
 
 #seeking {
@@ -106,4 +102,16 @@ a {
     padding: $scoreboard-padding;
     background-color: $secondary-color;
   }
+}
+
+.nav > li {
+  padding: 0 25px !important;
+}
+
+.navbar a, .nav > li > a, .nav > li > a {
+  color: white !important;
+
+}
+.navbar a:hover, .nav > li > a:hover, .nav > li > a:focus {
+  text-decoration: none;
 }

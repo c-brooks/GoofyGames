@@ -1,14 +1,29 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-    <h1 class="pull-left">Goofy Games</h1>
-    <form id="login" method="post" action="/login" class="pull-right form-inline">
-      <input id="playerID" type="text" name="id" value = "" class="form-control" placeholder="ID">
-      <button class="btn btn-default">Login</button>
-      <% if (player_id) { %>
-      <div id="login-state">Player ID: <%= player_id %> </div>
-      <% } %>
-    </form>
-  </div>
-  <div class="container">
-  </div>
+<nav class="navbar navbar-default navbar-fixed-">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <h1><a href="/">Goofy Games</a></h1>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <form id="login" method="post" action="/login" class="navbar-form navbar-right">
+        <input id="playerID" type="text" name="id" value = "" class="form-control" placeholder="ID">
+        <button class="btn btn-default">Login</button>
+        <% if (player_id) { %>
+        <div id="login-state">Player ID: <%= player_id %> </div>
+        <% } %>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><h3><a href="/rankings">Rankings</a></h3></li>
+        <li><h3><a href="/users">Profile</a></h3></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
 </nav>

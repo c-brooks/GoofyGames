@@ -17,17 +17,15 @@ module.exports = (knex) => {
   // Matches home page - display and look for matches
   router.get("/", (req, res) => {
     Promise.all([
-      matchesRepo.getAllMatches(),
       matchesRepo.getMatchesByPlayerID(req.cookies['user_id']),
       gamesRepo.getAllGames(),
       matchmakingRepo.getUserChallenges(req.cookies['user_id'])
       ])
     .then( (results) => {
       var templateVars = {
-        allMatches:   results[0],
-        myMatches:    results[1],
-        games:        results[2],
-        myChallenges: results[3],
+        myMatches:    results[0],
+        games:        results[1],
+        myChallenges: results[2],
         my_id:      req.cookies['user_id']
       }
       res.render("matches", templateVars)
