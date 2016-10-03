@@ -1,4 +1,4 @@
-// require('dotenv').config();
+require('dotenv').config();
 
 module.exports = {
 
@@ -25,7 +25,7 @@ module.exports = {
     client: 'postgresql',
     connection: process.env.HEROKU_POSTGRESQL_ROSE_URL + '?ssl=true',
     pool: {
-      min: 0,
+      min: 2,
       max: 10
     },
     migrations: {
