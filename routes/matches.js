@@ -138,16 +138,11 @@ router.get("/:id", (req, res) => {
       ]).then((turn) => {
         let activePlayer = turn[0][0];
         let opponent = turn[1][0];
-        var newState;
         if (activePlayer.player_last_turn !== null && opponent.player_last_turn !== null) {
           matchesRepo.getMatchByID(req.params.id)
           .then((match) => {
             let oldState = match[0];
-            if (match.game_id === 1){
-              newState = goofspiel.move(oldState);
-            } else if (match.game_id === 2){
-              newState = goofspiel.move(oldState);
-            }
+            let newState = goofspiel.move(oldState);
             if(oldState && newState){
               matchesRepo.updateMatch(oldState, newState)
             .then((results) => {
@@ -156,10 +151,10 @@ router.get("/:id", (req, res) => {
                 let matchData = obfuscateMatchData(match[0], opponent.player_last_turn);
                 // Archive the match if it's over
                 if (matchData.game_end) { archiveMatch(matchData); }
-                res.json(matchData);
-              })
-            });
-          } else res.json(oldState);
+                  res.json(matchData);
+                })
+              });
+            } else res.json(oldState);
           });
         } else {
           // Return opponent's turn
