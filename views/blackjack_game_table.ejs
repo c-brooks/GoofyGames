@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <% const player_id = my_id %>
+  <% include ../views/partials/_head %>
+  <% /*include ../views/partials/_header*/ %>
+  <script type="text/javascript" src="/scripts/blackjack.js"></script>
+
+</head>
+
+  <body class="bump-down">
+    <div class='container'>
+      <div class='row play-area'>
+        <div class='activePlayer-score col-sm-3'>
+          <h2>YOU</h2>
+          <span class='score'><%= matchData.activeplayer_score %></span>
+        </div>
+
+        <div class='deck cards col-sm-2'>
+          <% var suit = matchData.deck_cards[0].suit %>
+          <% var cardNum = matchData.deck_cards[0].value %>
+          <% include ../views/partials/_card %>
+        </div>
+
+        <div class='opponent-score col-sm-3'>
+          <h2>THEM</h2>
+          <span class='score'><%= matchData.opponent_score %></span>
+        </div>
+      </div>
+
+      <div class = 'row activePlayer cards'>
+        <% for (card in matchData.activeplayer_cards) { %>
+          <% var currCard = matchData.activeplayer_cards[card] %>
+          <% var suit = currCard.suit %>
+          <% var cardNum = currCard.value %>
+          <% include ../views/partials/_card %>
+        <% } %>
+
+      </div>
+    </div>
+  </body>
+
+  <% include ../views/partials/_footer %>
+</html>
