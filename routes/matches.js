@@ -139,13 +139,14 @@ router.get("/:id", (req, res) => {
         if (activePlayer.player_last_turn !== null && opponent.player_last_turn !== null) {
           matchesRepo.getMatchByID(req.params.id)
           .then((match) => {
+            var newState;
             let oldState = match[0];
-            if(match.game_id == 1){
-              let newState = goofspiel.move(oldState);
-            } else if (match.game_id == 2) {
-              let newState = blackjack.stand(oldState);
+            if(match[0].game_id == 1) {
+              newState = goofspiel.move(oldState);
+            } else if (match[0].game_id == 2) {
+              newState = blackjack.stand(oldState);
             }
-            //if(oldState && newState) {
+            if(oldState && newState) {
               matchesRepo.updateMatch(newState)
             .then((results) => {
               matchesRepo.getMyMatch(req.cookies.user_id, req.params.id)
@@ -156,7 +157,7 @@ router.get("/:id", (req, res) => {
                   res.json(matchData);
                 })
               });
-            //} else res.json(oldState);
+            } else res.json(oldState);
           });
         } else {
           // Return opponent's turn

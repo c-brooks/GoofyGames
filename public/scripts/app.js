@@ -78,6 +78,7 @@ $(() => {
             console.log(results);
             if (results.opponent_last_turn !== null) {
               // Show their card
+              console.log(results);
               $('.theirMove').append(generateCard(results.opponent_last_turn.suit, results.opponent_last_turn.value));
 
               // Remove card from their hand
