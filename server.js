@@ -55,7 +55,11 @@ app.use("/matches",  matchesRoutes(knex));
 // Home page
 app.get("/", (req, res) => {
   var templateVars = { title: 'Login', my_id: req.cookies['user_id'] }
-  res.render("index", templateVars);
+  if (req.cookies.user_id === undefined) {
+    res.render("index", templateVars);
+  } else {
+    res.redirect('/matches', 302);
+  }
 });
 
 app.listen(PORT, () => {

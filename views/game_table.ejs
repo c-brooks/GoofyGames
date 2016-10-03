@@ -33,9 +33,13 @@
         </div>
 
         <div class='deck cards col-sm-2'>
+          <% if (matchData.deck_cards !== undefined) { %>
             <% var suit = matchData.deck_cards.suit %>
             <% var cardNum = matchData.deck_cards.value %>
             <% include ../views/partials/_card %>
+          <% } else { %>
+            <h2>GAME OVER</h2>
+          <% } %>
         </div>
 
         <div class='theirMove cards col-sm-2'>
