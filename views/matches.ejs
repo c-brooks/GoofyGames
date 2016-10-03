@@ -16,7 +16,7 @@
         <% } else { %>
           <% for (var i = 0; i < myMatches.length; i++) { %>
             <!-- start match box -->
-            <%  if ((myMatches[i].player1_id == my_id && myMatches[i].player1_last_turn === null)
+            <%  if (myMatches[i].game_end === null && (myMatches[i].player1_id == my_id && myMatches[i].player1_last_turn === null)
             || (myMatches[i].player2_id == my_id && myMatches[i].player2_last_turn === null)) { %>
               <div class="panel panel-default match-btn highlight-turn">
             <% } else { %>
@@ -45,12 +45,16 @@
                 </h3>
 
                 <div class="row center-block">
-                  <a href="/matches/<%= myMatches[i].id %>" class="btn btn-default col-xs-6">Play</a>
+                  <% if (myMatches[i].game_end === null) { %>
+                    <a href="/matches/<%= myMatches[i].id %>" class="btn btn-default col-xs-6">Play</a>
 
-                  <form action="/matches/delete" method="POST" class="col-xs-6">
-                    <input type="hidden" name="match_id" value="<%= myMatches[i].id %>">
-                    <button type="submit" class="btn btn-default">Resign</button>
-                  </form>
+                    <form action="/matches/delete" method="POST" class="col-xs-6">
+                      <input type="hidden" name="match_id" value="<%= myMatches[i].id %>">
+                      <button type="submit" class="btn btn-default">Resign</button>
+                    </form>
+                  <% } else { %>
+                    GAME OVER
+                  <% } %>
                 </div>
               </div>
             </div>

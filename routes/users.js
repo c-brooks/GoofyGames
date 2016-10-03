@@ -10,6 +10,9 @@ module.exports = (knex) => {
   const rankingsRepo = require('../db/rankings.js')(knex);
 
   router.get("/:id", (req, res) => {
+    if (req.params.id === 'me') {
+      req.params.id = req.cookies.user_id;
+    }
     Promise.all([
       usersRepo.getUser(req.params.id),
       archivedMatchesRepo.getArchivedMatches(req.params.id),

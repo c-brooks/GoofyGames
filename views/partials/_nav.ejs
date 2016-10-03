@@ -8,12 +8,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <h1>Goofy Games</h1>
+      <h1><a href="/">Goofy Games</a></h1>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <form id="login" method="post" action"/login" class="navbar-form navbar-right">
+      <form id="login" method="post" action="/login" class="navbar-form navbar-right">
         <input id="playerID" type="text" name="id" value = "" class="form-control" placeholder="ID">
         <button class="btn btn-default">Login</button>
         <% if (player_id) { %>
@@ -21,8 +21,8 @@
         <% } %>
       </form>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="/rankings">Rankings</a></li>
-        <li><a href="/users">Profile</a></li>
+        <li><h3><a href="/rankings">Rankings</a></h3></li>
+        <li><h3><a href="/users">Profile</a></h3></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
